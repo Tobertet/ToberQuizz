@@ -4,15 +4,16 @@
       <img v-bind:src="question.imageUri" />
     </div>
     <div class="input-container">
-      <label>{{ index + 1 }} - </label><input v-model="answer" />
+      <label>{{ index + 1 }} - </label
+      ><input v-bind:disabled="status === 'valid'" v-model="answer" />
       <button @click="checkAnswer">V</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Encryption } from "@/encryption";
 import { defineComponent, PropType } from "vue";
+import argon2 from "argon2-browser";
 
 type Question = {
   solutions: string[];
@@ -40,13 +41,17 @@ export default defineComponent({
     index: Number,
   },
   methods: {
-    checkAnswer: function () {
-      const asd = !!this.question?.solutions.find(
-        (solution) => solution === Encryption.encrypt(this.answer)
+    checkAnswer: async function () {
+      const hashedAnswer = await argon2.hash({
+        pass: this.answer,
+        salt: "Tobertet",
+        hashLen: 32, // desired hash length
+        type: argon2.ArgonType.Argon2id, // Argon2d, Argon2i, Argon2id
+      });
+      const isValid = !!this.question?.solutions.find(
+        (solution) => solution === hashedAnswer.hashHex
       );
-      this.status = asd ? Status.Valid : Status.Error;
-      console.log(asd);
-      return asd;
+      this.status = isValid ? Status.Valid : Status.Error;
     },
   },
 });
