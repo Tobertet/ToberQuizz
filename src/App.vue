@@ -9,35 +9,29 @@
         {{ index + 1 }}
       </button>
     </div>
-
     <div
       id="questions-table"
       v-bind:style="{ 'grid-template-columns': tableColumns }"
     >
-      <div
-        class="question"
+      <Question
         v-for="(question, index) in questions"
         v-bind:key="index"
+        v-bind:question="question"
+        v-bind:index="index"
       >
-        <div class="image">
-          <img v-bind:src="question.imageUri" />
-        </div>
-        <div class="input">
-          <label>{{ index + 1 }} - </label><input />
-          <button v-on:click="checkAnswer('', index)">V</button>
-        </div>
-      </div>
+      </Question>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Question from "./components/Question.vue";
 import { questions } from "./questions";
-import JSEncrypt from "jsencrypt";
 
 export default defineComponent({
   name: "App",
+  components: { Question },
   data: () => {
     return {
       questions,
@@ -59,36 +53,8 @@ export default defineComponent({
   row-gap: 36px;
   width: 80%;
   margin: auto;
-}
-
-@media (max-width: 500px) {
-  #questions-table {
+  @media (max-width: 500px) {
     width: 100%;
   }
-}
-
-.question {
-  max-width: 100%;
-  text-align: center;
-}
-.question > .image {
-  max-width: 100%;
-  height: 0;
-  padding-bottom: 100%;
-  border: 1px solid gray;
-}
-
-.question img {
-  max-width: 100%;
-}
-
-.question > .input {
-  margin-top: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.input input {
-  width: 75%;
 }
 </style>
