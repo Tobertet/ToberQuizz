@@ -65,7 +65,7 @@ export default defineComponent({
   > .image-container {
     max-width: 100%;
     height: 0;
-    padding-bottom: 100%;
+    padding-bottom: calc(100% - 12px);
     border: 6px solid darkgray;
     &.valid {
       border-color: green;
