@@ -2,11 +2,11 @@
   <div id="app">
     <div>
       <button
-        v-for="index in [...Array(3).keys()]"
-        v-on:click="setColumns(index + 3)"
+        v-for="index in [...Array(4).keys()]"
+        v-on:click="setColumns(index + 1)"
         v-bind:key="index"
       >
-        {{ index + 3 }}
+        {{ index + 1 }}
       </button>
     </div>
     <div
