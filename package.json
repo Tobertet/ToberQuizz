@@ -2,7 +2,7 @@
   "name": "toberquizz",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://tobertet.github.io/toberquizz",
+  "homepage": "https://tobertet.github.io/ToberQuizz",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
