@@ -1,6 +1,6 @@
 export const questions: { imageUri: string; solutions: string[] }[] = [
   {
-    imageUri: "http://localhost:8080/pictures/01.png",
+    imageUri: "./pictures/01.png",
     solutions: [
       "00bb1d4670f1de7ca771050bb4619e224743edd6e3fbb8b3733318014ba4ceac",
       "7ac19dda99d2f454aafffb458d5cc412e8902dd5b39015b52efa8093b2646d44",
