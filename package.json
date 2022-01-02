@@ -12,6 +12,7 @@
     "argon2-browser": "^1.18.0",
     "base64-loader": "^1.0.0",
     "core-js": "^3.6.5",
+    "gh-pages": "^3.2.3",
     "vue": "^3.0.0"
   },
   "devDependencies": {
