@@ -1,5 +1,28 @@
 <template>
-  <div id="app">
+  <div id="app-container">
+    <header>
+      <pre id="ascii-title">
+ _______    _                ____        _         
+|__   __|  | |              / __ \      (_)        
+   | | ___ | |__   ___ _ __| |  | |_   _ _ ________
+   | |/ _ \| '_ \ / _ \ '__| |  | | | | | |_  /_  /
+   | | (_) | |_) |  __/ |  | |__| | |_| | |/ / / / 
+   |_|\___/|_.__/ \___|_|   \___\_\\__,_|_/___/___|
+    </pre
+      >
+      <p>
+        Te doy la bienvenida a ToberQuizz, la aplicación tecnológicamente ética
+        donde encontrarás desafíos originales y gratuitos que pondrán en jaque
+        tu imaginación.
+      </p>
+      <h2>Desafío nº 1</h2>
+      <p>
+        Este primer desafío contiene imágenes que representan de alguna forma
+        grupos o artistas de la música española desde los 60 hasta los 2000.
+      </p>
+      <p>¿Eres capaz de adivinar todos?</p>
+      <hr />
+    </header>
     <div>
       <button
         v-for="index in [...Array(4).keys()]"
@@ -21,6 +44,34 @@
       >
       </Question>
     </div>
+    <footer>
+      <hr />
+      <p>
+        Esta aplicación es tecnológicamente ética y no contiene ni anuncios ni
+        trackers ni cookies, respetando así totalmente tu privacidad. Además, es
+        open-source y puedes encontrar su código
+        <a
+          alt="link to the source code in Github"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/Tobertet/ToberQuizz"
+          >aquí</a
+        >.
+      </p>
+      <p>
+        Si te ha gustado, no dudes en compartirlo libremente con quien quieras.
+        Si, además quieres ayudarme a hacer más contenido tecnológicamente ético
+        como este, puedes
+        <a
+          alt="link to donation page"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://Ko-fi.com/robertmengual"
+          >invitarme a un café</a
+        >.
+      </p>
+      <p>Hecho para tí con mucho ❤️ por Robert Mengual.</p>
+    </footer>
   </div>
 </template>
 
@@ -47,14 +98,37 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+#ascii-title {
+  text-align: center;
+  font-size: 2vw;
+  @media (min-width: 1024px) {
+    font-size: 200%;
+  }
+}
+#app-container {
+  width: 80%;
+  margin-inline: auto;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+}
+h2,
+p {
+}
+p {
+  font-size: 1.2rem;
+}
 #questions-table {
   display: grid;
   gap: 24px;
   row-gap: 36px;
-  width: 80%;
-  margin: auto;
-  @media (max-width: 500px) {
-    width: 100%;
-  }
+}
+header {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+footer {
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 </style>
