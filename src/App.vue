@@ -62,7 +62,7 @@
           >invitarme a un café</a
         >.
       </p>
-      <p>Hecho para tí con mucho ❤️ por Robert Mengual.</p>
+      <p>Hecho para ti con mucho ❤️ por Robert Mengual.</p>
     </footer>
   </div>
   <div id="sticky-bar">

@@ -52,7 +52,9 @@ export default defineComponent({
         (solution) => solution === hashedAnswer.hashHex
       );
       this.status = isValid ? Status.Valid : Status.Error;
-      this.$emit("valid");
+      if (isValid) {
+        this.$emit("valid");
+      }
     },
   },
 });
