@@ -23,15 +23,6 @@
       <p>¿Eres capaz de adivinar todos?</p>
       <hr />
     </header>
-    <div>
-      <button
-        v-for="index in [...Array(4).keys()]"
-        v-on:click="setColumns(index + 1)"
-        v-bind:key="index"
-      >
-        {{ index + 1 }}
-      </button>
-    </div>
     <div
       id="questions-table"
       v-bind:style="{ 'grid-template-columns': tableColumns }"
@@ -41,6 +32,7 @@
         v-bind:key="index"
         v-bind:question="question"
         v-bind:index="index"
+        @valid="addValidAnswer"
       >
       </Question>
     </div>
@@ -73,6 +65,19 @@
       <p>Hecho para tí con mucho ❤️ por Robert Mengual.</p>
     </footer>
   </div>
+  <div id="sticky-bar">
+    <div>
+      Columnas:
+      <button
+        v-for="index in [...Array(4).keys()]"
+        v-on:click="setColumns(index + 1)"
+        v-bind:key="index"
+      >
+        {{ index + 1 }}
+      </button>
+    </div>
+    <div>Aciertos: {{ validAnswers }} / {{ questions.length }}</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -86,12 +91,16 @@ export default defineComponent({
   data: () => {
     return {
       questions,
+      validAnswers: 0,
       tableColumns: "repeat(4, 1fr)",
     };
   },
   methods: {
     setColumns: function (numberOfColumns: number) {
       this.tableColumns = `repeat(${numberOfColumns}, 1fr)`;
+    },
+    addValidAnswer: function () {
+      this.validAnswers = this.validAnswers + 1;
     },
   },
 });
@@ -130,5 +139,17 @@ header {
 footer {
   margin-top: 24px;
   margin-bottom: 24px;
+}
+#sticky-bar {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 10%;
+  background: lightgray;
+  padding: 4px;
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
 }
 </style>
