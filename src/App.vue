@@ -92,7 +92,7 @@ export default defineComponent({
     return {
       questions,
       validAnswers: 0,
-      tableColumns: "repeat(4, 1fr)",
+      tableColumns: `repeat(${window.innerWidth > 500 ? 4 : 1}, 1fr)`,
     };
   },
   methods: {
