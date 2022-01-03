@@ -138,7 +138,7 @@ header {
 }
 footer {
   margin-top: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 48px;
 }
 #sticky-bar {
   text-align: center;
