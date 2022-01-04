@@ -23,9 +23,21 @@
       <p>¿Eres capaz de adivinar todos?</p>
       <hr />
     </header>
+    <div class="columns-select">
+      <label for="numColumns">Imágenes por fila: </label>
+      <select v-model="tableColumns" name="numColumns" id="numColumns">
+        <option
+          v-for="columns in availableColumns"
+          v-bind:key="columns"
+          v-bind:value="columns"
+        >
+          {{ columns }}
+        </option>
+      </select>
+    </div>
     <div
       id="questions-table"
-      v-bind:style="{ 'grid-template-columns': tableColumns }"
+      v-bind:style="{ 'grid-template-columns': `repeat(${tableColumns}, 1fr)` }"
     >
       <Question
         v-for="(question, index) in questions"
@@ -35,6 +47,18 @@
         @valid="addValidAnswer"
       >
       </Question>
+    </div>
+    <div class="columns-select">
+      <label for="numColumns">Imágenes por fila: </label>
+      <select v-model="tableColumns" name="numColumns" id="numColumns">
+        <option
+          v-for="columns in availableColumns"
+          v-bind:key="columns"
+          v-bind:value="columns"
+        >
+          {{ columns }}
+        </option>
+      </select>
     </div>
     <footer>
       <hr />
@@ -66,16 +90,6 @@
     </footer>
   </div>
   <div id="sticky-bar">
-    <div>
-      Columnas:
-      <button
-        v-for="index in [...Array(4).keys()]"
-        v-on:click="setColumns(index + 1)"
-        v-bind:key="index"
-      >
-        {{ index + 1 }}
-      </button>
-    </div>
     <div>Aciertos: {{ validAnswers }} / {{ questions.length }}</div>
   </div>
 </template>
@@ -92,13 +106,11 @@ export default defineComponent({
     return {
       questions,
       validAnswers: 0,
-      tableColumns: `repeat(${window.innerWidth > 500 ? 4 : 1}, 1fr)`,
+      tableColumns: window.innerWidth > 500 ? 4 : 1,
+      availableColumns: window.innerWidth > 500 ? [3, 4, 5, 6] : [1, 2],
     };
   },
   methods: {
-    setColumns: function (numberOfColumns: number) {
-      this.tableColumns = `repeat(${numberOfColumns}, 1fr)`;
-    },
     addValidAnswer: function () {
       this.validAnswers = this.validAnswers + 1;
     },
@@ -141,15 +153,16 @@ footer {
   margin-bottom: 48px;
 }
 #sticky-bar {
-  text-align: center;
   position: fixed;
-  bottom: 0;
-  left: 10%;
+  bottom: 0%;
+  right: 10%;
   background: lightgray;
   padding: 4px;
-  width: 80%;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
+  font-size: 1.2rem;
+  border: 1px solid lightgray;
+}
+.columns-select {
+  text-align: end;
+  margin-block: 24px;
 }
 </style>
