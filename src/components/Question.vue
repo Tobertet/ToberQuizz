@@ -43,7 +43,11 @@ export default defineComponent({
   methods: {
     checkAnswer: async function () {
       const hashedAnswer = await argon2.hash({
-        pass: this.answer,
+        pass: this.answer
+          // If I wanted to get rid of accent marks
+          // .normalize("NFD")
+          // .replace(/\p{Diacritic}/gu, "")
+          .toLocaleLowerCase(),
         salt: "Tobertet",
         hashLen: 32, // desired hash length
         type: argon2.ArgonType.Argon2id, // Argon2d, Argon2i, Argon2id
