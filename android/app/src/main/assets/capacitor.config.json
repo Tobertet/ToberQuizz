@@ -1,0 +1,6 @@
+{
+	"appId": "com.robertmengual.toberquizz",
+	"appName": "ToberQuizz",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
