@@ -1,5 +1,4 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? "/ToberQuizz" : "/",
   configureWebpack: function (config) {
     config.module.rules = [
       ...config.module.rules,
