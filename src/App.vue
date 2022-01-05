@@ -135,20 +135,17 @@ export default defineComponent({
     const rawAnswers = (await Storage.get({ key: "ESP_001" })).value;
     if (!rawAnswers) return;
 
-    this.answers = await Promise.all(
-      (JSON.parse(rawAnswers) as string[]).map<Promise<Answer | undefined>>(
-        async (rawAnswer, index) => {
-          if (!rawAnswer) return;
-          return {
-            text: rawAnswer,
-            isValid: await Argon2Utils.isAnswerValid(
-              rawAnswer,
-              questions[index]
-            ),
-          };
-        }
-      )
-    );
+    (JSON.parse(rawAnswers) as string[]).forEach(async (rawAnswer, index) => {
+      if (!rawAnswer) return;
+      const isValid = await Argon2Utils.isAnswerValid(
+        rawAnswer,
+        questions[index]
+      );
+      this.answers[index] = {
+        text: rawAnswer,
+        isValid,
+      };
+    });
   },
 });
 </script>
