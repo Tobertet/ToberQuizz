@@ -1,4 +1,6 @@
-export const questions: { imageUri: string; solutions: string[] }[] = [
+import { Question } from "./models";
+
+export const questions: Question[] = [
   {
     imageUri: "./pictures/01.png",
     solutions: [

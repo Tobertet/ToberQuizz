@@ -5,20 +5,17 @@
     </div>
     <div class="input-container">
       <label>{{ index + 1 }} - </label
-      ><input v-bind:disabled="status === 'valid'" v-model="answer" />
-      <button @click="checkAnswer">V</button>
+      ><input v-bind:disabled="status === 'valid'" v-model="inputText" />
+      <button v-bind:disabled="status === 'valid'" @click="answerQuestion">
+        V
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import argon2 from "argon2-browser";
-
-type Question = {
-  solutions: string[];
-  imageUri: string;
-};
+import { Answer, Question } from "../models";
 
 enum Status {
   Error = "error",
@@ -30,7 +27,7 @@ export default defineComponent({
   name: "Question",
   data: () => {
     return {
-      answer: "",
+      inputText: "",
       status: Status.Clean,
     };
   },
@@ -38,28 +35,31 @@ export default defineComponent({
     question: {
       type: Object as PropType<Question>,
     },
+    answer: {
+      type: (Object as PropType<Answer>) || undefined,
+    },
     index: Number,
   },
-  methods: {
-    checkAnswer: async function () {
-      const hashedAnswer = await argon2.hash({
-        pass: this.answer
-          // If I wanted to get rid of accent marks
-          // .normalize("NFD")
-          // .replace(/\p{Diacritic}/gu, "")
-          .toLocaleLowerCase(),
-        salt: "Tobertet",
-        hashLen: 32, // desired hash length
-        type: argon2.ArgonType.Argon2id, // Argon2d, Argon2i, Argon2id
-      });
-      const isValid = !!this.question?.solutions.find(
-        (solution) => solution === hashedAnswer.hashHex
-      );
-      this.status = isValid ? Status.Valid : Status.Error;
-      if (isValid) {
-        this.$emit("valid");
-      }
+  watch: {
+    answer: function (newValue: Answer | undefined) {
+      this.setAnswer(newValue);
     },
+  },
+  methods: {
+    answerQuestion: function () {
+      this.$emit("answer", this.inputText, this.index);
+    },
+    setAnswer: function (answer?: Answer) {
+      this.inputText = answer?.text || "";
+      this.status = !answer
+        ? Status.Clean
+        : answer.isValid
+        ? Status.Valid
+        : Status.Error;
+    },
+  },
+  mounted: function () {
+    this.setAnswer(this.answer);
   },
 });
 </script>

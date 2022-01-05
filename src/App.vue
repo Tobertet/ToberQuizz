@@ -44,7 +44,8 @@
         v-bind:key="index"
         v-bind:question="question"
         v-bind:index="index"
-        @valid="addValidAnswer"
+        v-bind:answer="answers[index]"
+        @answer="checkAndSave"
       >
       </Question>
     </div>
@@ -90,14 +91,19 @@
     </footer>
   </div>
   <div id="sticky-bar">
-    <div>Aciertos: {{ validAnswers }} / {{ questions.length }}</div>
+    <div>
+      Aciertos: {{ answers.filter((answer) => answer.isValid).length }} /
+      {{ questions.length }}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Question from "./components/Question.vue";
+import { Answer } from "./models";
 import { questions } from "./questions";
+import { Argon2Utils } from "./Argon2Utils";
 
 export default defineComponent({
   name: "App",
@@ -105,14 +111,18 @@ export default defineComponent({
   data: () => {
     return {
       questions,
-      validAnswers: 0,
+      answers: new Array<Answer>(),
       tableColumns: window.innerWidth > 500 ? 4 : 1,
       availableColumns: window.innerWidth > 500 ? [3, 4, 5, 6] : [1, 2],
     };
   },
   methods: {
-    addValidAnswer: function () {
-      this.validAnswers = this.validAnswers + 1;
+    checkAndSave: async function (answerText: string, index: number) {
+      const fullAnswer: Answer = {
+        text: answerText,
+        isValid: await Argon2Utils.isAnswerValid(answerText, questions[index]),
+      };
+      this.answers[index] = fullAnswer;
     },
   },
 });
