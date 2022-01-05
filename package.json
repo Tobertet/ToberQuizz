@@ -12,6 +12,7 @@
     "@capacitor/android": "^3.3.3",
     "@capacitor/cli": "^3.3.3",
     "@capacitor/core": "^3.3.3",
+    "@capacitor/storage": "^1.2.3",
     "@types/argon2-browser": "^1.18.1",
     "argon2-browser": "^1.18.0",
     "base64-loader": "^1.0.0",

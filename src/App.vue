@@ -92,7 +92,8 @@
   </div>
   <div id="sticky-bar">
     <div>
-      Aciertos: {{ answers.filter((answer) => answer.isValid).length }} /
+      Aciertos:
+      {{ answers.filter((answer) => answer && answer.isValid).length }} /
       {{ questions.length }}
     </div>
   </div>
@@ -104,6 +105,7 @@ import Question from "./components/Question.vue";
 import { Answer } from "./models";
 import { questions } from "./questions";
 import { Argon2Utils } from "./Argon2Utils";
+import { Storage } from "@capacitor/storage";
 
 export default defineComponent({
   name: "App",
@@ -111,7 +113,7 @@ export default defineComponent({
   data: () => {
     return {
       questions,
-      answers: new Array<Answer>(),
+      answers: new Array<Answer | undefined>(),
       tableColumns: window.innerWidth > 500 ? 4 : 1,
       availableColumns: window.innerWidth > 500 ? [3, 4, 5, 6] : [1, 2],
     };
@@ -123,7 +125,30 @@ export default defineComponent({
         isValid: await Argon2Utils.isAnswerValid(answerText, questions[index]),
       };
       this.answers[index] = fullAnswer;
+      Storage.set({
+        key: "ESP_001",
+        value: JSON.stringify(this.answers.map((answer) => answer?.text)),
+      });
     },
+  },
+  mounted: async function () {
+    const rawAnswers = (await Storage.get({ key: "ESP_001" })).value;
+    if (!rawAnswers) return;
+
+    this.answers = await Promise.all(
+      (JSON.parse(rawAnswers) as string[]).map<Promise<Answer | undefined>>(
+        async (rawAnswer, index) => {
+          if (!rawAnswer) return;
+          return {
+            text: rawAnswer,
+            isValid: await Argon2Utils.isAnswerValid(
+              rawAnswer,
+              questions[index]
+            ),
+          };
+        }
+      )
+    );
   },
 });
 </script>
