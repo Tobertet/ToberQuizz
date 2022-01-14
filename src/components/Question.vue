@@ -1,7 +1,11 @@
 <template>
   <div class="question">
     <div class="image-container" v-bind:class="status">
-      <img v-bind:src="question.imageUri" />
+      <img
+        v-bind:src="`/pictures/${countryCode}/${challengeIndex + 1}/${
+          index + 1
+        }.png`"
+      />
     </div>
     <div class="input-container">
       <label>{{ index + 1 }} - </label
@@ -39,6 +43,8 @@ export default defineComponent({
       type: (Object as PropType<Answer>) || undefined,
     },
     index: Number,
+    challengeIndex: Number,
+    countryCode: { type: String },
   },
   watch: {
     answer: function (newValue: Answer | undefined) {

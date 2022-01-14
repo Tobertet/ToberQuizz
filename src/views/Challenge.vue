@@ -28,6 +28,8 @@
         v-bind:question="question"
         v-bind:index="index"
         v-bind:answer="answers[index]"
+        v-bind:challengeIndex="challengeIndex"
+        v-bind:countryCode="countryCode"
         @answer="checkAndSave"
       >
       </QuestionComponent>
@@ -70,6 +72,8 @@ export default defineComponent({
   components: { QuestionComponent, Footer, Header },
   data: function () {
     return {
+      countryCode: CountryCodes.Spain,
+      challengeIndex: 0,
       challenge: {
         description: "",
         questions: [],
@@ -142,21 +146,19 @@ export default defineComponent({
     },
   },
   mounted: async function () {
-    const countryCode = this.$route.params.countryCode as CountryCodes;
-    const challengeIndex = parseInt(
-      this.$route.params.challengeIndex as string
-    );
+    this.countryCode = this.$route.params.countryCode as CountryCodes;
+    this.challengeIndex = parseInt(this.$route.params.challengeIndex as string);
 
-    if (!Object.values(CountryCodes).includes(countryCode)) {
+    if (!Object.values(CountryCodes).includes(this.countryCode)) {
       this.$router.replace("/");
       return;
     }
 
-    if (countryCode === CountryCodes.Spain && challengeIndex === 0) {
+    if (this.countryCode === CountryCodes.Spain && this.challengeIndex === 0) {
       await this.loadLegacyAnswers();
     }
-    this.loadChallenge(countryCode, challengeIndex);
-    this.loadAnswers(countryCode, challengeIndex);
+    this.loadChallenge(this.countryCode, this.challengeIndex);
+    this.loadAnswers(this.countryCode, this.challengeIndex);
   },
 });
 </script>
