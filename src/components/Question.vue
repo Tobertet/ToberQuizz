@@ -1,18 +1,15 @@
 <template>
   <div class="question">
-    <div class="image-container" v-bind:class="status">
+    <div class="image-container" data-testid="image-container" :class="status">
       <img
-        v-bind:src="`/pictures/${countryCode}/${challengeIndex + 1}/${
-          index + 1
-        }.png`"
+        :alt="question.altText"
+        :src="`/resources/${countryCode}/${challengeNumber}/${questionNumber}.png`"
       />
     </div>
     <div class="input-container">
-      <label>{{ index + 1 }} - </label
-      ><input v-bind:disabled="status === 'valid'" v-model="inputText" />
-      <button v-bind:disabled="status === 'valid'" @click="answerQuestion">
-        V
-      </button>
+      <label>{{ questionNumber }} - </label
+      ><input :disabled="status === 'valid'" v-model="inputText" />
+      <button :disabled="status === 'valid'" @click="answerQuestion">V</button>
     </div>
   </div>
 </template>
@@ -38,13 +35,14 @@ export default defineComponent({
   props: {
     question: {
       type: Object as PropType<Question>,
+      required: true,
     },
     answer: {
-      type: (Object as PropType<Answer>) || undefined,
+      type: Object as PropType<Answer>,
     },
-    index: Number,
-    challengeIndex: Number,
-    countryCode: { type: String },
+    questionNumber: { type: Number, required: true },
+    challengeNumber: { type: Number, required: true },
+    countryCode: { type: String, required: true },
   },
   watch: {
     answer: function (newValue: Answer | undefined) {
@@ -53,7 +51,10 @@ export default defineComponent({
   },
   methods: {
     answerQuestion: function () {
-      this.$emit("answer", this.inputText, this.index);
+      this.$emit("answer", {
+        text: this.inputText,
+        questionNumber: this.questionNumber,
+      });
     },
     setAnswer: function (answer?: Answer) {
       this.inputText = answer?.text || "";
@@ -70,7 +71,6 @@ export default defineComponent({
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .question {
   max-width: 100%;

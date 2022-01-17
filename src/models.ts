@@ -15,7 +15,7 @@ export interface Challenge {
 
 export interface Question {
   solutions: string[];
-  imageUri?: string;
+  altText: string;
 }
 
 export interface Answer {
