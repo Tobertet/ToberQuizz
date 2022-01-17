@@ -1,9 +1,4 @@
-import {
-  render,
-  fireEvent,
-  RenderOptions,
-  VueFireEventObject,
-} from "@testing-library/vue";
+import { render, fireEvent, RenderOptions } from "@testing-library/vue";
 import Question from "@/components/Question.vue";
 import { Answer } from "@/models";
 
@@ -65,7 +60,7 @@ describe("Question.vue", () => {
   });
 
   describe("when an answer has been typed and the button has been clicked", () => {
-    it('emits an "answer" event', () => {
+    it("emits an 'answer' event", () => {
       const { input, button, emitted } = setup();
 
       fireEvent.update(input, "whatever");
