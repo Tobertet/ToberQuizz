@@ -5,9 +5,9 @@
   </header>
   <main>
     <button
-      v-bind:to="$route.params.countryCode"
+      :to="$route.params.countryCode"
       v-for="challenge of Object.keys(challenges)"
-      v-bind:key="challenge"
+      :key="challenge"
       @click="goToChallenge(challenge)"
     >
       Challenge {{ parseInt(challenge) + 1 }}

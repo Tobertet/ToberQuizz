@@ -5,9 +5,9 @@
   </header>
   <main>
     <router-link
-      v-bind:to="countryCode"
+      :to="countryCode"
       v-for="countryCode of Object.keys(quizzData)"
-      v-bind:key="countryCode"
+      :key="countryCode"
     >
       {{ countryCode }}
     </router-link>

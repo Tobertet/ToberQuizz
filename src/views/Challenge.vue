@@ -1,18 +1,16 @@
 <template>
   <div id="app-container">
     <Header
-      v-bind:title="
-        'Desafío nº ' + (parseInt($route.params.challengeIndex) + 1)
-      "
-      v-bind:description="challenge.description"
+      :title="'Desafío nº ' + (parseInt($route.params.challengeIndex) + 1)"
+      :description="challenge.description"
     />
     <div class="columns-select">
       <label for="numColumns">Imágenes por fila: </label>
       <select v-model="tableColumns" name="numColumns" id="numColumns">
         <option
           v-for="columns in availableColumns"
-          v-bind:key="columns"
-          v-bind:value="columns"
+          :key="columns"
+          :value="columns"
         >
           {{ columns }}
         </option>
@@ -20,16 +18,16 @@
     </div>
     <div
       id="questions-table"
-      v-bind:style="{ 'grid-template-columns': `repeat(${tableColumns}, 1fr)` }"
+      :style="{ 'grid-template-columns': `repeat(${tableColumns}, 1fr)` }"
     >
       <QuestionComponent
         v-for="(question, index) in challenge.questions"
-        v-bind:key="index"
-        v-bind:question="question"
-        v-bind:index="index"
-        v-bind:answer="answers[index]"
-        v-bind:challengeIndex="challengeIndex"
-        v-bind:countryCode="countryCode"
+        :key="index"
+        :question="question"
+        :questionNumber="index + 1"
+        :answer="answers[index]"
+        :challengeNumber="challengeIndex + 1"
+        :countryCode="countryCode"
         @answer="checkAndSave"
       >
       </QuestionComponent>
@@ -39,8 +37,8 @@
       <select v-model="tableColumns" name="numColumns" id="numColumns">
         <option
           v-for="columns in availableColumns"
-          v-bind:key="columns"
-          v-bind:value="columns"
+          :key="columns"
+          :value="columns"
         >
           {{ columns }}
         </option>
