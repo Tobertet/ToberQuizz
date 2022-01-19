@@ -9,7 +9,7 @@
     <div class="input-container">
       <label>{{ questionNumber }} - </label
       ><input :disabled="status === 'valid'" v-model="inputText" />
-      <button :disabled="status === 'valid'" @click="answerQuestion">V</button>
+      <button :disabled="status === 'valid'" @click="answerQuestion">✔️</button>
     </div>
   </div>
 </template>
