@@ -15,7 +15,7 @@ export interface Challenge {
 
 export interface Question {
   solutions: string[];
-  altText: string;
+  altText?: string;
 }
 
 export interface Answer {
