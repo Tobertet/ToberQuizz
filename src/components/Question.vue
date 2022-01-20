@@ -95,9 +95,9 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     input {
-      width: 75%;
+      width: 70%;
       @media (max-width: 500px) {
-        width: 70%;
+        width: 65%;
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div id="app-container">
     <Header
-      :title="'Desafío nº ' + (parseInt($route.params.challengeIndex) + 1)"
+      :title="'Desafío nº ' + (challengeIndex + 1)"
       :description="challenge.description"
     />
     <div class="columns-select">
@@ -84,9 +84,6 @@ export default defineComponent({
   },
   methods: {
     checkAndSave: async function (answerText: string, index: number) {
-      const countryCode = this.$route.params.countryCode as CountryCodes;
-      const challengeIndex = this.$route.params.challengeIndex as string;
-
       const fullAnswer: Answer = {
         text: answerText,
         isValid: await Argon2Utils.isAnswerValid(
@@ -96,7 +93,7 @@ export default defineComponent({
       };
       this.answers[index] = fullAnswer;
       Storage.set({
-        key: `${countryCode}_${challengeIndex}`,
+        key: `${this.countryCode}_${this.challengeIndex}`,
         value: JSON.stringify(this.answers.map((answer) => answer?.text)),
       });
     },
