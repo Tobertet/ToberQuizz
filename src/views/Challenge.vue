@@ -83,7 +83,8 @@ export default defineComponent({
     };
   },
   methods: {
-    checkAndSave: async function (answerText: string, index: number) {
+    checkAndSave: async function (answerText: string, questionNumber: number) {
+      const index = questionNumber - 1;
       const fullAnswer: Answer = {
         text: answerText,
         isValid: await Argon2Utils.isAnswerValid(

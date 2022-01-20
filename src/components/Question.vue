@@ -9,13 +9,13 @@
     <div class="input-container">
       <label>{{ questionNumber }} - </label
       ><input :disabled="status === 'valid'" v-model="inputText" />
-      <button :disabled="status === 'valid'" @click="answerQuestion">✔️</button>
+      <button :disabled="status === 'valid'" @click="emitAnswer">✔️</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, onMounted, ref, watch, toRefs } from "vue";
 import { Answer, Question } from "../models";
 
 enum Status {
@@ -26,12 +26,6 @@ enum Status {
 
 export default defineComponent({
   name: "Question",
-  data: () => {
-    return {
-      inputText: "",
-      status: Status.Clean,
-    };
-  },
   props: {
     question: {
       type: Object as PropType<Question>,
@@ -44,29 +38,34 @@ export default defineComponent({
     challengeNumber: { type: Number, required: true },
     countryCode: { type: String, required: true },
   },
-  watch: {
-    answer: function (newValue: Answer | undefined) {
-      this.setAnswer(newValue);
-    },
-  },
-  methods: {
-    answerQuestion: function () {
-      this.$emit("answer", {
-        text: this.inputText,
-        questionNumber: this.questionNumber,
-      });
-    },
-    setAnswer: function (answer?: Answer) {
-      this.inputText = answer?.text || "";
-      this.status = !answer
+  setup: (props, context) => {
+    const { answer, questionNumber } = toRefs(props);
+
+    const inputText = ref("");
+    const status = ref(Status.Clean);
+
+    const emitAnswer = () => {
+      context.emit("answer", inputText.value, questionNumber.value);
+    };
+
+    const setAnswer = (answer?: Answer) => {
+      inputText.value = answer?.text || "";
+      status.value = !answer
         ? Status.Clean
         : answer.isValid
         ? Status.Valid
         : Status.Error;
-    },
-  },
-  mounted: function () {
-    this.setAnswer(this.answer);
+    };
+
+    onMounted(() => setAnswer(answer.value));
+
+    watch(answer, () => setAnswer(answer.value));
+
+    return {
+      inputText,
+      status,
+      emitAnswer,
+    };
   },
 });
 </script>

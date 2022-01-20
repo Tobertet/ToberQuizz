@@ -75,9 +75,7 @@ describe("Question.vue", () => {
       fireEvent.update(input, "whatever");
       fireEvent.click(button);
 
-      expect(emitted().answer[0]).toEqual([
-        { text: "whatever", questionNumber: 20 },
-      ]);
+      expect(emitted().answer[0]).toEqual(["whatever", 20]);
     });
   });
 
