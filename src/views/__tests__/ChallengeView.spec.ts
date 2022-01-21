@@ -1,5 +1,5 @@
 import { render } from "@testing-library/vue";
-import Challenge from "@/views/Challenge.vue";
+import Challenge from "@/views/ChallengeView.vue";
 
 describe("Challenge.vue", () => {
   const setup = (routeParams?: Record<string, unknown>) => {

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "@/views/Home.vue";
-import Challenge from "@/views/Challenge.vue";
+import ChallengeView from "@/views/ChallengeView.vue";
 import ChallengeList from "@/views/ChallengeList.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/:countryCode/:challengeIndex",
     name: "Challenge",
-    component: Challenge,
+    component: ChallengeView,
   },
 ];
 
