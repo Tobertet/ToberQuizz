@@ -1,5 +1,5 @@
 import { render } from "@testing-library/vue";
-import Challenge from "@/views/ChallengeView.vue";
+import ChallengeView from "@/views/ChallengeView.vue";
 
 describe("Challenge.vue", () => {
   const setup = (routeParams?: Record<string, unknown>) => {
@@ -13,7 +13,7 @@ describe("Challenge.vue", () => {
     const mockRouter = {
       replace: jest.fn(),
     };
-    const utils = render(Challenge, {
+    const utils = render(ChallengeView, {
       global: { mocks: { $route: mockRoute, $router: mockRouter } },
     });
     return { ...utils, mockRouter, mockRoute };

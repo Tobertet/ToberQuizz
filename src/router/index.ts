@@ -1,21 +1,21 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Home from "@/views/Home.vue";
+import HomeView from "@/views/HomeView.vue";
 import ChallengeView from "@/views/ChallengeView.vue";
-import ChallengeList from "@/views/ChallengeList.vue";
+import ChallengeListView from "@/views/ChallengeListView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: HomeView,
   },
   {
     path: "/:countryCode",
     name: "ChallengeList",
-    component: ChallengeList,
+    component: ChallengeListView,
   },
   {
-    path: "/:countryCode/:challengeIndex",
+    path: "/:countryCode/:challengeNumber",
     name: "Challenge",
     component: ChallengeView,
   },
