@@ -1,128 +1,78 @@
 <template>
-  <div id="app-container">
-    <Header
-      v-bind:title="'Desafío nº 1'"
-      v-bind:description="'Este primer desafío contiene imágenes que representan de alguna forma grupos o artistas de la música española desde los 60 hasta los 2000.'"
-    />
-    <div class="columns-select">
-      <label for="numColumns">Imágenes por fila: </label>
-      <select v-model="tableColumns" name="numColumns" id="numColumns">
-        <option
-          v-for="columns in availableColumns"
-          v-bind:key="columns"
-          v-bind:value="columns"
-        >
-          {{ columns }}
-        </option>
-      </select>
-    </div>
-    <div
-      id="questions-table"
-      v-bind:style="{ 'grid-template-columns': `repeat(${tableColumns}, 1fr)` }"
-    >
-      <Question
-        v-for="(question, index) in questions"
-        v-bind:key="index"
-        v-bind:question="question"
-        v-bind:index="index"
-        v-bind:answer="answers[index]"
-        @answer="checkAndSave"
-      >
-      </Question>
-    </div>
-    <div class="columns-select">
-      <label for="numColumns">Imágenes por fila: </label>
-      <select v-model="tableColumns" name="numColumns" id="numColumns">
-        <option
-          v-for="columns in availableColumns"
-          v-bind:key="columns"
-          v-bind:value="columns"
-        >
-          {{ columns }}
-        </option>
-      </select>
-    </div>
-    <Footer />
-  </div>
+  <h2>Desafío nº {{ challengeNumber }}</h2>
+  <p>
+    {{ challenge.description }}
+  </p>
+  <p>¿Eres capaz de adivinar todos?</p>
+
+  <hr />
+  <QuestionsTable
+    :challengeNumber="challengeNumber"
+    :countryCode="countryCode"
+    :challenge="challenge"
+    :checkedAnswers="checkedAnswers"
+    @answer="onAnswer"
+  />
+
   <div id="sticky-bar">
     <div>
       Aciertos:
-      {{ answers.filter((answer) => answer && answer.isValid).length }} /
-      {{ questions.length }}
+      {{ countOfValidAnswers }}
+      /
+      {{ challenge.questions.length }}
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import Question from "./Question.vue";
-import { Answer } from "../models";
-import { questions } from "../questions";
-import { Argon2Utils } from "../Argon2Utils";
-import { Storage } from "@capacitor/storage";
-import Footer from "./Footer.vue";
-import Header from "./Header.vue";
+import useAnswers from "@/hooks/useAnswers.vue";
+import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
+import useChallenge from "@/hooks/useChallenge.vue";
+import QuestionsTable from "@/components/QuestionsTable.vue";
+import { CountryCodes } from "@/models";
+import { computed, defineComponent, Ref, toRefs } from "vue";
 
 export default defineComponent({
   name: "Challenge",
-  components: { Question, Footer, Header },
-  data: () => {
-    return {
-      questions,
-      answers: new Array<Answer | undefined>(),
-      tableColumns: window.innerWidth > 500 ? 4 : 1,
-      availableColumns: window.innerWidth > 500 ? [3, 4, 5, 6] : [1, 2],
-    };
+  props: {
+    challengeNumber: { type: Number, required: true },
+    countryCode: { type: String, required: true },
   },
-  methods: {
-    checkAndSave: async function (answerText: string, index: number) {
-      const fullAnswer: Answer = {
-        text: answerText,
-        isValid: await Argon2Utils.isAnswerValid(answerText, questions[index]),
-      };
-      this.answers[index] = fullAnswer;
-      Storage.set({
-        key: "ESP_001",
-        value: JSON.stringify(this.answers.map((answer) => answer?.text)),
-      });
-    },
-  },
-  mounted: async function () {
-    const rawAnswers = (await Storage.get({ key: "ESP_001" })).value;
-    if (!rawAnswers) return;
+  components: { QuestionsTable },
+  setup: (props) => {
+    const { challengeNumber, countryCode } = toRefs(props);
 
-    (JSON.parse(rawAnswers) as string[]).forEach(async (rawAnswer, index) => {
-      if (!rawAnswer) return;
-      const isValid = await Argon2Utils.isAnswerValid(
-        rawAnswer,
-        questions[index]
-      );
-      this.answers[index] = {
-        text: rawAnswer,
-        isValid,
-      };
-    });
+    const { answers, updateAnswers } = useAnswers(
+      challengeNumber,
+      countryCode as Ref<CountryCodes>
+    );
+
+    const { challenge } = useChallenge(
+      challengeNumber,
+      countryCode as Ref<CountryCodes>
+    );
+
+    const { checkedAnswers } = useCheckedAnswers(answers, challenge);
+
+    const countOfValidAnswers = computed(
+      () =>
+        checkedAnswers.value.filter(
+          (checkedAnswer) => checkedAnswer && checkedAnswer.isValid
+        ).length
+    );
+
+    const onAnswer = (answer: string, questionNumber: number) => {
+      const newAnswers = [...answers.value];
+      newAnswers[questionNumber - 1] = answer;
+      updateAnswers(newAnswers);
+    };
+
+    return { challenge, checkedAnswers, countOfValidAnswers, onAnswer };
   },
 });
 </script>
 
-<style lang="scss">
-#app-container {
-  width: 80%;
-  margin-inline: auto;
-  @media (max-width: 500px) {
-    width: 100%;
-  }
-  #questions-table {
-    display: grid;
-    gap: 24px;
-    row-gap: 36px;
-  }
-  .columns-select {
-    text-align: end;
-    margin-block: 24px;
-  }
-}
+<style scoped lang="scss">
 #sticky-bar {
   position: fixed;
   bottom: 0%;

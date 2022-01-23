@@ -1,21 +1,22 @@
 <template>
   <div class="question">
-    <div class="image-container" v-bind:class="status">
-      <img v-bind:src="question.imageUri" />
+    <div class="image-container" data-testid="image-container" :class="status">
+      <img
+        :alt="question.altText"
+        :src="`/resources/${countryCode}/${challengeNumber}/${questionNumber}.png`"
+      />
     </div>
     <div class="input-container">
-      <label>{{ index + 1 }} - </label
-      ><input v-bind:disabled="status === 'valid'" v-model="inputText" />
-      <button v-bind:disabled="status === 'valid'" @click="answerQuestion">
-        V
-      </button>
+      <label>{{ questionNumber }} - </label
+      ><input :disabled="status === 'valid'" v-model="inputText" />
+      <button :disabled="status === 'valid'" @click="emitAnswer">✔️</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { Answer, Question } from "../models";
+import { defineComponent, PropType, onMounted, ref, watch, toRefs } from "vue";
+import { CheckedAnswer, Question } from "../models";
 
 enum Status {
   Error = "error",
@@ -25,46 +26,51 @@ enum Status {
 
 export default defineComponent({
   name: "Question",
-  data: () => {
-    return {
-      inputText: "",
-      status: Status.Clean,
-    };
-  },
+  emits: ["answer"],
   props: {
     question: {
       type: Object as PropType<Question>,
+      required: true,
     },
-    answer: {
-      type: (Object as PropType<Answer>) || undefined,
+    checkedAnswer: {
+      type: Object as PropType<CheckedAnswer>,
     },
-    index: Number,
+    questionNumber: { type: Number, required: true },
+    challengeNumber: { type: Number, required: true },
+    countryCode: { type: String, required: true },
   },
-  watch: {
-    answer: function (newValue: Answer | undefined) {
-      this.setAnswer(newValue);
-    },
-  },
-  methods: {
-    answerQuestion: function () {
-      this.$emit("answer", this.inputText, this.index);
-    },
-    setAnswer: function (answer?: Answer) {
-      this.inputText = answer?.text || "";
-      this.status = !answer
+  setup: (props, context) => {
+    const { checkedAnswer, questionNumber } = toRefs(props);
+
+    const inputText = ref("");
+    const status = ref(Status.Clean);
+
+    const emitAnswer = () => {
+      context.emit("answer", inputText.value, questionNumber.value);
+    };
+
+    const setAnswer = (checkedAnswer?: CheckedAnswer) => {
+      inputText.value = checkedAnswer?.text || "";
+      status.value = !checkedAnswer
         ? Status.Clean
-        : answer.isValid
+        : checkedAnswer.isValid
         ? Status.Valid
         : Status.Error;
-    },
-  },
-  mounted: function () {
-    this.setAnswer(this.answer);
+    };
+
+    onMounted(() => setAnswer(checkedAnswer.value));
+
+    watch(checkedAnswer, () => setAnswer(checkedAnswer.value));
+
+    return {
+      inputText,
+      status,
+      emitAnswer,
+    };
   },
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .question {
   max-width: 100%;
@@ -89,9 +95,9 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     input {
-      width: 75%;
+      width: 70%;
       @media (max-width: 500px) {
-        width: 70%;
+        width: 65%;
       }
     }
   }
