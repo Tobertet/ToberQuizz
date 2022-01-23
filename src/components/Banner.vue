@@ -1,5 +1,5 @@
 <template>
-  <pre id="ascii-title">
+  <pre data-testid="banner-title" id="ascii-title" @click="goToHomePage">
  _______    _                ____        _         
 |__   __|  | |              / __ \      (_)        
    | | ___ | |__   ___ _ __| |  | |_   _ _ ________
@@ -10,8 +10,22 @@
   >
 </template>
 
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "Banner",
+  methods: {
+    goToHomePage: function () {
+      this.$router.push("/");
+    },
+  },
+});
+</script>
+
 <style lang="scss">
 #ascii-title {
+  cursor: pointer;
   text-align: center;
   font-size: 2vw;
   @media (min-width: 1024px) {
