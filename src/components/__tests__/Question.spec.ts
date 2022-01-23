@@ -1,6 +1,6 @@
 import { render, fireEvent, RenderOptions } from "@testing-library/vue";
 import Question from "@/components/Question.vue";
-import { Answer } from "@/models";
+import { CheckedAnswer } from "@/models";
 
 describe("Question.vue", () => {
   const setup = (options?: RenderOptions) => {
@@ -51,12 +51,6 @@ describe("Question.vue", () => {
     const { getByTestId } = setup();
 
     expect(getByTestId("image-container")).toHaveClass("clean");
-
-    // There is a BUG in vue-jest, they are not loading any style in tests.
-    //
-    // expect(getByTestId("image-container")).toHaveStyle(
-    //   "border: 6px solid darkgray;"
-    // );
   });
 
   describe("when an answer has been typed and the button has been clicked", () => {
@@ -79,37 +73,40 @@ describe("Question.vue", () => {
     });
   });
 
-  describe("when an answer was provided as a prop", () => {
+  describe("when there is a checked answer", () => {
     describe("when the answer is wrong", () => {
       it("shows a red border around the image", async () => {
-        const answer: Answer = { text: "whatever", isValid: false };
-        const { findByTestId } = setup({ props: { answer } });
+        const checkedAnswer: CheckedAnswer = {
+          text: "whatever",
+          isValid: false,
+        };
+        const { findByTestId } = setup({ props: { checkedAnswer } });
 
         expect(await findByTestId("image-container")).toHaveClass("error");
       });
     });
 
     describe("when the answer is right", () => {
-      const answer: Answer = { text: "whatever", isValid: true };
+      const checkedAnswer: CheckedAnswer = { text: "whatever", isValid: true };
 
       it("shows a green border around the image", async () => {
-        const { findByTestId } = setup({ props: { answer } });
+        const { findByTestId } = setup({ props: { checkedAnswer } });
 
         expect(await findByTestId("image-container")).toHaveClass("valid");
       });
 
       it("disables the input", async () => {
-        const { input, rerender } = setup({ props: { answer } });
+        const { input, rerender } = setup({ props: { checkedAnswer } });
 
-        await rerender({ answer });
+        await rerender({ checkedAnswer });
 
         expect(input).toBeDisabled();
       });
 
       it("disables the button", async () => {
-        const { button, rerender } = setup({ props: { answer } });
+        const { button, rerender } = setup({ props: { checkedAnswer } });
 
-        await rerender({ answer });
+        await rerender({ checkedAnswer });
 
         expect(button).toBeDisabled();
       });

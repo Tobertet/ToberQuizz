@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, onMounted, ref, watch, toRefs } from "vue";
-import { Answer, Question } from "../models";
+import { CheckedAnswer, Question } from "../models";
 
 enum Status {
   Error = "error",
@@ -26,20 +26,21 @@ enum Status {
 
 export default defineComponent({
   name: "Question",
+  emits: ["answer"],
   props: {
     question: {
       type: Object as PropType<Question>,
       required: true,
     },
-    answer: {
-      type: Object as PropType<Answer>,
+    checkedAnswer: {
+      type: Object as PropType<CheckedAnswer>,
     },
     questionNumber: { type: Number, required: true },
     challengeNumber: { type: Number, required: true },
     countryCode: { type: String, required: true },
   },
   setup: (props, context) => {
-    const { answer, questionNumber } = toRefs(props);
+    const { checkedAnswer, questionNumber } = toRefs(props);
 
     const inputText = ref("");
     const status = ref(Status.Clean);
@@ -48,18 +49,18 @@ export default defineComponent({
       context.emit("answer", inputText.value, questionNumber.value);
     };
 
-    const setAnswer = (answer?: Answer) => {
-      inputText.value = answer?.text || "";
-      status.value = !answer
+    const setAnswer = (checkedAnswer?: CheckedAnswer) => {
+      inputText.value = checkedAnswer?.text || "";
+      status.value = !checkedAnswer
         ? Status.Clean
-        : answer.isValid
+        : checkedAnswer.isValid
         ? Status.Valid
         : Status.Error;
     };
 
-    onMounted(() => setAnswer(answer.value));
+    onMounted(() => setAnswer(checkedAnswer.value));
 
-    watch(answer, () => setAnswer(answer.value));
+    watch(checkedAnswer, () => setAnswer(checkedAnswer.value));
 
     return {
       inputText,
