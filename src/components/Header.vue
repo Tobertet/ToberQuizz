@@ -1,16 +1,7 @@
 <template>
   <header>
     <Banner />
-    <p>
-      Te doy la bienvenida a ToberQuizz, la aplicación tecnológicamente ética
-      donde encontrarás desafíos originales y gratuitos que pondrán en jaque tu
-      imaginación.
-    </p>
-    <h2>{{ title }}</h2>
-    <p>
-      {{ description }}
-    </p>
-    <p>¿Eres capaz de adivinar todos?</p>
+    <h3>Desafíos creativos y gratuitos. Tecnología ética.</h3>
     <hr />
   </header>
 </template>
@@ -22,10 +13,6 @@ import Banner from "./Banner.vue";
 export default defineComponent({
   name: "Header",
   components: { Banner },
-  props: {
-    title: String,
-    description: String,
-  },
 });
 </script>
 
@@ -33,8 +20,10 @@ export default defineComponent({
 header {
   margin-top: 24px;
   margin-bottom: 24px;
-  p {
-    font-size: 1.2rem;
+  h3 {
+    font-weight: normal;
+    font-size: 1.4rem;
+    text-align: center;
   }
 }
 </style>
