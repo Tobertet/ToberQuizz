@@ -18,7 +18,7 @@ export interface Question {
   altText?: string;
 }
 
-export interface Answer {
+export interface CheckedAnswer {
   text: string;
   isValid: boolean;
 }
