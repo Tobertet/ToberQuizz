@@ -7,7 +7,7 @@
         v-for="countryCode of Object.keys(quizzData)"
         :key="countryCode"
       >
-        {{ countryCode }}
+        {{ t(`COUNTRY_LIST.${countryCode}`) }}
       </router-link>
     </main>
     <Footer />
@@ -19,13 +19,19 @@ import { defineComponent } from "vue";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { QUIZZ_DATA } from "@/quizzData";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "Home",
   components: { Header, Footer },
-  data: () => ({
-    quizzData: QUIZZ_DATA,
-  }),
+  setup: () => {
+    const quizzData = QUIZZ_DATA;
+    const { t } = useI18n();
+    return {
+      quizzData,
+      t,
+    };
+  },
 });
 </script>
 
