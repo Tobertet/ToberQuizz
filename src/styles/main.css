@@ -1,0 +1,16 @@
+@import url("./fonts.css");
+@import url("./variables.css");
+
+body {
+  font-family: "Roboto";
+  margin: 0;
+}
+
+p {
+  color: var(--primary-color);
+  font-weight: 300;
+}
+
+.regular {
+  font-weight: 400;
+}
