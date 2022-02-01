@@ -6,6 +6,10 @@ body {
   margin: 0;
 }
 
+#app {
+  min-height: 100vh;
+}
+
 p {
   color: var(--primary-color);
   font-weight: 300;
