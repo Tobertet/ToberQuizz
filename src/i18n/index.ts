@@ -9,5 +9,6 @@ export const i18n = createI18n<[MessageSchema], "en" | "es">({
     en,
     es,
   },
+  locale: "es",
   fallbackLocale: "en",
 });
