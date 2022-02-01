@@ -21,7 +21,6 @@ import Header from "../components/Header.vue";
 import { QUIZZ_DATA } from "@/quizzData";
 
 export default defineComponent({
-  name: "ChallengeView",
   components: { Challenge, Footer, Header },
   data: function () {
     return {

@@ -11,7 +11,6 @@ import { defineComponent } from "vue";
 import Banner from "./Banner.vue";
 
 export default defineComponent({
-  name: "Header",
   components: { Banner },
 });
 </script>

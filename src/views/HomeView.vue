@@ -31,7 +31,6 @@ import { useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
 
 export default defineComponent({
-  name: "HomeView",
   components: { ArrowRight },
   setup: () => {
     const quizzData = QUIZZ_DATA;

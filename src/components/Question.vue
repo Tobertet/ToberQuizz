@@ -25,7 +25,6 @@ enum Status {
 }
 
 export default defineComponent({
-  name: "Question",
   emits: ["answer"],
   props: {
     question: {

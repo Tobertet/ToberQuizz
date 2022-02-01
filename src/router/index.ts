@@ -6,17 +6,14 @@ import ChallengeListView from "@/views/ChallengeListView.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Home",
     component: HomeView,
   },
   {
     path: "/:countryCode",
-    name: "ChallengeList",
     component: ChallengeListView,
   },
   {
     path: "/:countryCode/:challengeNumber",
-    name: "Challenge",
     component: ChallengeView,
   },
 ];

@@ -48,7 +48,6 @@ import Question from "../components/Question.vue";
 import { Challenge, CheckedAnswer } from "../models";
 
 export default defineComponent({
-  name: "QuestionsTable",
   components: { Question },
   emits: ["answer"],
   props: {

@@ -33,7 +33,6 @@ import { CountryCodes } from "@/models";
 import { computed, defineComponent, Ref, toRefs } from "vue";
 
 export default defineComponent({
-  name: "Challenge",
   props: {
     challengeNumber: { type: Number, required: true },
     countryCode: { type: String, required: true },

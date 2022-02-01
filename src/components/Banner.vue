@@ -14,7 +14,6 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Banner",
   methods: {
     goToHomePage: function () {
       this.$router.push("/");
