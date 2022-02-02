@@ -13,7 +13,7 @@
         class="list-item"
         v-for="countryCode of Object.keys(quizzData)"
         :key="countryCode"
-        @click="goToCountry(countryCode)"
+        @click="goToChallengeListView(countryCode)"
       >
         <p>{{ t(`COUNTRY_LIST.${countryCode}`) }}</p>
         <ArrowRight />
@@ -37,7 +37,7 @@ export default defineComponent({
     const { t } = useI18n();
     const router = useRouter();
 
-    const goToCountry = (countryCode: CountryCodes) => {
+    const goToChallengeListView = (countryCode: CountryCodes) => {
       router.push({
         path: `/${countryCode}`,
       });
@@ -46,7 +46,7 @@ export default defineComponent({
     return {
       quizzData,
       t,
-      goToCountry,
+      goToChallengeListView,
     };
   },
 });

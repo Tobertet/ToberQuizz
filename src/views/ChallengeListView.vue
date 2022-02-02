@@ -1,17 +1,30 @@
 <template>
   <div id="app-bar">
-    <img alt="ToberQuizz logo" src="/secondary-logo.png" />
+    <img
+      class="pointer"
+      alt="ToberQuizz logo"
+      @click="goToHomeView"
+      src="/secondary-logo.png"
+    />
   </div>
   <div id="view-container">
     <h2>Desafíos en <span class="regular">España</span></h2>
-    <p id="why-toberquizz"><a class="regular">¿Por qué ToberQuizz?</a></p>
+    <p id="why-toberquizz">
+      <a
+        class="regular"
+        rel="noopener noreferrer"
+        target="_blank"
+        href="https://robertmengual.com/projects;project=toberquizz"
+        >¿Por qué ToberQuizz?</a
+      >
+    </p>
     <div>
       <p class="regular list-heading">Selecciona un desafío</p>
       <div
         class="list-item"
         v-for="challengeIndex of Object.keys(challenges)"
         :key="challengeIndex"
-        @click="goToChallenge(parseInt(challengeIndex) + 1)"
+        @click="goToChallengeView(parseInt(challengeIndex) + 1)"
       >
         <p>Desafío {{ parseInt(challengeIndex) + 1 }}</p>
         <ArrowRight />
@@ -36,9 +49,15 @@ export default defineComponent({
 
     const challenges = ref(new Array<Challenge>());
 
-    const goToChallenge = (challengeNumber: number) => {
+    const goToHomeView = () => {
       router.push({
-        path: `${route.params.countryCode}/${challengeNumber}`,
+        path: `/`,
+      });
+    };
+
+    const goToChallengeView = (challengeNumber: number) => {
+      router.push({
+        path: `/${route.params.countryCode}/${challengeNumber}`,
       });
     };
 
@@ -52,7 +71,8 @@ export default defineComponent({
     });
 
     return {
-      goToChallenge,
+      goToHomeView,
+      goToChallengeView,
       challenges,
     };
   },
@@ -63,7 +83,7 @@ export default defineComponent({
 #app-bar {
   height: 64px;
   border-bottom: 1px solid var(--primary-color);
-  padding: 0 10%;
+  padding: 0 32px;
   display: flex;
   align-items: center;
 }
@@ -84,6 +104,10 @@ h2 {
   margin: 0;
   color: var(--primary-color);
   font-size: 20px;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 #view-container {
