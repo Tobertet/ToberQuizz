@@ -22,7 +22,7 @@
       </div>
       <div
         class="list-item pointer"
-        v-for="challengeIndex of Object.keys(challenges)"
+        v-for="challengeIndex of Object.keys(challenges).reverse()"
         :key="challengeIndex"
         @click="goToChallengeView(parseInt(challengeIndex) + 1)"
       >
