@@ -1,12 +1,5 @@
 <template>
-  <div id="app-bar">
-    <img
-      class="pointer"
-      alt="ToberQuizz logo"
-      @click="goToHomeView"
-      src="/secondary-logo.png"
-    />
-  </div>
+  <AppBar />
   <div id="view-container">
     <h2>Desafíos en <span class="regular">España</span></h2>
     <p id="why-toberquizz">
@@ -39,21 +32,16 @@ import { QUIZZ_DATA } from "@/quizzData";
 import { Challenge, CountryCodes } from "@/models";
 import { useRoute, useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
+import AppBar from "@/components/AppBar.vue";
 
 export default defineComponent({
-  components: { ArrowRight },
+  components: { ArrowRight, AppBar },
   setup: () => {
     const quizzData = QUIZZ_DATA;
     const router = useRouter();
     const route = useRoute();
 
     const challenges = ref(new Array<Challenge>());
-
-    const goToHomeView = () => {
-      router.push({
-        path: `/`,
-      });
-    };
 
     const goToChallengeView = (challengeNumber: number) => {
       router.push({
@@ -71,7 +59,6 @@ export default defineComponent({
     });
 
     return {
-      goToHomeView,
       goToChallengeView,
       challenges,
     };
@@ -80,14 +67,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-#app-bar {
-  height: 64px;
-  border-bottom: 1px solid var(--primary-color);
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-}
-
 #why-toberquizz {
   margin-bottom: 32px;
   margin-top: 8px;
@@ -104,10 +83,6 @@ h2 {
   margin: 0;
   color: var(--primary-color);
   font-size: 20px;
-}
-
-.pointer {
-  cursor: pointer;
 }
 
 #view-container {

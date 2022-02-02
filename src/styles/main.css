@@ -18,3 +18,7 @@ p {
 .regular {
   font-weight: 400;
 }
+
+.pointer {
+  cursor: pointer;
+}
