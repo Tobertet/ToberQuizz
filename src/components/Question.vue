@@ -77,13 +77,13 @@ export default defineComponent({
   > .image-container {
     max-width: 100%;
     height: 0;
-    padding-bottom: calc(100% - 12px);
-    border: 6px solid darkgray;
+    padding-bottom: calc(100% - 24px);
+    border: 12px solid var(--gray-color);
     &.valid {
-      border-color: green;
+      border-color: var(--success-color);
     }
     &.error {
-      border-color: red;
+      border-color: var(--danger-color);
     }
     img {
       max-width: 100%;

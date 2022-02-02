@@ -1,13 +1,11 @@
 <template>
-  <div id="app-container">
-    <Header />
-    <main>
-      <Challenge
-        v-if="challengeAvailable"
-        :countryCode="countryCode"
-        :challengeNumber="challengeNumber"
-      />
-    </main>
+  <AppBar />
+  <div id="view-container">
+    <Challenge
+      v-if="challengeAvailable"
+      :countryCode="countryCode"
+      :challengeNumber="challengeNumber"
+    />
     <Footer />
   </div>
 </template>
@@ -17,11 +15,11 @@ import { defineComponent } from "vue";
 import { CountryCodes } from "../models";
 import Challenge from "../components/Challenge.vue";
 import Footer from "../components/Footer.vue";
-import Header from "../components/Header.vue";
 import { QUIZZ_DATA } from "@/quizzData";
+import AppBar from "@/components/AppBar.vue";
 
 export default defineComponent({
-  components: { Challenge, Footer, Header },
+  components: { Challenge, Footer, AppBar },
   data: function () {
     return {
       countryCode: CountryCodes.Spain,
@@ -60,11 +58,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-#app-container {
-  width: 80%;
-  margin-inline: auto;
-  @media (max-width: 500px) {
-    width: 100%;
+#view-container {
+  padding: 32px;
+  max-width: 512px;
+  margin: auto;
+  @media (min-width: 992px) {
+    max-width: 992px;
   }
 }
 </style>

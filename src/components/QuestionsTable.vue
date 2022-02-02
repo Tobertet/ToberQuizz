@@ -64,9 +64,9 @@ export default defineComponent({
   },
   setup: function (props, context) {
     const availableColumns = ref(
-      window.innerWidth > 500 ? [3, 4, 5, 6] : [1, 2]
+      window.innerWidth > 992 ? [3, 4, 5, 6] : [1, 2]
     );
-    const tableColumns = ref(window.innerWidth > 500 ? 4 : 1);
+    const tableColumns = ref(window.innerWidth > 992 ? 4 : 1);
 
     const emitAnswer = (answer: string, questionNumber: number) => {
       context.emit("answer", answer, questionNumber);
@@ -86,5 +86,9 @@ export default defineComponent({
 .columns-select {
   text-align: end;
   margin-block: 24px;
+}
+label {
+  font-size: 14px;
+  font-weight: 300;
 }
 </style>

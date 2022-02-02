@@ -1,5 +1,5 @@
 <template>
-  <h2>Desafío nº {{ challengeNumber }}</h2>
+  <h2 class="regular">Desafío nº {{ challengeNumber }}</h2>
   <p>
     {{ challenge.description }}
   </p>
@@ -75,10 +75,20 @@ export default defineComponent({
 #sticky-bar {
   position: fixed;
   bottom: 0%;
-  right: 10%;
-  background: lightgray;
-  padding: 4px;
-  font-size: 1.2rem;
-  border: 1px solid lightgray;
+  right: 32px;
+  background: var(--primary-color);
+  padding: 8px;
+  font-size: 20px;
+  color: #fff;
+}
+
+h2 {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+p {
+  font-size: 18px;
 }
 </style>
