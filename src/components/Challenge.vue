@@ -1,6 +1,6 @@
 <template>
   <h2 class="regular">Desafío nº {{ challengeNumber }}</h2>
-  <p>
+  <p class="description">
     {{ challenge.description }}
   </p>
   <p>¿Eres capaz de adivinar todos?</p>
@@ -80,6 +80,10 @@ export default defineComponent({
   padding: 8px;
   font-size: 20px;
   color: #fff;
+}
+
+.description {
+  white-space: pre-wrap;
 }
 
 h2 {
