@@ -22,3 +22,15 @@ p {
 .pointer {
   cursor: pointer;
 }
+
+.not-allowed {
+  cursor: not-allowed;
+}
+
+.danger {
+  color: var(--danger-color);
+}
+
+.gray {
+  color: var(--gray-color);
+}

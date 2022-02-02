@@ -13,8 +13,15 @@
     </p>
     <div>
       <p class="regular list-heading">Selecciona un desafío</p>
+      <div class="list-item not-allowed">
+        <p class="gray">
+          Desafío {{ challenges.length + 1 }}
+          <span class="danger">(Marzo)</span>
+        </p>
+        <ArrowRight :color="'#a0a0a0'" />
+      </div>
       <div
-        class="list-item"
+        class="list-item pointer"
         v-for="challengeIndex of Object.keys(challenges)"
         :key="challengeIndex"
         @click="goToChallengeView(parseInt(challengeIndex) + 1)"
@@ -100,7 +107,6 @@ h2 {
 .list-item {
   border-bottom: 1px solid var(--gray-color);
   padding-left: 8px;
-  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
