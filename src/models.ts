@@ -1,6 +1,6 @@
 export enum CountryCodes {
   Spain = "ES",
-  // WorldWide = "WW",
+  WorldWide = "WW",
 }
 
 export type QuizzData = {
