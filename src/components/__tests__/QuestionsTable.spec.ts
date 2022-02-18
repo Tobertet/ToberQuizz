@@ -24,7 +24,7 @@ describe("QuestionsTable.vue", () => {
     const { getAllByRole } = setup();
     expect(getAllByRole("textbox")).toHaveLength(30);
   });
-  describe("when the viewport is < 500 px", () => {
+  describe("when the viewport is < 992 px", () => {
     beforeAll(() => {
       Object.defineProperty(window, "innerWidth", {
         writable: true,
@@ -40,19 +40,18 @@ describe("QuestionsTable.vue", () => {
       expect(selectOptions[1]).toHaveValue("2");
     });
   });
-  describe("when the viewport is > 500 px", () => {
+  describe("when the viewport is > 992 px", () => {
     beforeAll(() => {
       Object.defineProperty(window, "innerWidth", {
         writable: true,
         configurable: true,
-        value: 600,
+        value: 1000,
       });
     });
-    it("allows to select from 3 to 6 columns per row", () => {
+    it("allows to select from 4 to 6 columns per row", () => {
       const { getAllByRole } = setup();
       const selectOptions = getAllByRole("option");
 
-      expect(selectOptions[0]).toHaveValue("3");
       expect(selectOptions[1]).toHaveValue("4");
       expect(selectOptions[2]).toHaveValue("5");
       expect(selectOptions[3]).toHaveValue("6");
