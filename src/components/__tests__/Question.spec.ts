@@ -38,7 +38,9 @@ describe("Question.vue", () => {
   it("sets the image src to /resources/${countryCode}/${challengeNumber}/${questionNumber}.png", () => {
     const { img } = setup();
 
-    expect(img.src).toBe("http://localhost/resources/CN/100/20.png");
+    expect(img.src).toBe(
+      `${process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET}/CN/100/20.png`
+    );
   });
 
   it("sets the image alt text", () => {

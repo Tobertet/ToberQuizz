@@ -3,7 +3,7 @@
     <div class="image-container" data-testid="image-container" :class="status">
       <img
         :alt="question.altText"
-        :src="`/resources/${countryCode}/${challengeNumber}/${questionNumber}.png`"
+        :src="`${imagesBucket}/${countryCode}/${challengeNumber}/${questionNumber}.png`"
       />
     </div>
     <div class="input-container">
@@ -15,7 +15,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, onMounted, ref, watch, toRefs } from "vue";
+import {
+  defineComponent,
+  PropType,
+  onMounted,
+  ref,
+  watch,
+  toRefs,
+  computed,
+} from "vue";
 import { CheckedAnswer, Question } from "../models";
 
 enum Status {
@@ -61,10 +69,15 @@ export default defineComponent({
 
     watch(checkedAnswer, () => setAnswer(checkedAnswer.value));
 
+    const imagesBucket = computed(
+      () => process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET
+    );
+
     return {
       inputText,
       status,
       emitAnswer,
+      imagesBucket,
     };
   },
 });
