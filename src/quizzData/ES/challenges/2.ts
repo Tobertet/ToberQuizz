@@ -3,7 +3,7 @@ import { Challenge } from "@/models";
 export const CHALLENGE_2: Challenge = {
   description: `Tras el éxito del primer desafío, vamos a continuar con la misma temática antes de dar paso a cosas más complicadas 😈... 
   
-De nuevo, las imágenes imágenes que se muestran representan de alguna forma grupos o artistas de la música española desde los 60 hasta los 2000. En esta ocasión, los que aparecieron en el Desafío 1 están excluidos.`,
+De nuevo, las imágenes que se muestran representan de alguna forma grupos o artistas de la música española desde los 60 hasta los 2000. En esta ocasión, los que aparecieron en el Desafío 1 están excluidos.`,
   startingDate: "",
   questions: [
     {
