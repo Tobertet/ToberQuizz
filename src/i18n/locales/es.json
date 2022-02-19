@@ -29,7 +29,7 @@
     "CHALLENGES_IN": "Desafíos en "
   },
   "CHALLENGE_VIEW": {
-    "CHALLENGE": "Challenge {challengeNumber}",
+    "CHALLENGE": "Desafío {challengeNumber}",
     "HOOK": "¿Eres capaz de adivinar todos?",
     "HITS": "Aciertos",
     "IMAGES_PER_ROW": "Imágenes por fila: "
