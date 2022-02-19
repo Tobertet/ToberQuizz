@@ -3,12 +3,12 @@
     <div id="logo-container">
       <img alt="ToberQuizz logo" src="/logo256x256.png" />
       <div>
-        <p>Desafíos <span class="regular">gratuitos</span></p>
-        <p>Tecnología <span class="regular">ética</span></p>
+        <p v-html="t('HOME_VIEW.FREE_CHALLENGES')"></p>
+        <p v-html="t('HOME_VIEW.ETHICAL_TECHNOLOGY')"></p>
       </div>
     </div>
     <div>
-      <p class="regular list-heading">Selecciona un país</p>
+      <p class="regular list-heading">{{ t("HOME_VIEW.SELECT_A_COUNTRY") }}</p>
       <div
         class="list-item"
         v-for="countryCode of Object.keys(quizzData)"

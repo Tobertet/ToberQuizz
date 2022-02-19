@@ -2,5 +2,10 @@
   "COUNTRY_LIST": {
     "ES": "España (español)",
     "WW": "Internacional (inglés)"
+  },
+  "HOME_VIEW": {
+    "FREE_CHALLENGES": "Desafíos <span class=\"regular\">gratuitos</span>",
+    "ETHICAL_TECHNOLOGY": "Tecnología <span class=\"regular\">ética</span>",
+    "SELECT_A_COUNTRY": "Selecciona un país"
   }
 }
