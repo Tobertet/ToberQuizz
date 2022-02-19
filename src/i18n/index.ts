@@ -9,6 +9,8 @@ export const i18n = createI18n<[MessageSchema], "en" | "es">({
     en,
     es,
   },
-  locale: "es",
+  locale: ["ca", "gl", "eu"].includes(navigator.language.split("-")[0])
+    ? "es"
+    : navigator.language.split("-")[0],
   fallbackLocale: "en",
 });
