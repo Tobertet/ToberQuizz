@@ -1,22 +1,31 @@
 <template>
   <AppBar />
   <div id="view-container">
-    <h2>Desafíos en <span class="regular">España</span></h2>
+    <h2>
+      {{ t("CHALLENGE_LIST_VIEW.CHALLENGES_IN") }}
+      <span class="regular">{{ t(`COUNTRY_LIST.${countryCode}`) }}</span>
+    </h2>
     <p id="why-toberquizz">
       <a
         class="regular"
         rel="noopener noreferrer"
         target="_blank"
         href="https://robertmengual.com/projects;project=toberquizz"
-        >¿Por qué ToberQuizz?</a
+        >{{ t("CHALLENGE_LIST_VIEW.WHY_TOBERQUIZZ") }}</a
       >
     </p>
     <div>
-      <p class="regular list-heading">Selecciona un desafío</p>
+      <p class="regular list-heading">
+        {{ t("CHALLENGE_LIST_VIEW.SELECT_A_CHALLENGE") }}
+      </p>
       <div class="list-item not-allowed">
         <p class="gray">
-          Desafío {{ challenges.length + 1 }}
-          <span class="danger">(Marzo)</span>
+          {{
+            t("CHALLENGE_LIST_VIEW.CHALLENGE", {
+              challengeNumber: challenges.length + 1,
+            })
+          }}
+          <span class="danger">({{ t("MONTHS.MARCH") }})</span>
         </p>
         <ArrowRight :color="'#a0a0a0'" />
       </div>
@@ -26,7 +35,13 @@
         :key="challengeIndex"
         @click="goToChallengeView(parseInt(challengeIndex) + 1)"
       >
-        <p>Desafío {{ parseInt(challengeIndex) + 1 }}</p>
+        <p>
+          {{
+            t("CHALLENGE_LIST_VIEW.CHALLENGE", {
+              challengeNumber: parseInt(challengeIndex) + 1,
+            })
+          }}
+        </p>
         <ArrowRight />
       </div>
     </div>
@@ -40,6 +55,7 @@ import { Challenge, CountryCodes } from "@/models";
 import { useRoute, useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
 import AppBar from "@/components/AppBar.vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   components: { ArrowRight, AppBar },
@@ -47,8 +63,10 @@ export default defineComponent({
     const quizzData = QUIZZ_DATA;
     const router = useRouter();
     const route = useRoute();
+    const { t } = useI18n();
 
     const challenges = ref(new Array<Challenge>());
+    const countryCode = ref<CountryCodes>();
 
     const goToChallengeView = (challengeNumber: number) => {
       router.push({
@@ -57,17 +75,20 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      const countryCode = route.params.countryCode as CountryCodes;
-      if (!Object.values(CountryCodes).includes(countryCode)) {
+      const countryCodeParam = route.params.countryCode as CountryCodes;
+      if (!Object.values(CountryCodes).includes(countryCodeParam)) {
         router.replace("/");
       } else {
-        challenges.value = quizzData[countryCode];
+        challenges.value = quizzData[countryCodeParam];
+        countryCode.value = countryCodeParam as CountryCodes;
       }
     });
 
     return {
       goToChallengeView,
       challenges,
+      t,
+      countryCode,
     };
   },
 });

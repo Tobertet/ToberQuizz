@@ -1,4 +1,18 @@
 {
+  "MONTHS": {
+    "JANUARY": "January",
+    "FEBRUARY": "February",
+    "MARCH": "March",
+    "APRIL": "April",
+    "MAY": "May",
+    "JUNE": "June",
+    "JULY": "July",
+    "AUGUST": "August",
+    "SEPTEMBER": "September",
+    "OCTOBER": "October",
+    "NOVEMBER": "November",
+    "DECEMBER": "December"
+  },
   "COUNTRY_LIST": {
     "ES": "Spain (Spanish)",
     "WW": "International (English)"
@@ -7,5 +21,11 @@
     "FREE_CHALLENGES": "<span class=\"regular\">Free</span> challenges",
     "ETHICAL_TECHNOLOGY": "<span class=\"regular\">Ethical</span> technology",
     "SELECT_A_COUNTRY": "Select a country"
+  },
+  "CHALLENGE_LIST_VIEW": {
+    "CHALLENGE": "Challenge {challengeNumber}",
+    "SELECT_A_CHALLENGE": "Select a challenge",
+    "WHY_TOBERQUIZZ": "Why ToberQuizz?",
+    "CHALLENGES_IN": "Challenges in "
   }
 }
