@@ -2,21 +2,33 @@
   <footer>
     <hr />
     <p>
-      ToberQuizz es totalmente gratuito y su misión es puramente solidaria.
+      {{ t("FOOTER.MISSION") }}
       <a
         class="regular"
         rel="noopener noreferrer"
         target="_blank"
         href="https://robertmengual.com/projects;project=toberquizz"
-        >¿Quieres saber por qué y cómo contribuir?</a
+        >{{ t("FOOTER.CONTRIBUTE") }}</a
       >
     </p>
     <p>
-      Hecho para ti con mucho ❤️ por
+      {{ t("FOOTER.MADE_BY") }}
       <span class="regular">Robert Mengual</span>.
     </p>
   </footer>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import { useI18n } from "vue-i18n";
+
+export default defineComponent({
+  setup: () => {
+    const { t } = useI18n();
+    return { t };
+  },
+});
+</script>
 
 <style lang="scss">
 footer {

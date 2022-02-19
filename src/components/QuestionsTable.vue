@@ -1,6 +1,6 @@
 <template>
   <div class="columns-select">
-    <label for="numColumns">Imágenes por fila: </label>
+    <label for="numColumns">{{ t("CHALLENGE_VIEW.IMAGES_PER_ROW") }} </label>
     <select v-model="tableColumns" name="numColumns" id="numColumns">
       <option
         v-for="columns in availableColumns"
@@ -29,7 +29,7 @@
     </Question>
   </div>
   <div class="columns-select">
-    <label for="numColumns">Imágenes por fila: </label>
+    <label for="numColumns">{{ t("CHALLENGE_VIEW.IMAGES_PER_ROW") }} </label>
     <select v-model="tableColumns" name="numColumns" id="numColumns">
       <option
         v-for="columns in availableColumns"
@@ -44,6 +44,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import Question from "../components/Question.vue";
 import { Challenge, CheckedAnswer } from "../models";
 
@@ -63,6 +64,8 @@ export default defineComponent({
     countryCode: { type: String, required: true },
   },
   setup: function (props, context) {
+    const { t } = useI18n();
+
     const availableColumns = ref(
       window.innerWidth > 992 ? [3, 4, 5, 6] : [1, 2]
     );
@@ -72,7 +75,7 @@ export default defineComponent({
       context.emit("answer", answer, questionNumber);
     };
 
-    return { tableColumns, availableColumns, emitAnswer };
+    return { tableColumns, availableColumns, emitAnswer, t };
   },
 });
 </script>

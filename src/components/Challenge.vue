@@ -1,9 +1,11 @@
 <template>
-  <h2 class="regular">Desafío nº {{ challengeNumber }}</h2>
+  <h2 class="regular">
+    {{ t("CHALLENGE_VIEW.CHALLENGE", { challengeNumber }) }}
+  </h2>
   <p class="description">
     {{ challenge.description }}
   </p>
-  <p>¿Eres capaz de adivinar todos?</p>
+  <p>{{ t("CHALLENGE_VIEW.HOOK") }}</p>
 
   <hr />
   <QuestionsTable
@@ -16,7 +18,7 @@
 
   <div id="sticky-bar">
     <div>
-      Aciertos:
+      {{ t("CHALLENGE_VIEW.HITS") }}:
       {{ countOfValidAnswers }}
       /
       {{ challenge.questions.length }}
@@ -31,6 +33,7 @@ import useChallenge from "@/hooks/useChallenge.vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
 import { CountryCodes } from "@/models";
 import { computed, defineComponent, Ref, toRefs } from "vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   props: {
@@ -40,6 +43,8 @@ export default defineComponent({
   components: { QuestionsTable },
   setup: (props) => {
     const { challengeNumber, countryCode } = toRefs(props);
+
+    const { t } = useI18n();
 
     const { answers, updateAnswers } = useAnswers(
       challengeNumber,
@@ -66,7 +71,7 @@ export default defineComponent({
       updateAnswers(newAnswers);
     };
 
-    return { challenge, checkedAnswers, countOfValidAnswers, onAnswer };
+    return { challenge, checkedAnswers, countOfValidAnswers, onAnswer, t };
   },
 });
 </script>

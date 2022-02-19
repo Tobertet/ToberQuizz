@@ -27,5 +27,16 @@
     "SELECT_A_CHALLENGE": "Select a challenge",
     "WHY_TOBERQUIZZ": "Why ToberQuizz?",
     "CHALLENGES_IN": "Challenges in "
+  },
+  "CHALLENGE_VIEW": {
+    "CHALLENGE": "Challenge {challengeNumber}",
+    "HOOK": "Will you guess all?",
+    "HITS": "Hits",
+    "IMAGES_PER_ROW": "Images per row: "
+  },
+  "FOOTER": {
+    "MADE_BY": "Made for you with much ❤️ by",
+    "CONTRIBUTE": "Do you want to know why and how to contribute?",
+    "MISSION": "ToberQuizz is completely free and its mission is purely charitable."
   }
 }
