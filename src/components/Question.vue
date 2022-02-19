@@ -100,6 +100,7 @@ export default defineComponent({
     }
     img {
       max-width: 100%;
+      width: fill-available;
     }
   }
   > .input-container {
