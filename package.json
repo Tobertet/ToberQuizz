@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^3.3.3",
+    "@capacitor/app": "^1.1.0",
     "@capacitor/cli": "^3.3.3",
     "@capacitor/core": "^3.3.3",
     "@capacitor/storage": "^1.2.3",
