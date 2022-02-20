@@ -1,6 +1,6 @@
-Esta aplicación open-source es tecnológicamente ética y no contiene ni anuncios ni trackers ni cookies, respetando así totalmente tu privacidad.
+ToberQuizz presenta desafíos imaginativos centrados en temáticas españolas e internacionales como música, películas y muchos más. ¿Serás capaz de adivinar todos?
 
-Este primer desafío contiene imágenes que representan de alguna forma grupos o artistas de la música española desde los 60 hasta los 2000. ¿Eres capaz de adivinar todos?
+Esta aplicación open-source es tecnológicamente ética y no contiene ni anuncios ni trackers ni cookies, respetando así totalmente tu privacidad.
 
 Si te ha gustado, no dudes en compartirlo libremente con quien quieras. ¡Pon a prueba a tus amigos y familiares!
 

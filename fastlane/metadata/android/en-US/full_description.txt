@@ -1,8 +1,6 @@
+ToberQuizz presents imaginative challenges focused on international themes such as music, movies and many more. Will you be able to guess all of them?
+
 This open-source application is technologically ethical and does not contain ads, trackers, or cookies, thus fully respecting your privacy.
-
-The first version of this app is Spanish only, we are already working on other languages for the next version.
-
-This first challenge contains images that in some way represent groups or artists of Spanish music from the 60s to the 2000s. Can you guess all of them?
 
 If you liked it, do not hesitate to share it freely with whoever you want. Put your friends and family to the test!
 
