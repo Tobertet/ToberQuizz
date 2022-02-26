@@ -73,6 +73,15 @@ describe("Question.vue", () => {
 
       expect(emitted().answer[0]).toEqual(["whatever", 20]);
     });
+
+    it("emits an 'answer' event with the answer text trimmed", () => {
+      const { input, button, emitted } = setup();
+
+      fireEvent.update(input, "  wha tev   er   ");
+      fireEvent.click(button);
+
+      expect(emitted().answer[0]).toEqual(["wha tev er", 20]);
+    });
   });
 
   describe("when there is a checked answer", () => {

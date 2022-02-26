@@ -53,7 +53,11 @@ export default defineComponent({
     const status = ref(Status.Clean);
 
     const emitAnswer = () => {
-      context.emit("answer", inputText.value, questionNumber.value);
+      context.emit(
+        "answer",
+        inputText.value.trim().replace(/\s{2,}/g, " "),
+        questionNumber.value
+      );
     };
 
     const setAnswer = (checkedAnswer?: CheckedAnswer) => {
