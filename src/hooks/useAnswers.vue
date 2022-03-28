@@ -10,34 +10,12 @@ export default function useAnswers(
   const answers = ref(new Array<string>());
 
   onMounted(async () => {
-    if (
-      countryCode.value === CountryCodes.Spain &&
-      challengeNumber.value === 1
-    ) {
-      await migrateLegacyAnswers();
-    }
     loadAnswers();
   });
 
-  watch([challengeNumber, countryCode], async (to, from) => {
-    if (
-      countryCode.value === CountryCodes.Spain &&
-      challengeNumber.value === 1
-    ) {
-      await migrateLegacyAnswers();
-    }
+  watch([challengeNumber, countryCode], async () => {
     loadAnswers();
   });
-
-  const migrateLegacyAnswers = async () => {
-    const rawAnswers = (await Storage.get({ key: "ESP_001" })).value;
-    if (!rawAnswers) return;
-    await Storage.set({
-      key: "ES_1",
-      value: rawAnswers,
-    });
-    return Storage.remove({ key: "ESP_001" });
-  };
 
   const loadAnswers = async () => {
     const rawAnswers = (
