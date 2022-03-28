@@ -14,7 +14,9 @@ describe("Challenge.vue", () => {
       replace: jest.fn(),
     };
     const utils = render(ChallengeView, {
-      global: { mocks: { $route: mockRoute, $router: mockRouter } },
+      global: {
+        mocks: { $route: mockRoute, $router: mockRouter },
+      },
     });
     return { ...utils, mockRouter, mockRoute };
   };

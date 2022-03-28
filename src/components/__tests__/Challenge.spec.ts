@@ -13,7 +13,7 @@ describe("Challenge.vue", () => {
   };
   it("renders the challenge heading with the challenge number", () => {
     const { getByText } = setup();
-    expect(getByText(/Desafío nº 1/i)).toBeInTheDocument();
+    expect(getByText(/Challenge 1/i)).toBeInTheDocument();
   });
   it("renders the challenge description", async () => {
     const { findByText } = setup();

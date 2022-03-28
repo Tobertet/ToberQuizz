@@ -1,9 +1,4 @@
-import {
-  render,
-  fireEvent,
-  RenderOptions,
-  getByTestId,
-} from "@testing-library/vue";
+import { render, fireEvent } from "@testing-library/vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
 import { QUIZZ_DATA } from "@/quizzData";
 
