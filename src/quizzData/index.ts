@@ -1,8 +1,6 @@
-import { QuizzData } from "@/models";
-import ES from "./ES";
-import WW from "./WW";
+import { CountryCodes } from "@/models";
 
-export const QUIZZ_DATA: QuizzData = {
-  ES,
-  WW,
-};
+export const QUIZZ_COUNTRIES: Array<CountryCodes> = [
+  CountryCodes.Spain,
+  CountryCodes.WorldWide,
+];

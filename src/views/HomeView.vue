@@ -11,7 +11,7 @@
       <p class="regular list-heading">{{ t("HOME_VIEW.SELECT_A_COUNTRY") }}</p>
       <div
         class="list-item"
-        v-for="countryCode of Object.keys(quizzData)"
+        v-for="countryCode of quizzCountries"
         :key="countryCode"
         @click="goToChallengeListView(countryCode)"
       >
@@ -24,16 +24,16 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { QUIZZ_DATA } from "@/quizzData";
 import { useI18n } from "vue-i18n";
 import { CountryCodes } from "@/models";
 import { useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
+import { QUIZZ_COUNTRIES } from "@/quizzData";
 
 export default defineComponent({
   components: { ArrowRight },
   setup: () => {
-    const quizzData = QUIZZ_DATA;
+    const quizzCountries = QUIZZ_COUNTRIES;
     const { t } = useI18n();
     const router = useRouter();
 
@@ -44,7 +44,7 @@ export default defineComponent({
     };
 
     return {
-      quizzData,
+      quizzCountries,
       t,
       goToChallengeListView,
     };

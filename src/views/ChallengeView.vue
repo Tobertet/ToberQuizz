@@ -15,7 +15,6 @@ import { defineComponent } from "vue";
 import { CountryCodes } from "../models";
 import Challenge from "../components/Challenge.vue";
 import Footer from "../components/Footer.vue";
-import { QUIZZ_DATA } from "@/quizzData";
 import AppBar from "@/components/AppBar.vue";
 
 export default defineComponent({
@@ -33,10 +32,12 @@ export default defineComponent({
       this.$router.replace("/");
       return;
     }
-    if (!QUIZZ_DATA[this.countryCode][this.challengeNumber - 1]) {
-      this.$router.replace("/");
-      return;
-    }
+    // if (
+    //   !QUIZZ_DATA[this.countryCode as CountryCodes][this.challengeNumber - 1]
+    // ) {
+    //   this.$router.replace("/");
+    //   return;
+    // }
     this.challengeAvailable = true;
   },
   methods: {

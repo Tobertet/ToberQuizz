@@ -3,10 +3,6 @@ export enum CountryCodes {
   WorldWide = "WW",
 }
 
-export type QuizzData = {
-  [P in CountryCodes]: Challenge[];
-};
-
 export interface Challenge {
   description: string;
   questions: Question[];
