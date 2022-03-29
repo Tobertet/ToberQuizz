@@ -42,29 +42,69 @@ describe("Challenge.vue", () => {
         '["whatever"]'
       );
     });
-    it("adds the status as a class to the question", async () => {
-      const { findAllByTestId, findAllByRole } = setup();
-      const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
-      const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
 
-      await fireEvent.update(input, "whatever");
-      await fireEvent.click(button);
-      // How could I wait for the answer to be there?
-      await new Promise((r) => setTimeout(r, timerValue));
+    describe("when it is wrong", () => {
+      it("adds the class error to the question component", async () => {
+        const { findAllByTestId, findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
 
-      expect((await findAllByTestId("image-container"))[0]).toHaveClass(
-        "error"
-      );
+        await fireEvent.update(input, "whatever");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, timerValue));
+
+        expect((await findAllByTestId("image-container"))[0]).toHaveClass(
+          "error"
+        );
+      });
+      it("does not increase the hits count", async () => {
+        const { findByText, findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
+
+        await fireEvent.update(input, "whatever");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, timerValue));
+
+        expect(await findByText(/0 \/ 3/)).toBeInTheDocument();
+      });
     });
-    it("updates the number of valid answers if it was right", () => {
-      // Can't test this until I add a test challenge or people could see the answer.
+    describe("when it is right", () => {
+      it("adds the class valid to the question component", async () => {
+        const { findAllByTestId, findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
+
+        await fireEvent.update(input, "test answer 1");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, timerValue));
+
+        expect((await findAllByTestId("image-container"))[0]).toHaveClass(
+          "valid"
+        );
+      });
+      it("increases the hits count by 1", async () => {
+        const { findByText, findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
+
+        await fireEvent.update(input, "test answer 1");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, timerValue));
+
+        expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
+      });
     });
   });
   describe("when there are stored answers", () => {
     beforeAll(() => {
       localStorage.setItem(
         "CapacitorStorage.ES_1",
-        '["test", null, "anotherTest"]'
+        '["test", null, "test answer 3"]'
       );
     });
     it("displays the stored answers in the inputs", async () => {
@@ -73,7 +113,7 @@ describe("Challenge.vue", () => {
       // I should add a loading and waitFor the loading to dissappear
       await new Promise((r) => setTimeout(r, timerValue));
       expect(answerInputElements[0]).toHaveValue("test");
-      expect(answerInputElements[2]).toHaveValue("anotherTest");
+      expect(answerInputElements[2]).toHaveValue("test answer 3");
     });
     it("does not display the stored null answers in the inputs", async () => {
       const { findAllByRole } = setup();
@@ -88,10 +128,12 @@ describe("Challenge.vue", () => {
       // I should add a loading and waitFor the loading to dissappear
       await new Promise((r) => setTimeout(r, timerValue));
       expect(imageContainers[0]).toHaveClass("error");
-      expect(imageContainers[2]).toHaveClass("error");
+      expect(imageContainers[2]).toHaveClass("valid");
     });
-    it("updates the number of valid answers if it was right", () => {
-      // Can't test this until I add a test challenge or people could see the answer.
+    it("updates the hits count", async () => {
+      const { findByText } = setup();
+
+      expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
     });
   });
 });
