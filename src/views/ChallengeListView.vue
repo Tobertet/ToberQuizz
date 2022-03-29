@@ -65,7 +65,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     const challenges = ref(new Array<number>());
-    const countryCode = ref<CountryCodes>();
+    const countryCode = ref<CountryCodes>(CountryCodes.WorldWide);
 
     const goToChallengeView = (challengeNumber: number) => {
       router.push({

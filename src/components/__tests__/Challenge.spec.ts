@@ -3,6 +3,13 @@ import Challenge from "@/components/Challenge.vue";
 
 const timerValue = 20;
 
+jest.mock("vue-router", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+  }),
+}));
+
 describe("Challenge.vue", () => {
   const setup = () => {
     const utils = render(Challenge, {

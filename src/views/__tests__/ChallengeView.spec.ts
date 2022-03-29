@@ -3,12 +3,11 @@ import ChallengeView from "@/views/ChallengeView.vue";
 
 jest.mock("vue-router", () => ({
   useRouter: () => ({
-    push: jest.fn(),
     replace: jest.fn(),
   }),
 }));
 
-describe("Challenge.vue", () => {
+describe("ChallengeView.vue", () => {
   const setup = (routeParams?: Record<string, unknown>) => {
     const mockRoute = {
       params: {
@@ -38,8 +37,8 @@ describe("Challenge.vue", () => {
     });
     describe("when the challenge index is not found", () => {
       it("redirects to the home page", () => {
-        const { mockRouter } = setup({ challengeIndex: 1000 });
-        expect(mockRouter.replace).toHaveBeenCalledWith("/");
+        setup({ challengeIndex: 1000 });
+        expect(window.location.pathname).toBe("/");
       });
     });
   });
