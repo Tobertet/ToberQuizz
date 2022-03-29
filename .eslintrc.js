@@ -16,6 +16,8 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    // I don't like this Vue rule
+    "vue/multi-word-component-names": "off",
   },
   overrides: [
     {
