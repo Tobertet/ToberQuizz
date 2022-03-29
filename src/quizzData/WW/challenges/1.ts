@@ -36,7 +36,7 @@ export const CHALLENGE_1: Challenge = {
       solutions: [
         "9833756bf0c46aaf940859ecc0c3b9ad3019bd554d373ea8da226341a7ce6fa6",
         "90ec541671f96cf010700be567fe5a9b2239dab9c2da06103c3c8a0712863abb",
-        "d21e4021ae035d3a03519693d5a11347cc5ccf8688eb9aaacccbb4004d76030b"
+        "d21e4021ae035d3a03519693d5a11347cc5ccf8688eb9aaacccbb4004d76030b",
       ],
     },
     {
