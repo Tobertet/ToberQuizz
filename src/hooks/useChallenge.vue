@@ -1,7 +1,8 @@
 <script lang="ts">
 import { onMounted, Ref, ref, watch } from "vue";
 import { Challenge, CountryCodes } from "@/models";
-import { QUIZZ_DATA } from "@/quizzData";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default function useChallenge(
   challengeNumber: Ref<number>,
@@ -13,6 +14,8 @@ export default function useChallenge(
     startingDate: "",
   });
 
+  const router = useRouter();
+
   onMounted(() => {
     loadChallenge();
   });
@@ -21,8 +24,14 @@ export default function useChallenge(
     loadChallenge();
   });
 
-  const loadChallenge = () => {
-    challenge.value = QUIZZ_DATA[countryCode.value][challengeNumber.value - 1];
+  const loadChallenge = async () => {
+    const challengeURL = `${process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET}/${countryCode.value}/${challengeNumber.value}/challenge.json`;
+    try {
+      const data = await (await axios.get(challengeURL)).data;
+      challenge.value = data;
+    } catch (e) {
+      router.replace("/");
+    }
   };
 
   return {

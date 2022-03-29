@@ -50,23 +50,22 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { QUIZZ_DATA } from "@/quizzData";
-import { Challenge, CountryCodes } from "@/models";
+import { CountryCodes } from "@/models";
 import { useRoute, useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
 import AppBar from "@/components/AppBar.vue";
 import { useI18n } from "vue-i18n";
+import axios from "axios";
 
 export default defineComponent({
   components: { ArrowRight, AppBar },
   setup: () => {
-    const quizzData = QUIZZ_DATA;
     const router = useRouter();
     const route = useRoute();
     const { t } = useI18n();
 
-    const challenges = ref(new Array<Challenge>());
-    const countryCode = ref<CountryCodes>();
+    const challenges = ref(new Array<number>());
+    const countryCode = ref<CountryCodes>(CountryCodes.WorldWide);
 
     const goToChallengeView = (challengeNumber: number) => {
       router.push({
@@ -79,10 +78,16 @@ export default defineComponent({
       if (!Object.values(CountryCodes).includes(countryCodeParam)) {
         router.replace("/");
       } else {
-        challenges.value = quizzData[countryCodeParam];
         countryCode.value = countryCodeParam as CountryCodes;
+        loadChallenges();
       }
     });
+
+    const loadChallenges = async () => {
+      const challengeURL = `${process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET}/${countryCode.value}/challenges.json`;
+      const data = await (await axios.get(challengeURL)).data;
+      challenges.value = data;
+    };
 
     return {
       goToChallengeView,

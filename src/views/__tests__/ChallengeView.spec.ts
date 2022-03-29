@@ -1,7 +1,13 @@
 import { render } from "@testing-library/vue";
 import ChallengeView from "@/views/ChallengeView.vue";
 
-describe("Challenge.vue", () => {
+jest.mock("vue-router", () => ({
+  useRouter: () => ({
+    replace: jest.fn(),
+  }),
+}));
+
+describe("ChallengeView.vue", () => {
   const setup = (routeParams?: Record<string, unknown>) => {
     const mockRoute = {
       params: {
@@ -12,6 +18,7 @@ describe("Challenge.vue", () => {
     };
     const mockRouter = {
       replace: jest.fn(),
+      push: jest.fn(),
     };
     const utils = render(ChallengeView, {
       global: {
@@ -30,8 +37,8 @@ describe("Challenge.vue", () => {
     });
     describe("when the challenge index is not found", () => {
       it("redirects to the home page", () => {
-        const { mockRouter } = setup({ challengeIndex: 1000 });
-        expect(mockRouter.replace).toHaveBeenCalledWith("/");
+        setup({ challengeIndex: 1000 });
+        expect(window.location.pathname).toBe("/");
       });
     });
   });

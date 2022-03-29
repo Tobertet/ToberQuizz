@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
-import { QUIZZ_DATA } from "@/quizzData";
+import { TESTING_CHALLENGE } from "@/mocks/mocks";
 
 describe("QuestionsTable.vue", () => {
   const setup = () => {
@@ -8,7 +8,7 @@ describe("QuestionsTable.vue", () => {
       props: {
         challengeNumber: 1,
         countryCode: "ES",
-        challenge: QUIZZ_DATA.ES[0],
+        challenge: TESTING_CHALLENGE,
         checkedAnswers: [],
       },
     });
@@ -17,7 +17,7 @@ describe("QuestionsTable.vue", () => {
   };
   it("shows the challenge questions", () => {
     const { getAllByRole } = setup();
-    expect(getAllByRole("textbox")).toHaveLength(30);
+    expect(getAllByRole("textbox")).toHaveLength(3);
   });
   describe("when the viewport is < 992 px", () => {
     beforeAll(() => {

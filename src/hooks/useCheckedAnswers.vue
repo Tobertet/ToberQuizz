@@ -17,10 +17,12 @@ export default function useCheckedAnswers(
   });
 
   watch([answers, challenge], async () => {
-    checkedAnswers.value = await Argon2Utils.checkAnswers(
-      answers.value,
-      challenge.value.questions
-    );
+    if (challenge.value.questions.length > 0) {
+      checkedAnswers.value = await Argon2Utils.checkAnswers(
+        answers.value,
+        challenge.value.questions
+      );
+    }
   });
 
   return {
