@@ -1,6 +1,13 @@
 import { render } from "@testing-library/vue";
 import ChallengeView from "@/views/ChallengeView.vue";
 
+jest.mock("vue-router", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+  }),
+}));
+
 describe("Challenge.vue", () => {
   const setup = (routeParams?: Record<string, unknown>) => {
     const mockRoute = {
@@ -12,6 +19,7 @@ describe("Challenge.vue", () => {
     };
     const mockRouter = {
       replace: jest.fn(),
+      push: jest.fn(),
     };
     const utils = render(ChallengeView, {
       global: {
