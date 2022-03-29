@@ -28,12 +28,11 @@ import { useI18n } from "vue-i18n";
 import { CountryCodes } from "@/models";
 import { useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
-import { QUIZZ_COUNTRIES } from "@/quizzData";
 
 export default defineComponent({
   components: { ArrowRight },
   setup: () => {
-    const quizzCountries = QUIZZ_COUNTRIES;
+    const quizzCountries = Object.values(CountryCodes);
     const { t } = useI18n();
     const router = useRouter();
 
