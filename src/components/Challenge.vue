@@ -31,7 +31,7 @@ import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
 import useChallenge from "@/hooks/useChallenge.vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
 import { CountryCodes } from "@/models";
-import { computed, defineComponent, Ref, toRefs } from "vue";
+import { defineComponent, Ref, toRefs } from "vue";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
