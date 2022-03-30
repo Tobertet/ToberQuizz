@@ -31,7 +31,7 @@
   "CHALLENGE_VIEW": {
     "CHALLENGE": "Challenge {challengeNumber}",
     "HOOK": "Will you guess all?",
-    "HITS": "Hits",
+    "CORRECT_ANSWERS": "Correct answers",
     "IMAGES_PER_ROW": "Images per row: "
   },
   "FOOTER": {

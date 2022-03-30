@@ -31,8 +31,8 @@ describe("ChallengeView.vue", () => {
   describe("when the path does not match a challenge", () => {
     describe("when the country code is not found", () => {
       it("redirects to the home page", () => {
-        const { mockRouter } = setup({ countryCode: ":)" });
-        expect(mockRouter.replace).toHaveBeenCalledWith("/");
+        setup({ countryCode: ":)" });
+        expect(window.location.pathname).toBe("/");
       });
     });
     describe("when the challenge index is not found", () => {

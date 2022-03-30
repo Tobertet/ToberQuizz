@@ -15,6 +15,7 @@
     "@capacitor/cli": "^3.3.3",
     "@capacitor/core": "^3.3.3",
     "@capacitor/storage": "^1.2.3",
+    "@supabase/supabase-js": "^1.33.2",
     "@types/argon2-browser": "^1.18.1",
     "argon2-browser": "^1.18.0",
     "axios": "^0.26.1",

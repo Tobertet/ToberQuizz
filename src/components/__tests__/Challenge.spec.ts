@@ -65,7 +65,7 @@ describe("Challenge.vue", () => {
           "error"
         );
       });
-      it("does not increase the hits count", async () => {
+      it("does not increase the correct answers count", async () => {
         const { findByText, findAllByRole } = setup();
         const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
         const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
@@ -76,6 +76,23 @@ describe("Challenge.vue", () => {
         await new Promise((r) => setTimeout(r, timerValue));
 
         expect(await findByText(/0 \/ 3/)).toBeInTheDocument();
+      });
+      it("does not push the correct answers count to the API queue", async () => {
+        const spy = jest.spyOn(Storage.prototype, "setItem");
+
+        const { findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
+
+        await fireEvent.update(input, "whatever");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, timerValue));
+
+        expect(spy).not.toHaveBeenCalledWith(
+          "CapacitorStorage.API_QUEUE",
+          '[{"countryCode":"ES","challengeNumber":1,"correctAnswersCount":1}]'
+        );
       });
     });
     describe("when it is right", () => {
@@ -93,7 +110,7 @@ describe("Challenge.vue", () => {
           "valid"
         );
       });
-      it("increases the hits count by 1", async () => {
+      it("increases the correct answers count by 1", async () => {
         const { findByText, findAllByRole } = setup();
         const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
         const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
@@ -104,6 +121,23 @@ describe("Challenge.vue", () => {
         await new Promise((r) => setTimeout(r, timerValue));
 
         expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
+      });
+      it("pushes the correct answers count to the API queue", async () => {
+        const spy = jest.spyOn(Storage.prototype, "setItem");
+
+        const { findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
+
+        await fireEvent.update(input, "test answer 1");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, 1000));
+
+        expect(spy).toHaveBeenCalledWith(
+          "CapacitorStorage.API_QUEUE",
+          '[{"countryCode":"ES","challengeNumber":1,"correctAnswersCount":1}]'
+        );
       });
     });
   });
@@ -137,10 +171,21 @@ describe("Challenge.vue", () => {
       expect(imageContainers[0]).toHaveClass("error");
       expect(imageContainers[2]).toHaveClass("valid");
     });
-    it("updates the hits count", async () => {
+    it("updates the correct answers count", async () => {
       const { findByText } = setup();
 
       expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
+    });
+    it("does not add the correct answers count to the API queue", () => {
+      jest.clearAllMocks();
+      const spy = jest.spyOn(Storage.prototype, "setItem");
+
+      setup();
+
+      expect(spy).not.toHaveBeenCalledWith(
+        "CapacitorStorage.API_QUEUE",
+        '[{"countryCode":"ES","challengeNumber":1,"correctAnswersCount":1}]'
+      );
     });
   });
 });

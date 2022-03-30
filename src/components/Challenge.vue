@@ -18,7 +18,7 @@
 
   <div id="sticky-bar">
     <div>
-      {{ t("CHALLENGE_VIEW.HITS") }}:
+      {{ t("CHALLENGE_VIEW.CORRECT_ANSWERS") }}:
       {{ countOfValidAnswers }}
       /
       {{ challenge.questions.length }}
@@ -27,12 +27,11 @@
 </template>
 
 <script lang="ts">
-import useAnswers from "@/hooks/useAnswers.vue";
 import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
 import useChallenge from "@/hooks/useChallenge.vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
 import { CountryCodes } from "@/models";
-import { computed, defineComponent, Ref, toRefs } from "vue";
+import { defineComponent, Ref, toRefs } from "vue";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -46,29 +45,20 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const { answers, updateAnswers } = useAnswers(
-      challengeNumber,
-      countryCode as Ref<CountryCodes>
-    );
-
     const { challenge } = useChallenge(
       challengeNumber,
       countryCode as Ref<CountryCodes>
     );
 
-    const { checkedAnswers } = useCheckedAnswers(answers, challenge);
-
-    const countOfValidAnswers = computed(
-      () =>
-        checkedAnswers.value.filter(
-          (checkedAnswer) => checkedAnswer && checkedAnswer.isValid
-        ).length
-    );
+    const { checkedAnswers, checkAnswer, countOfValidAnswers } =
+      useCheckedAnswers(
+        countryCode as Ref<CountryCodes>,
+        challengeNumber,
+        challenge
+      );
 
     const onAnswer = (answer: string, questionNumber: number) => {
-      const newAnswers = [...answers.value];
-      newAnswers[questionNumber - 1] = answer;
-      updateAnswers(newAnswers);
+      checkAnswer(answer, questionNumber);
     };
 
     return { challenge, checkedAnswers, countOfValidAnswers, onAnswer, t };
