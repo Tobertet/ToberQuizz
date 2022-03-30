@@ -77,6 +77,23 @@ describe("Challenge.vue", () => {
 
         expect(await findByText(/0 \/ 3/)).toBeInTheDocument();
       });
+      it("does not push the hits count to the API queue", async () => {
+        const spy = jest.spyOn(Storage.prototype, "setItem");
+
+        const { findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
+
+        await fireEvent.update(input, "whatever");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, timerValue));
+
+        expect(spy).not.toHaveBeenCalledWith(
+          "CapacitorStorage.API_QUEUE",
+          '[{"countryCode":"ES","challengeNumber":1,"ticsCount":1}]'
+        );
+      });
     });
     describe("when it is right", () => {
       it("adds the class valid to the question component", async () => {
@@ -104,6 +121,23 @@ describe("Challenge.vue", () => {
         await new Promise((r) => setTimeout(r, timerValue));
 
         expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
+      });
+      it("pushes the hits count to the API queue", async () => {
+        const spy = jest.spyOn(Storage.prototype, "setItem");
+
+        const { findAllByRole } = setup();
+        const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
+        const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
+
+        await fireEvent.update(input, "test answer 1");
+        await fireEvent.click(button);
+        // How could I wait for the answer to be there?
+        await new Promise((r) => setTimeout(r, 1000));
+
+        expect(spy).toHaveBeenCalledWith(
+          "CapacitorStorage.API_QUEUE",
+          '[{"countryCode":"ES","challengeNumber":1,"ticsCount":1}]'
+        );
       });
     });
   });
@@ -141,6 +175,17 @@ describe("Challenge.vue", () => {
       const { findByText } = setup();
 
       expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
+    });
+    it("does not add the hits count to the API queue", () => {
+      jest.clearAllMocks();
+      const spy = jest.spyOn(Storage.prototype, "setItem");
+
+      setup();
+
+      expect(spy).not.toHaveBeenCalledWith(
+        "CapacitorStorage.API_QUEUE",
+        '[{"countryCode":"ES","challengeNumber":1,"ticsCount":1}]'
+      );
     });
   });
 });

@@ -19,7 +19,7 @@ export default function useStorageAnswers(
     }
   });
 
-  watch(storageAnswers, (newValue, oldValue) => {
+  watch(storageAnswers, (newValue) => {
     if (newValue === undefined || newValue === []) {
       return;
     }

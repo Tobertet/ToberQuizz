@@ -50,18 +50,12 @@ export default defineComponent({
       countryCode as Ref<CountryCodes>
     );
 
-    const { checkedAnswers, checkAnswer } = useCheckedAnswers(
-      countryCode as Ref<CountryCodes>,
-      challengeNumber,
-      challenge
-    );
-
-    const countOfValidAnswers = computed(
-      () =>
-        checkedAnswers.value.filter(
-          (checkedAnswer) => checkedAnswer && checkedAnswer.isValid
-        ).length
-    );
+    const { checkedAnswers, checkAnswer, countOfValidAnswers } =
+      useCheckedAnswers(
+        countryCode as Ref<CountryCodes>,
+        challengeNumber,
+        challenge
+      );
 
     const onAnswer = (answer: string, questionNumber: number) => {
       checkAnswer(answer, questionNumber);
