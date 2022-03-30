@@ -36,17 +36,22 @@ export default defineComponent({
   },
   methods: {
     getUrlParams: function () {
-      this.countryCode = (
-        this.$route.params.countryCode as string
-      ).toUpperCase() as CountryCodes;
-      this.challengeNumber = parseInt(
-        this.$route.params.challengeNumber as string
-      );
+      if (
+        this.$route.params.countryCode &&
+        this.$route.params.challengeNumber
+      ) {
+        this.countryCode = (
+          this.$route.params.countryCode as string
+        ).toUpperCase() as CountryCodes;
+        this.challengeNumber = parseInt(
+          this.$route.params.challengeNumber as string
+        );
+      }
     },
   },
   watch: {
     $route() {
-      // this.getUrlParams();
+      this.getUrlParams();
     },
   },
 });

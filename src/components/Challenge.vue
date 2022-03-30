@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import useAnswers from "@/hooks/useAnswers.vue";
 import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
 import useChallenge from "@/hooks/useChallenge.vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
@@ -46,17 +45,16 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const { answers, updateAnswers } = useAnswers(
-      challengeNumber,
-      countryCode as Ref<CountryCodes>
-    );
-
     const { challenge } = useChallenge(
       challengeNumber,
       countryCode as Ref<CountryCodes>
     );
 
-    const { checkedAnswers } = useCheckedAnswers(answers, challenge);
+    const { checkedAnswers, checkAnswer } = useCheckedAnswers(
+      countryCode as Ref<CountryCodes>,
+      challengeNumber,
+      challenge
+    );
 
     const countOfValidAnswers = computed(
       () =>
@@ -66,9 +64,7 @@ export default defineComponent({
     );
 
     const onAnswer = (answer: string, questionNumber: number) => {
-      const newAnswers = [...answers.value];
-      newAnswers[questionNumber - 1] = answer;
-      updateAnswers(newAnswers);
+      checkAnswer(answer, questionNumber);
     };
 
     return { challenge, checkedAnswers, countOfValidAnswers, onAnswer, t };

@@ -4,15 +4,17 @@ import { Challenge, CountryCodes } from "@/models";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
+const EMPTY_CHALLENGE = {
+  description: "",
+  questions: [],
+  startingDate: "",
+};
+
 export default function useChallenge(
   challengeNumber: Ref<number>,
   countryCode: Ref<CountryCodes>
 ): { challenge: Ref<Challenge> } {
-  const challenge = ref<Challenge>({
-    description: "",
-    questions: [],
-    startingDate: "",
-  });
+  const challenge = ref<Challenge>(EMPTY_CHALLENGE);
 
   const router = useRouter();
 
@@ -25,6 +27,7 @@ export default function useChallenge(
   });
 
   const loadChallenge = async () => {
+    challenge.value = EMPTY_CHALLENGE;
     const challengeURL = `${process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET}/${countryCode.value}/${challengeNumber.value}/challenge.json`;
     try {
       const data = await (await axios.get(challengeURL)).data;

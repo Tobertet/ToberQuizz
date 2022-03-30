@@ -1,32 +1,36 @@
 <script lang="ts">
-import { onMounted, Ref, ref, watch } from "vue";
-import { Challenge, CheckedAnswer } from "@/models";
+import { Ref, ref, watch } from "vue";
+import { Challenge, CheckedAnswer, CountryCodes } from "@/models";
 import { Argon2Utils } from "@/utils/Argon2Utils";
+import useStorageAnswers from "./useStorageAnswers.vue";
 
 export default function useCheckedAnswers(
-  answers: Ref<string[]>,
+  countryCode: Ref<CountryCodes>,
+  challengeNumber: Ref<number>,
   challenge: Ref<Challenge>
-): { checkedAnswers: Ref<Array<CheckedAnswer | undefined>> } {
+) {
   const checkedAnswers = ref<Array<CheckedAnswer | undefined>>([]);
 
-  onMounted(async () => {
-    checkedAnswers.value = await Argon2Utils.checkAnswers(
-      answers.value,
-      challenge.value.questions
-    );
-  });
+  const { storageAnswers } = useStorageAnswers(challengeNumber, countryCode);
 
-  watch([answers, challenge], async () => {
+  watch([storageAnswers, challenge], async () => {
     if (challenge.value.questions.length > 0) {
       checkedAnswers.value = await Argon2Utils.checkAnswers(
-        answers.value,
+        storageAnswers.value,
         challenge.value.questions
       );
     }
   });
 
+  const checkAnswer = (answer: string, questionNumber: number) => {
+    const newStorageAnswers = [...storageAnswers.value];
+    newStorageAnswers[questionNumber - 1] = answer;
+    storageAnswers.value = newStorageAnswers;
+  };
+
   return {
     checkedAnswers,
+    checkAnswer,
   };
 }
 </script>
