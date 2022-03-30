@@ -18,7 +18,7 @@
 
   <div id="sticky-bar">
     <div>
-      {{ t("CHALLENGE_VIEW.HITS") }}:
+      {{ t("CHALLENGE_VIEW.CORRECT_ANSWERS") }}:
       {{ countOfValidAnswers }}
       /
       {{ challenge.questions.length }}

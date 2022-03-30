@@ -14,7 +14,7 @@ export default function useCheckedAnswers(
 
   const { storageAnswers } = useStorageAnswers(challengeNumber, countryCode);
 
-  const { pushTicsCountEvent } = useApiQueue();
+  const { pushCorrectAnswersCountEvent } = useApiQueue();
 
   watch([storageAnswers, challenge], async () => {
     if (challenge.value.questions.length > 0) {
@@ -31,10 +31,10 @@ export default function useCheckedAnswers(
       challenge.value.questions[questionNumber - 1]
     );
     if (isValid) {
-      pushTicsCountEvent({
+      pushCorrectAnswersCountEvent({
         countryCode: countryCode.value,
         challengeNumber: challengeNumber.value,
-        ticsCount: countOfValidAnswers.value + 1,
+        correctAnswersCount: countOfValidAnswers.value + 1,
       });
     }
 

@@ -31,7 +31,7 @@
   "CHALLENGE_VIEW": {
     "CHALLENGE": "Desafío {challengeNumber}",
     "HOOK": "¿Eres capaz de adivinar todos?",
-    "HITS": "Aciertos",
+    "CORRECT_ANSWERS": "Aciertos",
     "IMAGES_PER_ROW": "Imágenes por fila: "
   },
   "FOOTER": {

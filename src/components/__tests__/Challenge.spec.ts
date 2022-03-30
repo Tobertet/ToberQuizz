@@ -65,7 +65,7 @@ describe("Challenge.vue", () => {
           "error"
         );
       });
-      it("does not increase the hits count", async () => {
+      it("does not increase the correct answers count", async () => {
         const { findByText, findAllByRole } = setup();
         const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
         const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
@@ -77,7 +77,7 @@ describe("Challenge.vue", () => {
 
         expect(await findByText(/0 \/ 3/)).toBeInTheDocument();
       });
-      it("does not push the hits count to the API queue", async () => {
+      it("does not push the correct answers count to the API queue", async () => {
         const spy = jest.spyOn(Storage.prototype, "setItem");
 
         const { findAllByRole } = setup();
@@ -91,7 +91,7 @@ describe("Challenge.vue", () => {
 
         expect(spy).not.toHaveBeenCalledWith(
           "CapacitorStorage.API_QUEUE",
-          '[{"countryCode":"ES","challengeNumber":1,"ticsCount":1}]'
+          '[{"countryCode":"ES","challengeNumber":1,"correctAnswersCount":1}]'
         );
       });
     });
@@ -110,7 +110,7 @@ describe("Challenge.vue", () => {
           "valid"
         );
       });
-      it("increases the hits count by 1", async () => {
+      it("increases the correct answers count by 1", async () => {
         const { findByText, findAllByRole } = setup();
         const input = (await findAllByRole("textbox"))[0] as HTMLInputElement;
         const button = (await findAllByRole("button"))[0] as HTMLButtonElement;
@@ -122,7 +122,7 @@ describe("Challenge.vue", () => {
 
         expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
       });
-      it("pushes the hits count to the API queue", async () => {
+      it("pushes the correct answers count to the API queue", async () => {
         const spy = jest.spyOn(Storage.prototype, "setItem");
 
         const { findAllByRole } = setup();
@@ -136,7 +136,7 @@ describe("Challenge.vue", () => {
 
         expect(spy).toHaveBeenCalledWith(
           "CapacitorStorage.API_QUEUE",
-          '[{"countryCode":"ES","challengeNumber":1,"ticsCount":1}]'
+          '[{"countryCode":"ES","challengeNumber":1,"correctAnswersCount":1}]'
         );
       });
     });
@@ -171,12 +171,12 @@ describe("Challenge.vue", () => {
       expect(imageContainers[0]).toHaveClass("error");
       expect(imageContainers[2]).toHaveClass("valid");
     });
-    it("updates the hits count", async () => {
+    it("updates the correct answers count", async () => {
       const { findByText } = setup();
 
       expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
     });
-    it("does not add the hits count to the API queue", () => {
+    it("does not add the correct answers count to the API queue", () => {
       jest.clearAllMocks();
       const spy = jest.spyOn(Storage.prototype, "setItem");
 
@@ -184,7 +184,7 @@ describe("Challenge.vue", () => {
 
       expect(spy).not.toHaveBeenCalledWith(
         "CapacitorStorage.API_QUEUE",
-        '[{"countryCode":"ES","challengeNumber":1,"ticsCount":1}]'
+        '[{"countryCode":"ES","challengeNumber":1,"correctAnswersCount":1}]'
       );
     });
   });
