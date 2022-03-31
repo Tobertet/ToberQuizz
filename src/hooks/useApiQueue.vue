@@ -1,20 +1,13 @@
 <script lang="ts">
 import { Storage } from "@capacitor/storage";
 import { CountryCodes } from "@/models";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/supabase";
 
 interface CorrectAnswersCountQueueEvent {
   countryCode: CountryCodes;
   challengeNumber: number;
   correctAnswersCount: number;
 }
-
-const supabase = createClient(
-  // eslint-disable-next-line
-  process.env.VUE_APP_SUPABASE_URL!,
-  // eslint-disable-next-line
-  process.env.VUE_APP_SUPABASE_ANON_KEY!
-);
 
 export default function useApiQueue(): {
   pushCorrectAnswersCountEvent: (event: CorrectAnswersCountQueueEvent) => void;
