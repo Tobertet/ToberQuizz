@@ -1,4 +1,7 @@
 describe("Challenge view", () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
   it("shows the questions for that challenge", () => {
     cy.visit("#/ES/1");
 
@@ -19,6 +22,28 @@ describe("Challenge view", () => {
         cy.wrap(item)
           .find("input")
           .should("have.value", storedValues[index] || "");
+      });
+    });
+  });
+  describe("when a question is answered", () => {
+    describe("when it is wrong", () => {
+      it("adds a red border around the question image", () => {
+        cy.visit("#/ES/1");
+
+        cy.get(".question input").first().type("whatever");
+        cy.get(".question button").first().click();
+
+        cy.get(".image-container").first().should("have.class", "error");
+      });
+    });
+    describe("when it is correct", () => {
+      it("adds a green border around the question image", () => {
+        cy.visit("#/ES/1");
+
+        cy.get(".question input").first().type("test answer 1");
+        cy.get(".question button").first().click();
+
+        cy.get(".image-container").first().should("have.class", "valid");
       });
     });
   });
