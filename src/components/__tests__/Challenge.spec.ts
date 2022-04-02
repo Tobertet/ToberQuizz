@@ -32,6 +32,28 @@ describe("Challenge.vue", () => {
     const { findByText } = setup();
     expect(await findByText(/0 \/ 3/)).toBeInTheDocument();
   });
+  describe("when nobody has completed the challenge", () => {
+    it("shows a taunting message", async () => {
+      const { findByText } = setup();
+
+      expect(
+        await findByText(
+          "This challenge has not been completed by anybody yet!"
+        )
+      ).toBeInTheDocument();
+    });
+  });
+  describe("when someone has completed the challenge", () => {
+    it("it does not show a taunting message", async () => {
+      const { queryByText } = setup();
+
+      // TODO this test needs to be done properly
+
+      // expect(
+      //   queryByText("This challenge has not been completed by anybody yet!")
+      // ).toBeNull();
+    });
+  });
   describe("when a question has been answered", () => {
     it("stores the answers", async () => {
       const saveItems = jest.spyOn(Storage.prototype, "setItem");

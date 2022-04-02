@@ -30,6 +30,7 @@
   },
   "CHALLENGE_VIEW": {
     "CHALLENGE": "Desafío {challengeNumber}",
+    "CHALLENGE_NOT_RESOLVED": "¡Este desafío todavía no ha sido completado por nadie!",
     "HOOK": "¿Eres capaz de adivinar todos?",
     "CORRECT_ANSWERS": "Aciertos",
     "IMAGES_PER_ROW": "Imágenes por fila: "

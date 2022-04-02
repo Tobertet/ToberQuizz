@@ -7,6 +7,10 @@
   </p>
   <p>{{ t("CHALLENGE_VIEW.HOOK") }}</p>
 
+  <p v-if="!hasBeenCompleted" class="danger-box">
+    {{ t("CHALLENGE_VIEW.CHALLENGE_NOT_RESOLVED") }}
+  </p>
+
   <hr />
   <QuestionsTable
     :challengeNumber="challengeNumber"
@@ -31,8 +35,9 @@ import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
 import useChallenge from "@/hooks/useChallenge.vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
 import { CountryCodes } from "@/models";
-import { defineComponent, Ref, toRefs } from "vue";
+import { defineComponent, ref, Ref, toRefs, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { supabase } from "@/supabase";
 
 export default defineComponent({
   props: {
@@ -42,6 +47,7 @@ export default defineComponent({
   components: { QuestionsTable },
   setup: (props) => {
     const { challengeNumber, countryCode } = toRefs(props);
+    const hasBeenCompleted = ref<boolean>(true);
 
     const { t } = useI18n();
 
@@ -61,7 +67,37 @@ export default defineComponent({
       checkAnswer(answer, questionNumber);
     };
 
-    return { challenge, checkedAnswers, countOfValidAnswers, onAnswer, t };
+    watch([challenge], async () => {
+      const questionsCount = challenge.value.questions.length;
+
+      if (countOfValidAnswers.value === questionsCount) {
+        hasBeenCompleted.value = true;
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("correct_answers")
+        .select("id")
+        .like("country_code", countryCode.value)
+        .eq("challenge_number", challengeNumber.value)
+        .eq("correct_answers_count", questionsCount);
+
+      if (error || !data || data.length > 0) {
+        hasBeenCompleted.value = true;
+        return;
+      }
+
+      hasBeenCompleted.value = false;
+    });
+
+    return {
+      challenge,
+      hasBeenCompleted,
+      checkedAnswers,
+      countOfValidAnswers,
+      onAnswer,
+      t,
+    };
   },
 });
 </script>
@@ -79,6 +115,15 @@ export default defineComponent({
 
 .description {
   white-space: pre-wrap;
+}
+
+.danger-box {
+  border-left: 5px solid var(--danger-color);
+  color: var(--danger-color);
+  background-color: rgba(#c91b13, 0.1);
+  padding: 20px;
+  text-align: left;
+  border-radius: 5px;
 }
 
 h2 {

@@ -7,6 +7,12 @@ describe("Challenge view", () => {
 
     cy.get("#questions-table").find(".question").should("have.length", 3);
   });
+  describe("when nobody has completed the challenge", () => {
+    it("shows a taunting message", () => {
+      cy.visit("#/ES/1");
+      cy.contains("This challenge has not been completed by anybody yet!");
+    });
+  });
   describe("when there are stored answers", () => {
     it("autocompletes the answered questions", () => {
       const storedValues = ["test answer 1", null, "whatever"];

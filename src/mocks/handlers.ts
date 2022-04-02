@@ -27,4 +27,10 @@ export const handlers = [
       return res(ctx.status(200), ctx.json({}));
     }
   ),
+  rest.get(
+    "https://vshirurkfkcqdabtrcnt.supabase.co/rest/v1/correct_answers",
+    (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json([]));
+    }
+  ),
 ];

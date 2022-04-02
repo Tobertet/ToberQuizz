@@ -30,6 +30,7 @@
   },
   "CHALLENGE_VIEW": {
     "CHALLENGE": "Challenge {challengeNumber}",
+    "CHALLENGE_NOT_RESOLVED": "This challenge has not been completed by anybody yet!",
     "HOOK": "Will you guess all?",
     "CORRECT_ANSWERS": "Correct answers",
     "IMAGES_PER_ROW": "Images per row: "
