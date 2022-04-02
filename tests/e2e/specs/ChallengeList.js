@@ -4,7 +4,6 @@ describe("Challenge list view", () => {
     cy.contains("Challenge 1");
     cy.contains("Challenge 2");
     cy.contains("Challenge 3");
-    cy.contains("Challenge 4");
   });
   describe("when a challenge is clicked", () => {
     it("navigates to the challenge page", () => {
