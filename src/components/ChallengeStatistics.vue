@@ -1,0 +1,107 @@
+<template>
+  <h2 class="regular">
+    {{ t("CHALLENGE_VIEW.CHALLENGE", { challengeNumber }) }}
+  </h2>
+  <p class="description">
+    {{ challenge.description }}
+  </p>
+  <p>{{ t("CHALLENGE_VIEW.HOOK") }}</p>
+
+  <hr />
+
+  <div id="sticky-bar">
+    <div>
+      {{ t("CHALLENGE_VIEW.CORRECT_ANSWERS") }}:
+      {{ countOfValidAnswers }}
+      /
+      {{ challenge.questions.length }}
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
+import useChallenge from "@/hooks/useChallenge.vue";
+import { CountryCodes } from "@/models";
+import { defineComponent, ref, Ref, toRefs, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { supabase } from "@/supabase";
+import Chart from "chart.js";
+
+export default defineComponent({
+  props: {
+    challengeNumber: { type: Number, required: true },
+    countryCode: { type: String, required: true },
+  },
+  setup: (props) => {
+    const { challengeNumber, countryCode } = toRefs(props);
+
+    const { t } = useI18n();
+
+    const { challenge } = useChallenge(
+      challengeNumber,
+      countryCode as Ref<CountryCodes>
+    );
+
+    const { checkedAnswers, countOfValidAnswers } = useCheckedAnswers(
+      countryCode as Ref<CountryCodes>,
+      challengeNumber,
+      challenge
+    );
+
+    watch([challenge], async () => {
+      const questionsCount = challenge.value.questions.length;
+
+      const { data, error } = await supabase.rpc("challenge_statistics", {
+        country_code_arg: countryCode.value,
+        challenge_number_arg: challengeNumber.value,
+      });
+
+      if (error) console.error(error);
+      else console.log(data);
+    });
+
+    return {
+      challenge,
+      checkedAnswers,
+      countOfValidAnswers,
+      t,
+    };
+  },
+});
+</script>
+
+<style scoped lang="scss">
+#sticky-bar {
+  position: fixed;
+  bottom: 0%;
+  right: 32px;
+  background: var(--primary-color);
+  padding: 8px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.description {
+  white-space: pre-wrap;
+}
+
+.danger-box {
+  border-left: 5px solid var(--danger-color);
+  color: var(--danger-color);
+  background-color: rgba(#c91b13, 0.1);
+  padding: 20px;
+  text-align: left;
+  border-radius: 5px;
+}
+
+h2 {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+p {
+  font-size: 18px;
+}
+</style>
