@@ -42,7 +42,14 @@
             })
           }}
         </p>
-        <ArrowRight />
+        <div class="end-icons">
+          <StatisticsIcon
+            @click.stop="
+              goToChallengeStatisticsView(parseInt(challengeIndex) + 1)
+            "
+          />
+          <ArrowRight />
+        </div>
       </div>
     </div>
   </div>
@@ -53,12 +60,13 @@ import { defineComponent, onMounted, ref } from "vue";
 import { CountryCodes } from "@/models";
 import { useRoute, useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
+import StatisticsIcon from "@/components/icons/StatisticsIcon.vue";
 import AppBar from "@/components/AppBar.vue";
 import { useI18n } from "vue-i18n";
 import axios from "axios";
 
 export default defineComponent({
-  components: { ArrowRight, AppBar },
+  components: { ArrowRight, AppBar, StatisticsIcon },
   setup: () => {
     const router = useRouter();
     const route = useRoute();
@@ -70,6 +78,12 @@ export default defineComponent({
     const goToChallengeView = (challengeNumber: number) => {
       router.push({
         path: `/${route.params.countryCode}/${challengeNumber}`,
+      });
+    };
+
+    const goToChallengeStatisticsView = (challengeNumber: number) => {
+      router.push({
+        path: `/stats/${route.params.countryCode}/${challengeNumber}`,
       });
     };
 
@@ -94,6 +108,7 @@ export default defineComponent({
       challenges,
       t,
       countryCode,
+      goToChallengeStatisticsView,
     };
   },
 });
@@ -137,8 +152,19 @@ h2 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  svg {
+    padding: 4px;
+  }
   p {
     font-size: 18px;
+  }
+}
+
+.end-icons {
+  display: flex;
+  flex-direction: row;
+  svg {
+    padding: 4px;
   }
 }
 </style>
