@@ -36,11 +36,17 @@ import { defineComponent, ref, Ref, toRefs, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { supabase } from "@/supabase";
 import { BarChart } from "vue-chart-3";
-import { Chart, registerables, ChartOptions, ChartData } from "chart.js";
+import {
+  Chart,
+  BarController,
+  ChartOptions,
+  ChartData,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
 
-// TODO register only what is going to be used
-
-Chart.register(...registerables);
+Chart.register(BarController, BarElement, CategoryScale, LinearScale);
 
 export default defineComponent({
   props: {
