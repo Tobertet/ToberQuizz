@@ -9,6 +9,10 @@
 
   <hr />
 
+  <h3 class="regular">
+    {{ t("CHALLENGE_STATISTICS_VIEW.CHALLENGE_PROGRESS") }}
+  </h3>
+
   <div style="margin-bottom: 40px">
     <BarChart
       v-if="chartData"
@@ -174,6 +178,13 @@ h2 {
   margin: 0;
   color: var(--primary-color);
   font-size: 24px;
+}
+
+h3 {
+  color: var(--primary-color);
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 0;
 }
 
 p {
