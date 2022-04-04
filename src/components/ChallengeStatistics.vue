@@ -85,13 +85,25 @@ export default defineComponent({
         challenge_number_arg: challengeNumber.value,
       });
 
+      const processedData = data?.map((item, index, array) => {
+        console.log(index);
+        if (index === 0) return item;
+        const processedItem = {
+          percentage:
+            array[index - 1].percentage < item.percentage
+              ? array[index - 1].percentage
+              : item.percentage,
+        };
+        return processedItem;
+      });
+
       //TODO if there is an error I should show a message
 
       chartData.value = {
         labels: Array.from({ length: questionsCount }, (_, i) => i + 1),
         datasets: [
           {
-            data: data?.map((item) => item.percentage) || [],
+            data: processedData?.map((item) => item.percentage) || [],
           },
         ],
       };
