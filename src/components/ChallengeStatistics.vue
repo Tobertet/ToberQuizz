@@ -86,7 +86,6 @@ export default defineComponent({
       });
 
       const processedData = data?.map((item, index, array) => {
-        console.log(index);
         if (index === 0) return item;
         const processedItem = {
           percentage:
