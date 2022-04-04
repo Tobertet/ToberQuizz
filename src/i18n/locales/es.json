@@ -37,7 +37,8 @@
   },
   "CHALLENGE_STATISTICS_VIEW": {
     "USERS_PERCENTAGE": "Porcentaje de usuarios",
-    "COUNT_OF_CORRECT_ANSWERS": "Total de respuestas acertadas"
+    "COUNT_OF_CORRECT_ANSWERS": "Total de respuestas acertadas",
+    "X_CORRECT_ANSWERS": "{count} respuestas acertadas"
   },
   "FOOTER": {
     "MADE_BY": "Hecho para ti con mucho ❤️ por",

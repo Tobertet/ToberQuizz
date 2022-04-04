@@ -44,9 +44,10 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
+  Tooltip,
 } from "chart.js";
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale);
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
 
 export default defineComponent({
   props: {
@@ -75,9 +76,7 @@ export default defineComponent({
     watch([challenge], async () => {
       const questionsCount = challenge.value.questions.length;
 
-      // TODO reset chartData when the challenge changes
-
-      const { data, error } = await supabase.rpc("challenge_statistics", {
+      const { data } = await supabase.rpc("challenge_statistics", {
         country_code_arg: countryCode.value,
         challenge_number_arg: challengeNumber.value,
       });
@@ -130,6 +129,16 @@ export default defineComponent({
       plugins: {
         legend: {
           display: false,
+        },
+        tooltip: {
+          displayColors: false,
+          callbacks: {
+            title: (tooltipItem) =>
+              t("CHALLENGE_STATISTICS_VIEW.X_CORRECT_ANSWERS", {
+                count: tooltipItem[0].label,
+              }),
+            label: (tooltipItem) => tooltipItem.formattedValue + "%",
+          },
         },
       },
     };

@@ -37,7 +37,8 @@
   },
   "CHALLENGE_STATISTICS_VIEW": {
     "USERS_PERCENTAGE": "Percentage of users",
-    "COUNT_OF_CORRECT_ANSWERS": "Count of correct answers"
+    "COUNT_OF_CORRECT_ANSWERS": "Count of correct answers",
+    "X_CORRECT_ANSWERS": "{count} correct answers"
   },
   "FOOTER": {
     "MADE_BY": "Made for you with much ❤️ by",
