@@ -19,10 +19,16 @@ export default function useChallenge(
   const router = useRouter();
 
   onMounted(() => {
+    if (!challengeNumber.value || !countryCode.value) {
+      return;
+    }
     loadChallenge();
   });
 
   watch([challengeNumber, countryCode], () => {
+    if (!challengeNumber.value || !countryCode.value) {
+      return;
+    }
     loadChallenge();
   });
 

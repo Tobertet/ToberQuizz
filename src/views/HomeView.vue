@@ -89,6 +89,9 @@ export default defineComponent({
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  svg {
+    padding: 4px;
+  }
   p {
     font-size: 18px;
   }

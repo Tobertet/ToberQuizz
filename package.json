@@ -20,10 +20,12 @@
     "argon2-browser": "^1.18.0",
     "axios": "^0.26.1",
     "base64-loader": "^1.0.0",
+    "chart.js": "^3.7.1",
     "core-js": "^3.8.3",
     "gh-pages": "^3.2.3",
     "path-browserify": "^1.0.1",
     "vue": "^3.2.13",
+    "vue-chart-3": "^3.1.8",
     "vue-i18n": "^9.2.0-beta.30",
     "vue-router": "^4.0.3"
   },
