@@ -35,6 +35,10 @@
     "CORRECT_ANSWERS": "Aciertos",
     "IMAGES_PER_ROW": "Imágenes por fila: "
   },
+  "CHALLENGE_STATISTICS_VIEW": {
+    "USERS_PERCENTAGE": "Porcentaje de usuarios",
+    "COUNT_OF_CORRECT_ANSWERS": "Total de respuestas acertadas"
+  },
   "FOOTER": {
     "MADE_BY": "Hecho para ti con mucho ❤️ por",
     "CONTRIBUTE": "¿Quieres saber por qué y cómo contribuir?",

@@ -35,6 +35,10 @@
     "CORRECT_ANSWERS": "Correct answers",
     "IMAGES_PER_ROW": "Images per row: "
   },
+  "CHALLENGE_STATISTICS_VIEW": {
+    "USERS_PERCENTAGE": "Percentage of users",
+    "COUNT_OF_CORRECT_ANSWERS": "Count of correct answers"
+  },
   "FOOTER": {
     "MADE_BY": "Made for you with much ❤️ by",
     "CONTRIBUTE": "Do you want to know why and how to contribute?",

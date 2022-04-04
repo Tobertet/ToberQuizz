@@ -9,6 +9,15 @@
 
   <hr />
 
+  <div style="margin-bottom: 40px">
+    <BarChart
+      v-if="chartData"
+      :chartData="chartData"
+      :options="chartOptions"
+      :height="800"
+    />
+  </div>
+
   <div id="sticky-bar">
     <div>
       {{ t("CHALLENGE_VIEW.CORRECT_ANSWERS") }}:
@@ -26,15 +35,23 @@ import { CountryCodes } from "@/models";
 import { defineComponent, ref, Ref, toRefs, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { supabase } from "@/supabase";
-import Chart from "chart.js";
+import { BarChart } from "vue-chart-3";
+import { Chart, registerables, ChartOptions, ChartData } from "chart.js";
+
+// TODO register only what is going to be used
+
+Chart.register(...registerables);
 
 export default defineComponent({
   props: {
     challengeNumber: { type: Number, required: true },
     countryCode: { type: String, required: true },
   },
+  components: { BarChart },
   setup: (props) => {
     const { challengeNumber, countryCode } = toRefs(props);
+
+    const chartData = ref<ChartData>();
 
     const { t } = useI18n();
 
@@ -52,20 +69,72 @@ export default defineComponent({
     watch([challenge], async () => {
       const questionsCount = challenge.value.questions.length;
 
+      // TODO reset chartData when the challenge changes
+
       const { data, error } = await supabase.rpc("challenge_statistics", {
         country_code_arg: countryCode.value,
         challenge_number_arg: challengeNumber.value,
       });
 
-      if (error) console.error(error);
-      else console.log(data);
+      //TODO if there is an error I should show a message
+
+      chartData.value = {
+        labels: Array.from({ length: questionsCount }, (_, i) => i + 1),
+        datasets: [
+          {
+            data: data?.map((item) => item.percentage) || [],
+          },
+        ],
+      };
     });
+
+    const chartOptions: ChartOptions = {
+      indexAxis: "y",
+      elements: {
+        bar: {
+          backgroundColor: (ctx) => {
+            return ctx.dataIndex + 1 === countOfValidAnswers.value
+              ? "#ffa316"
+              : "#4aab79";
+          },
+        },
+      },
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: t("CHALLENGE_STATISTICS_VIEW.COUNT_OF_CORRECT_ANSWERS"),
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: t("CHALLENGE_STATISTICS_VIEW.USERS_PERCENTAGE"),
+          },
+          min: 0,
+          max: 100,
+          ticks: {
+            callback: (value) => {
+              return value + "%";
+            },
+          },
+        },
+      },
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    };
 
     return {
       challenge,
       checkedAnswers,
       countOfValidAnswers,
       t,
+      chartData,
+      chartOptions,
     };
   },
 });
@@ -84,15 +153,6 @@ export default defineComponent({
 
 .description {
   white-space: pre-wrap;
-}
-
-.danger-box {
-  border-left: 5px solid var(--danger-color);
-  color: var(--danger-color);
-  background-color: rgba(#c91b13, 0.1);
-  padding: 20px;
-  text-align: left;
-  border-radius: 5px;
 }
 
 h2 {

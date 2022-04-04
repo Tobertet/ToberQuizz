@@ -2,6 +2,7 @@
   <AppBar />
   <div id="view-container">
     <ChallengeStatistics
+      v-if="challengeNumber && countryCode"
       :challengeNumber="challengeNumber"
       :countryCode="countryCode"
     />
@@ -18,8 +19,8 @@ import { useRoute, useRouter } from "vue-router";
 export default defineComponent({
   components: { AppBar, ChallengeStatistics },
   setup: () => {
-    const countryCode = ref<CountryCodes>(CountryCodes.Spain);
-    const challengeNumber = ref<number>(1);
+    const countryCode = ref<CountryCodes>();
+    const challengeNumber = ref<number>();
 
     const router = useRouter();
     const route = useRoute();
@@ -37,7 +38,10 @@ export default defineComponent({
 
     onMounted(() => {
       getUrlParams();
-      if (!Object.values(CountryCodes).includes(countryCode.value)) {
+      if (
+        countryCode.value &&
+        !Object.values(CountryCodes).includes(countryCode.value)
+      ) {
         router.replace("/");
         return;
       }
@@ -45,7 +49,10 @@ export default defineComponent({
 
     watch([route], () => {
       getUrlParams();
-      if (!Object.values(CountryCodes).includes(countryCode.value)) {
+      if (
+        countryCode.value &&
+        !Object.values(CountryCodes).includes(countryCode.value)
+      ) {
         router.replace("/");
         return;
       }
