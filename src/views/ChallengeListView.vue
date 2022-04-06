@@ -3,7 +3,12 @@
   <div id="view-container">
     <h2>
       {{ t("CHALLENGE_LIST_VIEW.CHALLENGES_IN") }}
-      <span class="regular">{{ t(`COUNTRY_LIST.${countryCode}`) }}</span>
+      <span class="regular">{{
+        t(`COUNTRY_LIST.${countryCode}`) +
+        " (" +
+        t(`LANGUAGE_LIST.${countryCode}`) +
+        ")"
+      }}</span>
     </h2>
     <p id="why-toberquizz">
       <a

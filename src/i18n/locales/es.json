@@ -14,15 +14,19 @@
     "DECEMBER": "Diciembre"
   },
   "COUNTRY_LIST": {
-    "ES": "España (español)",
-    "WW": "Internacional (inglés)"
+    "ES": "España",
+    "WW": "Internacional"
+  },
+  "LANGUAGE_LIST": {
+    "ES": "español",
+    "WW": "inglés"
   },
   "HOME_VIEW": {
     "FREE_CHALLENGES": "Desafíos <span class=\"regular\">gratuitos</span>",
     "ETHICAL_TECHNOLOGY": "Tecnología <span class=\"regular\">ética</span>",
     "SELECT_A_COUNTRY": "Selecciona un país",
     "SHARE": "Compartir",
-    "SHARE_MESSAGE": "¡Descubre los desafíos de ToberQuizz!%0a%0a¿Serás capaz de adivinar todos?%0a%0ahttps://toberquizz.com"
+    "SHARE_MESSAGE": "¡Descubre los desafíos de ToberQuizz!%0a¿Serás capaz de adivinar todos?%0a%0ahttps://toberquizz.com"
   },
   "CHALLENGE_LIST_VIEW": {
     "CHALLENGE": "Desafío {challengeNumber}",
@@ -35,7 +39,9 @@
     "CHALLENGE_NOT_RESOLVED": "¡Este desafío todavía no ha sido completado por nadie!",
     "HOOK": "¿Eres capaz de adivinar todos?",
     "CORRECT_ANSWERS": "Aciertos",
-    "IMAGES_PER_ROW": "Imágenes por fila: "
+    "IMAGES_PER_ROW": "Imágenes por fila: ",
+    "SHARE_HOOK": "¡Disfruta de ToberQuizz en compañía! Reta a tus contactos y resolved todos los desafíos.",
+    "SHARE_MESSAGE": "¿Te atreves a completar el desafío número { challengeNumber } de { countryName } en ToberQuizz?%0a%0ahttps://toberquizz.com/%23/{countryCode}/{challengeNumber}"
   },
   "CHALLENGE_STATISTICS_VIEW": {
     "USERS_PERCENTAGE": "Porcentaje de usuarios",

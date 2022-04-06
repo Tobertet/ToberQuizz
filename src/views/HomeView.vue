@@ -26,7 +26,14 @@
         :key="countryCode"
         @click="goToChallengeListView(countryCode)"
       >
-        <p>{{ t(`COUNTRY_LIST.${countryCode}`) }}</p>
+        <p>
+          {{
+            t(`COUNTRY_LIST.${countryCode}`) +
+            " (" +
+            t(`LANGUAGE_LIST.${countryCode}`) +
+            ")"
+          }}
+        </p>
         <ArrowRight />
       </div>
     </div>

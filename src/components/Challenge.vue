@@ -2,6 +2,29 @@
   <h2 class="regular">
     {{ t("CHALLENGE_VIEW.CHALLENGE", { challengeNumber }) }}
   </h2>
+
+  <div class="info-box">
+    <p>
+      {{ t("CHALLENGE_VIEW.SHARE_HOOK") }}
+    </p>
+    <p>
+      <a
+        :href="
+          'whatsapp://send?text=' +
+          t('CHALLENGE_VIEW.SHARE_MESSAGE', {
+            countryCode,
+            countryName: t(`COUNTRY_LIST.${countryCode}`),
+            challengeNumber,
+          })
+        "
+        data-action="share/whatsapp/share"
+        target="_blank"
+      >
+        {{ t("HOME_VIEW.SHARE") }} <ShareIcon :color="'#1366c9'"
+      /></a>
+    </p>
+  </div>
+
   <p class="description">
     {{ challenge.description }}
   </p>
@@ -34,6 +57,7 @@
 import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
 import useChallenge from "@/hooks/useChallenge.vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
+import ShareIcon from "@/components/icons/ShareIcon.vue";
 import { CountryCodes } from "@/models";
 import { defineComponent, ref, Ref, toRefs, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -44,7 +68,7 @@ export default defineComponent({
     challengeNumber: { type: Number, required: true },
     countryCode: { type: String, required: true },
   },
-  components: { QuestionsTable },
+  components: { QuestionsTable, ShareIcon },
   setup: (props) => {
     const { challengeNumber, countryCode } = toRefs(props);
     const hasBeenCompleted = ref<boolean>(true);
@@ -115,6 +139,27 @@ export default defineComponent({
 
 .description {
   white-space: pre-wrap;
+}
+
+.info-box {
+  @media (min-width: 500px) {
+    display: none;
+  }
+  border-left: 5px solid var(--info-color);
+  background-color: rgba(#1366c9, 0.1);
+  text-align: left;
+  border-radius: 5px;
+  padding: 4px 20px;
+  margin: 1em 0;
+  p {
+    color: var(--info-color);
+    a {
+      font-size: 20px;
+      color: var(--info-color);
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .danger-box {

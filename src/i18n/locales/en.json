@@ -14,15 +14,19 @@
     "DECEMBER": "December"
   },
   "COUNTRY_LIST": {
-    "ES": "Spain (Spanish)",
-    "WW": "International (English)"
+    "ES": "Spain",
+    "WW": "International"
+  },
+  "LANGUAGE_LIST": {
+    "ES": "Spanish",
+    "WW": "English"
   },
   "HOME_VIEW": {
     "FREE_CHALLENGES": "<span class=\"regular\">Free</span> challenges",
     "ETHICAL_TECHNOLOGY": "<span class=\"regular\">Ethical</span> technology",
     "SELECT_A_COUNTRY": "Select a country",
     "SHARE": "Share",
-    "SHARE_MESSAGE": "Discover the challenges of ToberQuizz!%0a%0aWill you be able to guess all of them?%0a%0ahttps://toberquizz.com"
+    "SHARE_MESSAGE": "Discover the challenges of ToberQuizz!%0aWill you be able to guess all of them?%0a%0ahttps://toberquizz.com"
   },
   "CHALLENGE_LIST_VIEW": {
     "CHALLENGE": "Challenge {challengeNumber}",
@@ -35,7 +39,9 @@
     "CHALLENGE_NOT_RESOLVED": "This challenge has not been completed by anybody yet!",
     "HOOK": "Will you guess all?",
     "CORRECT_ANSWERS": "Correct answers",
-    "IMAGES_PER_ROW": "Images per row: "
+    "IMAGES_PER_ROW": "Images per row: ",
+    "SHARE_HOOK": "Enjoy ToberQuizz in company! Challenge your contacts and solve all the quizzes.",
+    "SHARE_MESSAGE": "Do you dare to complete { countryName }'s number { challengeNumber } challenge in ToberQuizz?%0a%0ahttps://toberquizz.com/%23/{countryCode}/{challengeNumber}"
   },
   "CHALLENGE_STATISTICS_VIEW": {
     "USERS_PERCENTAGE": "Percentage of users",
