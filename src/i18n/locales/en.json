@@ -20,7 +20,9 @@
   "HOME_VIEW": {
     "FREE_CHALLENGES": "<span class=\"regular\">Free</span> challenges",
     "ETHICAL_TECHNOLOGY": "<span class=\"regular\">Ethical</span> technology",
-    "SELECT_A_COUNTRY": "Select a country"
+    "SELECT_A_COUNTRY": "Select a country",
+    "SHARE": "Share",
+    "SHARE_MESSAGE": "Discover the challenges of ToberQuizz!%0a%0aWill you be able to guess all of them?%0a%0ahttps://toberquizz.com"
   },
   "CHALLENGE_LIST_VIEW": {
     "CHALLENGE": "Challenge {challengeNumber}",

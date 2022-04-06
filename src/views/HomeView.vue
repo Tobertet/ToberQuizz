@@ -7,6 +7,17 @@
         <p v-html="t('HOME_VIEW.ETHICAL_TECHNOLOGY')"></p>
       </div>
     </div>
+
+    <p id="share-button">
+      <a
+        :href="'whatsapp://send?text=' + t('HOME_VIEW.SHARE_MESSAGE')"
+        data-action="share/whatsapp/share"
+        target="_blank"
+      >
+        {{ t("HOME_VIEW.SHARE") }} <ShareIcon :color="'#ffa316'" />
+      </a>
+    </p>
+
     <div>
       <p class="regular list-heading">{{ t("HOME_VIEW.SELECT_A_COUNTRY") }}</p>
       <div
@@ -28,9 +39,10 @@ import { useI18n } from "vue-i18n";
 import { CountryCodes } from "@/models";
 import { useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
+import ShareIcon from "@/components/icons/ShareIcon.vue";
 
 export default defineComponent({
-  components: { ArrowRight },
+  components: { ArrowRight, ShareIcon },
   setup: () => {
     const quizzCountries = Object.values(CountryCodes);
     const { t } = useI18n();
@@ -72,6 +84,20 @@ export default defineComponent({
       margin: 0;
       font-size: 20px;
     }
+  }
+}
+
+#share-button {
+  a {
+    font-size: 24px;
+    color: var(--warning-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+  }
+  @media (min-width: 500px) {
+    display: none;
   }
 }
 
