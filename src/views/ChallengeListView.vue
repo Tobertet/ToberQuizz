@@ -69,6 +69,7 @@ import StatisticsIcon from "@/components/icons/StatisticsIcon.vue";
 import AppBar from "@/components/AppBar.vue";
 import { useI18n } from "vue-i18n";
 import axios from "axios";
+import { changeI18nLocale } from "@/i18n";
 
 export default defineComponent({
   components: { ArrowRight, AppBar, StatisticsIcon },
@@ -97,7 +98,8 @@ export default defineComponent({
       if (!Object.values(CountryCodes).includes(countryCodeParam)) {
         router.replace("/");
       } else {
-        countryCode.value = countryCodeParam as CountryCodes;
+        countryCode.value = countryCodeParam;
+        changeI18nLocale(countryCodeParam);
         loadChallenges();
       }
     });

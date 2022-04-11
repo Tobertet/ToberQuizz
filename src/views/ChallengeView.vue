@@ -16,6 +16,7 @@ import { CountryCodes } from "../models";
 import Challenge from "../components/Challenge.vue";
 import Footer from "../components/Footer.vue";
 import AppBar from "@/components/AppBar.vue";
+import { changeI18nLocale } from "@/i18n";
 
 export default defineComponent({
   components: { Challenge, Footer, AppBar },
@@ -32,6 +33,7 @@ export default defineComponent({
       this.$router.replace("/");
       return;
     }
+    changeI18nLocale(this.countryCode);
     this.challengeAvailable = true;
   },
   methods: {
@@ -52,6 +54,7 @@ export default defineComponent({
   watch: {
     $route() {
       this.getUrlParams();
+      changeI18nLocale(this.countryCode);
     },
   },
 });
