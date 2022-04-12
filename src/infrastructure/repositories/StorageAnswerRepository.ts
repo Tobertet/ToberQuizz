@@ -1,4 +1,4 @@
-import { Answer, CountryCode, AnswerRepository } from "@/domain";
+import { Answer, CountryCode, AnswerRepository, Challenge } from "@/domain";
 import { Storage } from "@capacitor/storage";
 
 export class StorageAnswerRepository implements AnswerRepository {
@@ -13,5 +13,17 @@ export class StorageAnswerRepository implements AnswerRepository {
     ).value;
 
     return !storedAnswers ? [] : JSON.parse(storedAnswers);
+  }
+
+  save(
+    countryCode: CountryCode,
+    challengeNumber: number,
+    challenge: Challenge
+  ): Promise<void> {
+    const plainAnswers = challenge.questions.map((question) => question.answer);
+    return Storage.set({
+      key: `${countryCode}_${challengeNumber}`,
+      value: JSON.stringify(plainAnswers),
+    });
   }
 }
