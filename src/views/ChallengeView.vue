@@ -41,7 +41,7 @@ export default defineComponent({
     // TODO Take a look at router guards
     const readAndSetUrlParams = () => {
       const countryCodeParam = (
-        route.params.countryCode as string
+        (route.params.countryCode as string) || ""
       ).toUpperCase() as CountryCode;
       const challengeNumberParam = parseInt(
         route.params.challengeNumber as string
