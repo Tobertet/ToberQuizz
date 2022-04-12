@@ -1,17 +1,19 @@
 import { render, fireEvent, RenderOptions } from "@testing-library/vue";
 import Question from "@/components/Question.vue";
-import { CheckedAnswer } from "@/models";
+import { Question as QuestionModel } from "@/domain";
+
+const testingQuestion = {
+  altText: "Testing question",
+  solutions: [
+    "6c11c637ac31ae0a59976acb163424dae5ff190d53ffe8183782f82eb0e54db4",
+  ],
+};
 
 describe("Question.vue", () => {
   const setup = (options?: RenderOptions) => {
     const utils = render(Question, {
       props: {
-        question: {
-          altText: "Testing question",
-          solutions: [
-            "6c11c637ac31ae0a59976acb163424dae5ff190d53ffe8183782f82eb0e54db4",
-          ],
-        },
+        question: testingQuestion,
         questionNumber: 20,
         challengeNumber: 100,
         countryCode: "CN",
@@ -87,37 +89,42 @@ describe("Question.vue", () => {
   describe("when there is a checked answer", () => {
     describe("when the answer is wrong", () => {
       it("shows a red border around the image", async () => {
-        const checkedAnswer: CheckedAnswer = {
-          text: "whatever",
-          isValid: false,
+        const question: QuestionModel = {
+          ...testingQuestion,
+          answer: "whatever",
+          isCorrect: false,
         };
-        const { findByTestId } = setup({ props: { checkedAnswer } });
+        const { findByTestId } = setup({ props: { question } });
 
         expect(await findByTestId("image-container")).toHaveClass("error");
       });
     });
 
     describe("when the answer is right", () => {
-      const checkedAnswer: CheckedAnswer = { text: "whatever", isValid: true };
+      const question: QuestionModel = {
+        ...testingQuestion,
+        answer: "whatever",
+        isCorrect: true,
+      };
 
       it("shows a green border around the image", async () => {
-        const { findByTestId } = setup({ props: { checkedAnswer } });
+        const { findByTestId } = setup({ props: { question } });
 
         expect(await findByTestId("image-container")).toHaveClass("valid");
       });
 
       it("disables the input", async () => {
-        const { input, rerender } = setup({ props: { checkedAnswer } });
+        const { input, rerender } = setup({ props: { question } });
 
-        await rerender({ checkedAnswer });
+        await rerender({ question });
 
         expect(input).toBeDisabled();
       });
 
       it("disables the button", async () => {
-        const { button, rerender } = setup({ props: { checkedAnswer } });
+        const { button, rerender } = setup({ props: { question } });
 
-        await rerender({ checkedAnswer });
+        await rerender({ question });
 
         expect(button).toBeDisabled();
       });

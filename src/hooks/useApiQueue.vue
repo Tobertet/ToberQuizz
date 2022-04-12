@@ -1,10 +1,10 @@
 <script lang="ts">
 import { Storage } from "@capacitor/storage";
-import { CountryCodes } from "@/models";
+import { CountryCode } from "@/domain";
 import { supabase } from "@/supabase";
 
 interface CorrectAnswersCountQueueEvent {
-  countryCode: CountryCodes;
+  countryCode: CountryCode;
   challengeNumber: number;
   correctAnswersCount: number;
 }

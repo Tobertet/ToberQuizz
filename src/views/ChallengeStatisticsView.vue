@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import { CountryCodes } from "../models";
+import { CountryCode } from "@/domain";
 import AppBar from "@/components/AppBar.vue";
 import ChallengeStatistics from "@/components/ChallengeStatistics.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -19,7 +19,7 @@ import { useRoute, useRouter } from "vue-router";
 export default defineComponent({
   components: { AppBar, ChallengeStatistics },
   setup: () => {
-    const countryCode = ref<CountryCodes>();
+    const countryCode = ref<CountryCode>();
     const challengeNumber = ref<number>();
 
     const router = useRouter();
@@ -29,7 +29,7 @@ export default defineComponent({
       if (route.params.countryCode && route.params.challengeNumber) {
         countryCode.value = (
           route.params.countryCode as string
-        ).toUpperCase() as CountryCodes;
+        ).toUpperCase() as CountryCode;
         challengeNumber.value = parseInt(
           route.params.challengeNumber as string
         );
@@ -40,7 +40,7 @@ export default defineComponent({
       getUrlParams();
       if (
         countryCode.value &&
-        !Object.values(CountryCodes).includes(countryCode.value)
+        !Object.values(CountryCode).includes(countryCode.value)
       ) {
         router.replace("/");
         return;
@@ -51,7 +51,7 @@ export default defineComponent({
       getUrlParams();
       if (
         countryCode.value &&
-        !Object.values(CountryCodes).includes(countryCode.value)
+        !Object.values(CountryCode).includes(countryCode.value)
       ) {
         router.replace("/");
         return;

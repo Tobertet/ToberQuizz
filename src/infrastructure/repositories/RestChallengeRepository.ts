@@ -10,7 +10,7 @@ export class RestChallengeRepository implements ChallengeRepository {
   ): Promise<Challenge> {
     const challengeURL = `${this.resourcesUri}/${countryCode}/${challengeNumber}/challenge.json`;
 
-    const response = await axios.get<Challenge>(challengeURL);
-    return response.data;
+    const response = await axios.get<Partial<Challenge>>(challengeURL);
+    return new Challenge().merge(response.data);
   }
 }

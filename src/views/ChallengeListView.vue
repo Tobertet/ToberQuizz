@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { CountryCodes } from "@/models";
+import { CountryCode } from "@/domain";
 import { useRoute, useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
 import StatisticsIcon from "@/components/icons/StatisticsIcon.vue";
@@ -79,7 +79,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     const challenges = ref(new Array<number>());
-    const countryCode = ref<CountryCodes>(CountryCodes.WorldWide);
+    const countryCode = ref<CountryCode>(CountryCode.WorldWide);
 
     const goToChallengeView = (challengeNumber: number) => {
       router.push({
@@ -94,8 +94,8 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      const countryCodeParam = route.params.countryCode as CountryCodes;
-      if (!Object.values(CountryCodes).includes(countryCodeParam)) {
+      const countryCodeParam = route.params.countryCode as CountryCode;
+      if (!Object.values(CountryCode).includes(countryCodeParam)) {
         router.replace("/");
       } else {
         countryCode.value = countryCodeParam;

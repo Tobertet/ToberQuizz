@@ -1,6 +1,6 @@
-import { Challenge } from "@/models";
+import { Challenge } from "@/domain";
 
-export const TESTING_CHALLENGE: Challenge = {
+export const TESTING_CHALLENGE: Challenge = new Challenge().merge({
   description: "Testing challenge.",
   startingDate: "",
   questions: [
@@ -23,4 +23,4 @@ export const TESTING_CHALLENGE: Challenge = {
       ],
     },
   ],
-};
+});
