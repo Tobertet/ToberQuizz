@@ -59,6 +59,7 @@ import ShareIcon from "@/components/icons/ShareIcon.vue";
 import { defineComponent, Ref, toRefs } from "vue";
 import { useI18n } from "vue-i18n";
 import { CountryCode } from "@/domain";
+import useApplicationServices from "@/hooks/useApplicationServices.vue";
 
 export default defineComponent({
   props: {
@@ -76,8 +77,16 @@ export default defineComponent({
       challengeNumber
     );
 
-    const onAnswer = (answer: string, questionNumber: number) => {
-      console.log("onAnswer");
+    const { answerQuestion } = useApplicationServices();
+
+    const onAnswer = async (answer: string, questionNumber: number) => {
+      challenge.value = await answerQuestion.execute(
+        countryCode.value as CountryCode,
+        challengeNumber.value,
+        challenge.value,
+        questionNumber,
+        answer
+      );
     };
 
     return {
