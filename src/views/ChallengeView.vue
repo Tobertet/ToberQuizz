@@ -40,6 +40,8 @@ export default defineComponent({
 
     // TODO Take a look at router guards
     const readAndSetUrlParams = () => {
+      if (!route.params.countryCode || !route.params.challengeNumber) return;
+
       const countryCodeParam = (
         (route.params.countryCode as string) || ""
       ).toUpperCase() as CountryCode;
