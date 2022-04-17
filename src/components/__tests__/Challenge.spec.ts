@@ -3,13 +3,6 @@ import Challenge from "@/components/Challenge.vue";
 
 const timerValue = 20;
 
-jest.mock("vue-router", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-    replace: jest.fn(),
-  }),
-}));
-
 describe("Challenge.vue", () => {
   const setup = () => {
     const utils = render(Challenge, {
@@ -68,7 +61,7 @@ describe("Challenge.vue", () => {
 
       expect(saveItems).toHaveBeenCalledWith(
         "CapacitorStorage.ES_1",
-        '["whatever"]'
+        JSON.stringify(["whatever", null, null])
       );
     });
 
@@ -197,17 +190,6 @@ describe("Challenge.vue", () => {
       const { findByText } = setup();
 
       expect(await findByText(/1 \/ 3/)).toBeInTheDocument();
-    });
-    it("does not add the correct answers count to the API queue", () => {
-      jest.clearAllMocks();
-      const spy = jest.spyOn(Storage.prototype, "setItem");
-
-      setup();
-
-      expect(spy).not.toHaveBeenCalledWith(
-        "CapacitorStorage.API_QUEUE",
-        '[{"countryCode":"ES","challengeNumber":1,"correctAnswersCount":1}]'
-      );
     });
   });
 });
