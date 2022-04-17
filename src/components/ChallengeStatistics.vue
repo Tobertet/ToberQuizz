@@ -25,7 +25,7 @@
   <div id="sticky-bar">
     <div>
       {{ t("CHALLENGE_VIEW.CORRECT_ANSWERS") }}:
-      {{ countOfValidAnswers }}
+      {{ correctAnswersCount }}
       /
       {{ challenge.questions.length }}
     </div>
@@ -69,12 +69,6 @@ export default defineComponent({
       countryCode as Ref<CountryCode>,
       challengeNumber
     );
-
-    // const { checkedAnswers, countOfValidAnswers } = useCheckedAnswers(
-    //   countryCode as Ref<CountryCode>,
-    //   challengeNumber,
-    //   challenge
-    // );
 
     watch([challenge], async () => {
       const questionsCount = challenge.value.questions.length;
