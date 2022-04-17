@@ -1,12 +1,11 @@
-import { AnswerRepository, Challenge, CountryCode } from "@/domain";
-import { ChallengeProgressRepository } from "@/domain/repositories/ChallengeProgressRepository";
-import { HashingAlgorithm } from "../ports";
+import { Challenge, CountryCode, AnswerRepository } from "@/domain";
+import { HashingAlgorithm, StatisticsCollector } from "@/application/ports";
 
 export class AnswerQuestion {
   constructor(
     private readonly hashingAlgorithm: HashingAlgorithm,
-    private readonly challengeProgressRepository: ChallengeProgressRepository,
-    private readonly answerRepository: AnswerRepository
+    private readonly answerRepository: AnswerRepository,
+    private readonly statisticsCollector: StatisticsCollector
   ) {}
 
   async execute(
@@ -38,11 +37,11 @@ export class AnswerQuestion {
         (question) => question.isCorrect
       ).length;
 
-      await this.challengeProgressRepository.save(
+      this.statisticsCollector.collect({
         countryCode,
         challengeNumber,
-        correctAnswersCount
-      );
+        correctAnswersCount,
+      });
     }
 
     return checkedChallenge;

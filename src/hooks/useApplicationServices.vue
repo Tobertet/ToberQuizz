@@ -1,11 +1,15 @@
 <script lang="ts">
-import { GetUserChallenge, CheckChallenge } from "@/application/services";
-import { AnswerQuestion } from "@/application/services/AnswerQuestion";
+import {
+  GetUserChallenge,
+  CheckChallenge,
+  AnswerQuestion,
+} from "@/application/services";
 import {
   StorageAnswerRepository,
   RestChallengeRepository,
   Argon2HashingAlgorithm,
-  SupabaseChallengeProgressRepository,
+  StorageApiQueueRepository,
+  SupabaseStatisticsCollector,
 } from "@/infrastructure";
 import { createClient } from "@supabase/supabase-js";
 
@@ -20,11 +24,13 @@ const answerRepository = new StorageAnswerRepository();
 const challengeRepository = new RestChallengeRepository(
   process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET || ""
 );
-const challengeProgressRepository = new SupabaseChallengeProgressRepository(
-  supabaseClient
-);
+const storageApiQueueRepository = new StorageApiQueueRepository();
 
 const hashingAlgorithm = new Argon2HashingAlgorithm();
+const statisticsCollector = new SupabaseStatisticsCollector(
+  storageApiQueueRepository,
+  supabaseClient
+);
 
 const getUserChallenge = new GetUserChallenge(
   challengeRepository,
@@ -33,8 +39,8 @@ const getUserChallenge = new GetUserChallenge(
 const checkChallenge = new CheckChallenge(hashingAlgorithm);
 const answerQuestion = new AnswerQuestion(
   hashingAlgorithm,
-  challengeProgressRepository,
-  answerRepository
+  answerRepository,
+  statisticsCollector
 );
 
 export default function useApplicationServices() {
