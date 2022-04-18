@@ -43,7 +43,7 @@ const answerQuestion = new AnswerQuestion(
   statisticsCollector
 );
 
-export default function useApplicationServices() {
+export function useApplicationServices() {
   return {
     getUserChallenge,
     checkChallenge,

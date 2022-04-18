@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import useChallenge from "@/hooks/useCheckedUserChallenge.vue";
+import { useCheckedUserChallenge } from "@/hooks";
 import { CountryCode } from "@/domain";
 import { defineComponent, ref, Ref, toRefs, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -65,7 +65,7 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const { challenge, correctAnswersCount } = useChallenge(
+    const { challenge, correctAnswersCount } = useCheckedUserChallenge(
       countryCode as Ref<CountryCode>,
       challengeNumber
     );

@@ -1,9 +1,9 @@
 <script lang="ts">
 import { computed, ComputedRef, onMounted, Ref, ref, watch } from "vue";
-import useApplicationServices from "./useApplicationServices.vue";
+import { useApplicationServices } from "@/hooks";
 import { CountryCode, Challenge } from "@/domain";
 
-export default function useCheckedUserChallenge(
+export function useCheckedUserChallenge(
   countryCode: Ref<CountryCode>,
   challengeNumber: Ref<number>
 ) {
