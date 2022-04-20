@@ -1,4 +1,9 @@
-import { Challenge, CountryCode, AnswerRepository } from "@/domain";
+import {
+  Challenge,
+  CountryCode,
+  AnswerRepository,
+  isCorrectlyAnsweredQuestion,
+} from "@/domain";
 import { HashingAlgorithm, StatisticsCollector } from "@/application/ports";
 
 export class AnswerQuestion {
@@ -15,35 +20,36 @@ export class AnswerQuestion {
     questionNumber: number,
     answer: string
   ): Promise<Challenge> {
-    const answeredChallenge = challenge.answerQuestion(questionNumber, answer);
+    // const answeredChallenge = challenge.answerQuestion(questionNumber, answer);
 
-    await this.answerRepository.save(
-      countryCode,
-      challengeNumber,
-      answeredChallenge
-    );
+    // await this.answerRepository.save(
+    //   countryCode,
+    //   challengeNumber,
+    //   answeredChallenge
+    // );
 
-    const checkedQuestion = await this.hashingAlgorithm.checkQuestion(
-      answeredChallenge.questions[questionNumber - 1]
-    );
+    // const checkedQuestion = await this.hashingAlgorithm.checkQuestion(
+    //   answeredChallenge.questions[questionNumber - 1]
+    // );
 
-    const checkedChallenge = answeredChallenge.checkQuestion(
-      questionNumber,
-      checkedQuestion.isCorrect || false
-    );
+    // const checkedChallenge = answeredChallenge.checkQuestion(
+    //   questionNumber,
+    //   checkedQuestion.answer.isCorrect || false
+    // );
 
-    if (checkedQuestion.isCorrect) {
-      const correctAnswersCount = checkedChallenge.questions.filter(
-        (question) => question.isCorrect
-      ).length;
+    // if (checkedQuestion.answer.isCorrect) {
+    //   const correctAnswersCount = checkedChallenge.questions.filter(
+    //     isCorrectlyAnsweredQuestion
+    //   ).length;
 
-      this.statisticsCollector.collect({
-        countryCode,
-        challengeNumber,
-        correctAnswersCount,
-      });
-    }
+    //   this.statisticsCollector.collect({
+    //     countryCode,
+    //     challengeNumber,
+    //     correctAnswersCount,
+    //   });
+    // }
 
-    return checkedChallenge;
+    // return checkedChallenge;
+    return challenge;
   }
 }

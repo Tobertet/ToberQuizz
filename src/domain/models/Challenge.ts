@@ -1,4 +1,22 @@
 import { Answer, Question } from "@/domain";
+import {
+  CheckedQuestion,
+  UnansweredQuestion,
+  UncheckedQuestion,
+} from "./Question";
+
+export type EmptyChallenge = {
+  description: string;
+  questions: UnansweredQuestion[];
+};
+export type CheckedChallenge = {
+  description: string;
+  questions: (UnansweredQuestion | CheckedQuestion)[];
+};
+export type UncheckedChallenge = {
+  description: string;
+  questions: (UnansweredQuestion | CheckedQuestion | UncheckedQuestion)[];
+};
 
 export class Challenge {
   constructor(

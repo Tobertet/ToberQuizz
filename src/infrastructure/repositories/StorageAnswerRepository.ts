@@ -15,15 +15,15 @@ export class StorageAnswerRepository implements AnswerRepository {
     return !storedAnswers ? [] : JSON.parse(storedAnswers);
   }
 
-  save(
+  async save(
     countryCode: CountryCode,
     challengeNumber: number,
     challenge: Challenge
   ): Promise<void> {
-    const plainAnswers = challenge.questions.map((question) => question.answer);
-    return Storage.set({
-      key: `${countryCode}_${challengeNumber}`,
-      value: JSON.stringify(plainAnswers),
-    });
+    // const plainAnswers = challenge.questions.map((question) => question.answer);
+    // return Storage.set({
+    //   key: `${countryCode}_${challengeNumber}`,
+    //   value: JSON.stringify(plainAnswers),
+    // });
   }
 }

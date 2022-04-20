@@ -1,25 +1,21 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "@/views/HomeView.vue";
-import ChallengeView from "@/views/ChallengeView.vue";
-import ChallengeStatisticsView from "@/views/ChallengeStatisticsView.vue";
-import ChallengeListView from "@/views/ChallengeListView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    component: HomeView,
+    component: () => import("@/views/HomeView.vue"),
   },
   {
     path: "/:countryCode",
-    component: ChallengeListView,
+    component: () => import("@/views/ChallengeListView.vue"),
   },
   {
     path: "/:countryCode/:challengeNumber",
-    component: ChallengeView,
+    component: () => import("@/views/ChallengeView.vue"),
   },
   {
     path: "/stats/:countryCode/:challengeNumber",
-    component: ChallengeStatisticsView,
+    component: () => import("@/views/ChallengeStatisticsView.vue"),
   },
 ];
 
