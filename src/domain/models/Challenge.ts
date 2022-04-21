@@ -1,9 +1,14 @@
-import { Answer, Question } from "@/domain";
+import { Answer, CountryCode, Question } from "@/domain";
 import {
   CheckedQuestion,
   UnansweredQuestion,
   UncheckedQuestion,
 } from "./Question";
+
+export type ChallengeIdentifier = {
+  countryCode: CountryCode;
+  challengeNumber: number;
+};
 
 export type EmptyChallenge = {
   description: string;

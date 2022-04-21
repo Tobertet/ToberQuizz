@@ -3,7 +3,10 @@ import {
   GetUserChallenge,
   CheckChallenge,
   AnswerQuestion,
+  GetEmptyChallenge,
+  EmptyChallengeGetter,
 } from "@/application/services";
+import { EmptyChallenge, ChallengeIdentifier, CountryCode } from "@/domain";
 import {
   StorageAnswerRepository,
   RestChallengeRepository,
@@ -43,8 +46,18 @@ const answerQuestion = new AnswerQuestion(
   statisticsCollector
 );
 
+const getEmptyChallenge: (
+  challengeIdentifier: ChallengeIdentifier,
+  options?: { emptyChallengeGetter: EmptyChallengeGetter }
+) => Promise<EmptyChallenge> = (challengeIdentifier, options) =>
+  GetEmptyChallenge.execute(
+    options?.emptyChallengeGetter || new RestChallengeRepository("").get,
+    challengeIdentifier
+  );
+
 export function useApplicationServices() {
   return {
+    getEmptyChallenge,
     getUserChallenge,
     checkChallenge,
     answerQuestion,
