@@ -15,12 +15,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Answer,
-  isAnsweredQuestion,
-  isCorrectlyAnsweredQuestion,
-  Question,
-} from "@/domain";
+import { Answer, isAnsweredQuestion, Question } from "@/domain";
 import {
   defineComponent,
   PropType,
@@ -67,11 +62,12 @@ export default defineComponent({
         ? question.value.answer
         : { text: "" };
       inputText.value = answer.text;
-      status.value = !answer
-        ? Status.Clean
-        : answer
+
+      status.value = answer.isCorrect
         ? Status.Valid
-        : Status.Error;
+        : answer.isCorrect === false
+        ? Status.Error
+        : Status.Clean;
     };
 
     onMounted(() => setAnswer());
