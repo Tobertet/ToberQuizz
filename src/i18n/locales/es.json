@@ -14,10 +14,12 @@
     "DECEMBER": "Diciembre"
   },
   "COUNTRY_LIST": {
+    "DE": "Alemania",
     "ES": "España",
     "WW": "Internacional"
   },
   "LANGUAGE_LIST": {
+    "DE": "alemán",
     "ES": "español",
     "WW": "inglés"
   },
