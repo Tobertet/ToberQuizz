@@ -1,0 +1,57 @@
+{
+  "MONTHS": {
+    "JANUARY": "Januar",
+    "FEBRUARY": "Februar",
+    "MARCH": "März",
+    "APRIL": "April",
+    "MAY": "Mai",
+    "JUNE": "Juni",
+    "JULY": "Juli",
+    "AUGUST": "August",
+    "SEPTEMBER": "September",
+    "OCTOBER": "Oktober",
+    "NOVEMBER": "November",
+    "DECEMBER": "Dezember"
+  },
+  "COUNTRY_LIST": {
+    "ES": "Spanien",
+    "WW": "International"
+  },
+  "LANGUAGE_LIST": {
+    "ES": "Spanisch",
+    "WW": "Englisch"
+  },
+  "HOME_VIEW": {
+    "FREE_CHALLENGES": "<span class=\"regular\">Kostenlose</span> Aufgaben",
+    "ETHICAL_TECHNOLOGY": "<span class=\"regular\">Ethische</span> Technologie",
+    "SELECT_A_COUNTRY": "Wähle ein Land aus",
+    "SHARE": "Teilen",
+    "SHARE_MESSAGE": "Entdecke die Aufgaben von ToberQuizz!%0aSchaffst du es alle zu lösen?%0a%0ahttps://toberquizz.com"
+  },
+  "CHALLENGE_LIST_VIEW": {
+    "CHALLENGE": "Aufgabe {challengeNumber}",
+    "SELECT_A_CHALLENGE": "Wähle eine Aufgabe aus",
+    "WHY_TOBERQUIZZ": "Warum ToberQuizz?",
+    "CHALLENGES_IN": "Aufgaben in "
+  },
+  "CHALLENGE_VIEW": {
+    "CHALLENGE": "Aufgabe {challengeNumber}",
+    "CHALLENGE_NOT_RESOLVED": "Diese Aufgabe wurde noch von keinem komplett gelöst!",
+    "HOOK": "Schaffst du es alle zu lösen?",
+    "CORRECT_ANSWERS": "Korrekte Antworten",
+    "IMAGES_PER_ROW": "Bilder pro Zeile: ",
+    "SHARE_HOOK": "Genieße ToberQuizz in Gesellschaft! Vordere deine Kontakte herraus und löse alle Rätsel.",
+    "SHARE_MESSAGE": "Traust du dir zu { countryName }s { challengeNumber }. Aufgabe von ToberQuizz zu lösen?%0a%0ahttps://toberquizz.com/%23/{countryCode}/{challengeNumber}"
+  },
+  "CHALLENGE_STATISTICS_VIEW": {
+    "USERS_PERCENTAGE": "Prozentsatz der Benutzer",
+    "COUNT_OF_CORRECT_ANSWERS": "Anzahl korrekter Antworten",
+    "X_CORRECT_ANSWERS": "{count} korrekte Antworten",
+    "CHALLENGE_PROGRESS": "Aufgabenfortschritt"
+  },
+  "FOOTER": {
+    "MADE_BY": "Mit viel ❤️ hergestellt von",
+    "CONTRIBUTE": "Willst du wissen wie und warum du mitarbeiten kannst?",
+    "MISSION": "ToberQuizz ist komplett kostenlos und gemeinnützig."
+  }
+}
