@@ -5,7 +5,6 @@ import {
   isUncheckedQuestion,
   UnansweredQuestion,
   UncheckedQuestion,
-  isCorrectlyAnsweredQuestion,
 } from "./Question";
 
 export type ChallengeIdentifier = {
@@ -28,7 +27,7 @@ export type UncheckedChallenge = {
 export type Challenge = EmptyChallenge | CheckedChallenge | UncheckedChallenge;
 
 const fillInAnswer = (
-  challenge: CheckedChallenge,
+  challenge: Challenge,
   answer: UncheckedAnswer,
   questionNumber: number
 ): UncheckedChallenge => {

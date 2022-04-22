@@ -79,12 +79,12 @@ export default defineComponent({
     const { answerQuestion } = useApplicationServices();
 
     const onAnswer = async (answer: string, questionNumber: number) => {
-      challenge.value = await answerQuestion.execute(
+      challenge.value = await answerQuestion(
         countryCode.value as CountryCode,
         challengeNumber.value,
         challenge.value,
         questionNumber,
-        answer
+        { text: answer }
       );
     };
 

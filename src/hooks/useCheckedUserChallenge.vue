@@ -20,7 +20,6 @@ export function useCheckedUserChallenge(
       challengeNumber: challengeNumber.value,
     });
     challenge.value = await checkChallenge(userChallenge);
-    console.log(challenge.value);
   });
 
   watch([challengeNumber, countryCode], async () => {

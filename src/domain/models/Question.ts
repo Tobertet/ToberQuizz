@@ -2,7 +2,6 @@ import {
   Answer,
   CheckedAnswer,
   CorrectAnswer,
-  IncorrectAnswer,
   UncheckedAnswer,
 } from "./Answer";
 
@@ -54,7 +53,7 @@ export function isCorrectlyAnsweredQuestion(
 }
 
 const answerQuestion = (
-  question: UnansweredQuestion | CheckedQuestion,
+  question: Question,
   answer: UncheckedAnswer
 ): UncheckedQuestion => ({ ...question, answer });
 

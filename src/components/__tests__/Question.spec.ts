@@ -50,12 +50,6 @@ describe("Question.vue", () => {
     );
   });
 
-  it("sets the image alt text", () => {
-    const { img } = setup();
-
-    expect(img.alt).toBe("Testing question");
-  });
-
   it("shows a gray border around the image", () => {
     const { getByTestId } = setup();
 

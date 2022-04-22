@@ -12,6 +12,8 @@ import {
   UncheckedChallenge,
   CheckedChallenge,
   Challenge,
+  CountryCode,
+  UncheckedAnswer,
 } from "@/domain";
 import {
   StorageAnswerRepository,
@@ -46,13 +48,28 @@ const checkChallenge: (
 ) => Promise<CheckedChallenge> = (challenge) =>
   CheckChallenge.execute(challenge, hashingAlgorithm.checkQuestion);
 
-const answerQuestion: (challenge: Challenge) => Promise<Challenge> = (
-  challenge
+const answerQuestion: (
+  countryCode: CountryCode,
+  challengeNumber: number,
+  challenge: Challenge,
+  questionNumber: number,
+  answer: UncheckedAnswer
+) => Promise<Challenge> = (
+  countryCode,
+  challengeNumber,
+  challenge,
+  questionNumber,
+  answer
 ) =>
   AnswerQuestion.execute(
-    hashingAlgorithm,
+    hashingAlgorithm.checkQuestion,
+    statisticsCollector,
     answerRepository,
-    statisticsCollector
+    countryCode,
+    challengeNumber,
+    challenge,
+    questionNumber,
+    answer
   );
 
 const getUserChallenge: (
