@@ -1,9 +1,9 @@
-import { Challenge, CountryCode } from "@/domain";
-import { EmptyChallenge } from "../models";
+import { ChallengeIdentifier, EmptyChallenge } from "@/domain";
 
-export interface ChallengeRepository {
-  get(challengeIdentifier: {
-    countryCode: CountryCode;
-    challengeNumber: number;
-  }): Promise<EmptyChallenge>;
-}
+export type EmptyChallengeGetter = (
+  challengeIdentifier: ChallengeIdentifier
+) => Promise<EmptyChallenge>;
+
+export type ChallengeRepository = {
+  getEmpty: EmptyChallengeGetter;
+};

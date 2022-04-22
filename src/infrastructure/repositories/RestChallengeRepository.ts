@@ -1,21 +1,16 @@
-import {
-  Challenge,
-  CountryCode,
-  ChallengeRepository,
-  EmptyChallenge,
-} from "@/domain";
+import { ChallengeRepository, EmptyChallenge } from "@/domain";
 import axios from "axios";
 
-export class RestChallengeRepository implements ChallengeRepository {
-  constructor(private readonly resourcesUri: string) {}
+const create: (resourcesUri: string) => ChallengeRepository = (
+  resourcesUri
+) => ({
+  getEmpty: async ({ challengeNumber, countryCode }) => {
+    const challengeUri = `${resourcesUri}/${countryCode}/${challengeNumber}/challenge.json`;
+    const response = await axios.get<EmptyChallenge>(challengeUri);
+    return response.data;
+  },
+});
 
-  async get(challengeIdentifier: {
-    countryCode: CountryCode;
-    challengeNumber: number;
-  }): Promise<EmptyChallenge> {
-    const challengeURL = `${this.resourcesUri}/${challengeIdentifier.countryCode}/${challengeIdentifier.challengeNumber}/challenge.json`;
-
-    const response = await axios.get<Partial<Challenge>>(challengeURL);
-    return new Challenge().merge(response.data);
-  }
-}
+export const RestChallengeRepository = {
+  create,
+};

@@ -1,8 +1,4 @@
-import { ChallengeIdentifier, EmptyChallenge } from "@/domain";
-
-export type EmptyChallengeGetter = (
-  challengeIdentifier: ChallengeIdentifier
-) => Promise<EmptyChallenge>;
+import { ChallengeIdentifier, EmptyChallengeGetter } from "@/domain";
 
 const getEmptyChallenge = (
   emptyChallengeGetter: EmptyChallengeGetter,

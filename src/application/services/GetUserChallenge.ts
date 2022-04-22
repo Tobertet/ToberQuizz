@@ -1,30 +1,20 @@
 import {
-  Challenge,
-  CountryCode,
-  AnswerRepository,
-  ChallengeRepository,
+  EmptyChallengeGetter,
+  ChallengeIdentifier,
+  UserAnswersGetter,
+  fillInAnswers,
 } from "@/domain";
 
-export class GetUserChallenge {
-  constructor(
-    private readonly challengeRepository: ChallengeRepository,
-    private readonly answerRepository: AnswerRepository
-  ) {}
+const getUserChallenge = async (
+  emptyChallengeGetter: EmptyChallengeGetter,
+  userAnswersGetter: UserAnswersGetter,
+  challengeIdentifier: ChallengeIdentifier
+) => {
+  const emptyChallenge = await emptyChallengeGetter(challengeIdentifier);
+  const userAnswers = await userAnswersGetter(challengeIdentifier);
+  return fillInAnswers(emptyChallenge, userAnswers);
+};
 
-  async execute(
-    countryCode: CountryCode,
-    challengeNumber: number
-  ): Promise<Challenge> {
-    const emptyChallenge = await this.challengeRepository.get(
-      countryCode,
-      challengeNumber
-    );
-    const userAnswers = await this.answerRepository.get(
-      countryCode,
-      challengeNumber
-    );
-    const answeredChallenge = emptyChallenge.fillAnswers(userAnswers);
-
-    return answeredChallenge;
-  }
-}
+export const GetUserChallenge = {
+  execute: getUserChallenge,
+};

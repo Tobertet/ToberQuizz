@@ -4,15 +4,20 @@ import {
   CheckChallenge,
   AnswerQuestion,
   GetEmptyChallenge,
-  EmptyChallengeGetter,
 } from "@/application/services";
-import { EmptyChallenge, ChallengeIdentifier, CountryCode } from "@/domain";
+import {
+  EmptyChallenge,
+  ChallengeIdentifier,
+  EmptyChallengeGetter,
+  UncheckedChallenge,
+  UserAnswersGetter,
+} from "@/domain";
 import {
   StorageAnswerRepository,
-  RestChallengeRepository,
   Argon2HashingAlgorithm,
   StorageApiQueueRepository,
   SupabaseStatisticsCollector,
+  RestChallengeRepository,
 } from "@/infrastructure";
 import { createClient } from "@supabase/supabase-js";
 
@@ -23,8 +28,8 @@ export const supabaseClient = createClient(
   process.env.VUE_APP_SUPABASE_ANON_KEY!
 );
 
-const answerRepository = new StorageAnswerRepository();
-const challengeRepository = new RestChallengeRepository(
+const answerRepository = StorageAnswerRepository.create();
+const challengeRepository = RestChallengeRepository.create(
   process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET || ""
 );
 const storageApiQueueRepository = new StorageApiQueueRepository();
@@ -35,10 +40,6 @@ const statisticsCollector = new SupabaseStatisticsCollector(
   supabaseClient
 );
 
-const getUserChallenge = new GetUserChallenge(
-  challengeRepository,
-  answerRepository
-);
 const checkChallenge = new CheckChallenge(hashingAlgorithm);
 const answerQuestion = new AnswerQuestion(
   hashingAlgorithm,
@@ -46,12 +47,21 @@ const answerQuestion = new AnswerQuestion(
   statisticsCollector
 );
 
+const getUserChallenge: (
+  challengeIdentifier: ChallengeIdentifier
+) => Promise<UncheckedChallenge> = (challengeIdentifier) =>
+  GetUserChallenge.execute(
+    challengeRepository.getEmpty,
+    answerRepository.get,
+    challengeIdentifier
+  );
+
 const getEmptyChallenge: (
   challengeIdentifier: ChallengeIdentifier,
   options?: { emptyChallengeGetter: EmptyChallengeGetter }
 ) => Promise<EmptyChallenge> = (challengeIdentifier, options) =>
   GetEmptyChallenge.execute(
-    options?.emptyChallengeGetter || new RestChallengeRepository("").get,
+    options?.emptyChallengeGetter || challengeRepository.getEmpty,
     challengeIdentifier
   );
 

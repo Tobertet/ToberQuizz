@@ -1,6 +1,8 @@
-import { Answer, CountryCode, Question } from "@/domain";
+import { CountryCode, UncheckedAnswer } from "@/domain";
 import {
+  answerQuestion,
   CheckedQuestion,
+  isUncheckedQuestion,
   UnansweredQuestion,
   UncheckedQuestion,
 } from "./Question";
@@ -22,45 +24,26 @@ export type UncheckedChallenge = {
   description: string;
   questions: (UnansweredQuestion | CheckedQuestion | UncheckedQuestion)[];
 };
+export type Challenge = EmptyChallenge | CheckedChallenge | UncheckedChallenge;
 
-export class Challenge {
-  constructor(
-    public description: string = "",
-    public questions: Question[] = [],
-    public startingDate: string = ""
-  ) {}
+export const fillInAnswers = (
+  challenge: EmptyChallenge,
+  answers: (UncheckedAnswer | undefined)[]
+): UncheckedChallenge => {
+  const filledInQuestions = challenge.questions.map((question, index) =>
+    !answers[index]
+      ? question
+      : answerQuestion(question, answers[index] as UncheckedAnswer)
+  );
+  return { ...challenge, questions: filledInQuestions };
+};
 
-  clone(): Challenge {
-    return new Challenge(this.description, this.questions, this.startingDate);
-  }
-
-  merge(other: Partial<Challenge>): Challenge {
-    return Object.assign(this.clone(), other);
-  }
-
-  public fillAnswers(answers: Answer[]): Challenge {
-    const filledQuestions = this.questions.map((question, index) => ({
-      ...question,
-      answer: answers[index],
-    }));
-    return this.merge({ questions: filledQuestions });
-  }
-
-  public answerQuestion(questionNumber: number, answer: string): Challenge {
-    const answeredQuestions = this.questions.map((question, index) => {
-      return index === questionNumber - 1
-        ? { ...question, answer }
-        : { ...question };
-    });
-    return this.merge({ questions: answeredQuestions });
-  }
-
-  public checkQuestion(questionNumber: number, isCorrect: boolean): Challenge {
-    const checkedQuestions = this.questions.map((question, index) => {
-      return index === questionNumber - 1
-        ? { ...question, isCorrect }
-        : { ...question };
-    });
-    return this.merge({ questions: checkedQuestions });
-  }
-}
+const checkChallenge = (
+  challenge: UncheckedChallenge,
+  questionChecker: (question: UncheckedQuestion) => CheckedQuestion
+): CheckedChallenge => {
+  const checkedQuestions = challenge.questions.map((question) =>
+    isUncheckedQuestion(question) ? questionChecker(question) : question
+  );
+  return { ...challenge, questions: checkedQuestions };
+};

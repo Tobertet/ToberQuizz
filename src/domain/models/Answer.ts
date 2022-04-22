@@ -12,6 +12,7 @@ export type CheckedAnswer = CorrectAnswer | IncorrectAnswer;
 
 export type UncheckedAnswer = {
   text: string;
+  isCorrect?: never;
 };
 
 export type Answer = CheckedAnswer | UncheckedAnswer;
