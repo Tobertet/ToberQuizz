@@ -52,7 +52,11 @@ export function isCorrectlyAnsweredQuestion(
   return answeredQuestion.answer && answeredQuestion.answer.isCorrect;
 }
 
-export const answerQuestion = (
+const answerQuestion = (
   question: UnansweredQuestion,
   answer: UncheckedAnswer
 ): UncheckedQuestion => ({ ...question, answer });
+
+export const QuestionUtils = {
+  answerQuestion,
+};

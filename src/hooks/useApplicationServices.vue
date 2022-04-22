@@ -10,7 +10,7 @@ import {
   ChallengeIdentifier,
   EmptyChallengeGetter,
   UncheckedChallenge,
-  UserAnswersGetter,
+  CheckedChallenge,
 } from "@/domain";
 import {
   StorageAnswerRepository,
@@ -34,13 +34,17 @@ const challengeRepository = RestChallengeRepository.create(
 );
 const storageApiQueueRepository = new StorageApiQueueRepository();
 
-const hashingAlgorithm = new Argon2HashingAlgorithm();
+const hashingAlgorithm = Argon2HashingAlgorithm.create();
 const statisticsCollector = new SupabaseStatisticsCollector(
   storageApiQueueRepository,
   supabaseClient
 );
 
-const checkChallenge = new CheckChallenge(hashingAlgorithm);
+const checkChallenge: (
+  challenge: UncheckedChallenge
+) => Promise<CheckedChallenge> = (challenge) =>
+  CheckChallenge.execute(challenge, hashingAlgorithm.checkQuestion);
+
 const answerQuestion = new AnswerQuestion(
   hashingAlgorithm,
   answerRepository,

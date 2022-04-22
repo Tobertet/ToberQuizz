@@ -1,8 +1,7 @@
-import { Challenge } from "@/domain";
+import { EmptyChallenge } from "@/domain";
 
-export const TESTING_CHALLENGE: Challenge = new Challenge().merge({
+export const TESTING_CHALLENGE: EmptyChallenge = {
   description: "Testing challenge.",
-  startingDate: "",
   questions: [
     {
       mediaResource: { mediaType: "image", uri: "" },
@@ -26,4 +25,4 @@ export const TESTING_CHALLENGE: Challenge = new Challenge().merge({
       ],
     },
   ],
-});
+};

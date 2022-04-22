@@ -7,7 +7,7 @@ import { Storage } from "@capacitor/storage";
 
 const loadRawAnswers: (
   challengeIdentifier: ChallengeIdentifier
-) => Promise<string[]> = async ({ countryCode, challengeNumber }) => {
+) => Promise<(string | null)[]> = async ({ countryCode, challengeNumber }) => {
   const storedAnswers = (
     await Storage.get({
       key: `${countryCode}_${challengeNumber}`,
@@ -29,9 +29,13 @@ const storeRawAnswers: (
 const create: () => AnswerRepository = () => ({
   get: async (challengeIdentifier) => {
     const rawAnswers = await loadRawAnswers(challengeIdentifier);
-    return rawAnswers.map<UncheckedAnswer>((rawAnswer) => ({
-      text: rawAnswer,
-    }));
+    return rawAnswers.map<UncheckedAnswer | undefined>((rawAnswer) =>
+      rawAnswer
+        ? {
+            text: rawAnswer,
+          }
+        : undefined
+    );
   },
   save: async (challengeIdentifier, challenge) => {
     const rawAnswers = challenge.questions.map(

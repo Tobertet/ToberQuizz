@@ -1,10 +1,18 @@
-import { Challenge } from "@/domain";
-import { HashingAlgorithm } from "@/application/ports";
+import {
+  ChallengeUtils,
+  CheckedChallenge,
+  CheckedQuestion,
+  UncheckedChallenge,
+  UncheckedQuestion,
+} from "@/domain";
 
-export class CheckChallenge {
-  constructor(private readonly hashingAlgorithm: HashingAlgorithm) {}
+const checkChallenge: (
+  uncheckedChallenge: UncheckedChallenge,
+  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
+) => Promise<CheckedChallenge> = (uncheckedChallenge, questionChecker) => {
+  return ChallengeUtils.checkChallenge(uncheckedChallenge, questionChecker);
+};
 
-  async execute(challenge: Challenge): Promise<Challenge> {
-    return await this.hashingAlgorithm.checkChallenge(challenge);
-  }
-}
+export const CheckChallenge = {
+  execute: checkChallenge,
+};

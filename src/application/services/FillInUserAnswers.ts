@@ -1,7 +1,7 @@
 import {
   ChallengeIdentifier,
+  ChallengeUtils,
   EmptyChallenge,
-  fillInAnswers,
   UncheckedChallenge,
   UserAnswersGetter,
 } from "@/domain";
@@ -12,7 +12,7 @@ const fillInUserAnswers = async (
   challengeIdentifier: ChallengeIdentifier
 ): Promise<UncheckedChallenge> => {
   const userAnswers = await userAnswersGetter(challengeIdentifier);
-  return fillInAnswers(challenge, userAnswers);
+  return ChallengeUtils.fillInAnswers(challenge, userAnswers);
 };
 
 export const FillInUserAnswers = {

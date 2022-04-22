@@ -1,6 +1,6 @@
 import { CountryCode, UncheckedAnswer } from "@/domain";
 import {
-  answerQuestion,
+  QuestionUtils,
   CheckedQuestion,
   isUncheckedQuestion,
   UnansweredQuestion,
@@ -26,24 +26,34 @@ export type UncheckedChallenge = {
 };
 export type Challenge = EmptyChallenge | CheckedChallenge | UncheckedChallenge;
 
-export const fillInAnswers = (
+const fillInAnswers = (
   challenge: EmptyChallenge,
   answers: (UncheckedAnswer | undefined)[]
 ): UncheckedChallenge => {
   const filledInQuestions = challenge.questions.map((question, index) =>
     !answers[index]
       ? question
-      : answerQuestion(question, answers[index] as UncheckedAnswer)
+      : QuestionUtils.answerQuestion(
+          question,
+          answers[index] as UncheckedAnswer
+        )
   );
   return { ...challenge, questions: filledInQuestions };
 };
 
-const checkChallenge = (
+const checkChallenge = async (
   challenge: UncheckedChallenge,
-  questionChecker: (question: UncheckedQuestion) => CheckedQuestion
-): CheckedChallenge => {
-  const checkedQuestions = challenge.questions.map((question) =>
-    isUncheckedQuestion(question) ? questionChecker(question) : question
+  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
+): Promise<CheckedChallenge> => {
+  const checkedQuestions = await Promise.all(
+    challenge.questions.map(async (question) =>
+      isUncheckedQuestion(question) ? await questionChecker(question) : question
+    )
   );
   return { ...challenge, questions: checkedQuestions };
+};
+
+export const ChallengeUtils = {
+  fillInAnswers,
+  checkChallenge,
 };
