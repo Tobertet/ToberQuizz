@@ -15,6 +15,7 @@
 </template>
 
 <script lang="ts">
+import { Question } from "@/domain";
 import {
   defineComponent,
   PropType,
@@ -24,7 +25,6 @@ import {
   toRefs,
   computed,
 } from "vue";
-import { CheckedAnswer, Question } from "../models";
 
 enum Status {
   Error = "error",
@@ -39,15 +39,12 @@ export default defineComponent({
       type: Object as PropType<Question>,
       required: true,
     },
-    checkedAnswer: {
-      type: Object as PropType<CheckedAnswer>,
-    },
     questionNumber: { type: Number, required: true },
     challengeNumber: { type: Number, required: true },
     countryCode: { type: String, required: true },
   },
   setup: (props, context) => {
-    const { checkedAnswer, questionNumber } = toRefs(props);
+    const { questionNumber, question } = toRefs(props);
 
     const inputText = ref("");
     const status = ref(Status.Clean);
@@ -60,18 +57,18 @@ export default defineComponent({
       );
     };
 
-    const setAnswer = (checkedAnswer?: CheckedAnswer) => {
-      inputText.value = checkedAnswer?.text || "";
-      status.value = !checkedAnswer
+    const setAnswer = () => {
+      inputText.value = question.value.answer || "";
+      status.value = !question.value.answer
         ? Status.Clean
-        : checkedAnswer.isValid
+        : question.value.isCorrect
         ? Status.Valid
         : Status.Error;
     };
 
-    onMounted(() => setAnswer(checkedAnswer.value));
+    onMounted(() => setAnswer());
 
-    watch(checkedAnswer, () => setAnswer(checkedAnswer.value));
+    watch(question, () => setAnswer());
 
     const imagesBucket = computed(
       () => process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET

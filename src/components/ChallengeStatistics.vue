@@ -25,7 +25,7 @@
   <div id="sticky-bar">
     <div>
       {{ t("CHALLENGE_VIEW.CORRECT_ANSWERS") }}:
-      {{ countOfValidAnswers }}
+      {{ correctAnswersCount }}
       /
       {{ challenge.questions.length }}
     </div>
@@ -33,9 +33,8 @@
 </template>
 
 <script lang="ts">
-import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
-import useChallenge from "@/hooks/useChallenge.vue";
-import { CountryCodes } from "@/models";
+import { useCheckedUserChallenge } from "@/hooks";
+import { CountryCode } from "@/domain";
 import { defineComponent, ref, Ref, toRefs, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { supabase } from "@/supabase";
@@ -66,15 +65,9 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const { challenge } = useChallenge(
-      challengeNumber,
-      countryCode as Ref<CountryCodes>
-    );
-
-    const { checkedAnswers, countOfValidAnswers } = useCheckedAnswers(
-      countryCode as Ref<CountryCodes>,
-      challengeNumber,
-      challenge
+    const { challenge, correctAnswersCount } = useCheckedUserChallenge(
+      countryCode as Ref<CountryCode>,
+      challengeNumber
     );
 
     watch([challenge], async () => {
@@ -113,7 +106,7 @@ export default defineComponent({
       elements: {
         bar: {
           backgroundColor: (ctx) => {
-            return ctx.dataIndex + 1 === countOfValidAnswers.value
+            return ctx.dataIndex + 1 === correctAnswersCount.value
               ? "#ffa316"
               : "#4aab79";
           },
@@ -160,8 +153,7 @@ export default defineComponent({
 
     return {
       challenge,
-      checkedAnswers,
-      countOfValidAnswers,
+      correctAnswersCount,
       t,
       chartData,
       chartOptions,

@@ -21,7 +21,6 @@
       :key="index"
       :question="question"
       :questionNumber="index + 1"
-      :checkedAnswer="checkedAnswers[index]"
       :challengeNumber="challengeNumber"
       :countryCode="countryCode"
       @answer="emitAnswer"
@@ -43,19 +42,15 @@
 </template>
 
 <script lang="ts">
+import { Challenge } from "@/domain";
 import { defineComponent, PropType, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Question from "../components/Question.vue";
-import { Challenge, CheckedAnswer } from "../models";
 
 export default defineComponent({
   components: { Question },
   emits: ["answer"],
   props: {
-    checkedAnswers: {
-      type: Object as PropType<CheckedAnswer[]>,
-      required: true,
-    },
     challenge: {
       type: Object as PropType<Challenge>,
       required: true,

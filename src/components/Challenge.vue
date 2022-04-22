@@ -30,23 +30,22 @@
   </p>
   <p>{{ t("CHALLENGE_VIEW.HOOK") }}</p>
 
-  <p v-if="!hasBeenCompleted" class="danger-box">
+  <!-- <p v-if="!hasBeenCompleted" class="danger-box">
     {{ t("CHALLENGE_VIEW.CHALLENGE_NOT_RESOLVED") }}
-  </p>
+  </p> -->
 
   <hr />
   <QuestionsTable
     :challengeNumber="challengeNumber"
     :countryCode="countryCode"
     :challenge="challenge"
-    :checkedAnswers="checkedAnswers"
     @answer="onAnswer"
   />
 
   <div id="sticky-bar">
     <div>
       {{ t("CHALLENGE_VIEW.CORRECT_ANSWERS") }}:
-      {{ countOfValidAnswers }}
+      {{ correctAnswersCount }}
       /
       {{ challenge.questions.length }}
     </div>
@@ -54,14 +53,12 @@
 </template>
 
 <script lang="ts">
-import useCheckedAnswers from "@/hooks/useCheckedAnswers.vue";
-import useChallenge from "@/hooks/useChallenge.vue";
 import QuestionsTable from "@/components/QuestionsTable.vue";
 import ShareIcon from "@/components/icons/ShareIcon.vue";
-import { CountryCodes } from "@/models";
-import { defineComponent, ref, Ref, toRefs, watch } from "vue";
+import { defineComponent, Ref, toRefs } from "vue";
 import { useI18n } from "vue-i18n";
-import { supabase } from "@/supabase";
+import { CountryCode } from "@/domain";
+import { useApplicationServices, useCheckedUserChallenge } from "@/hooks";
 
 export default defineComponent({
   props: {
@@ -71,54 +68,29 @@ export default defineComponent({
   components: { QuestionsTable, ShareIcon },
   setup: (props) => {
     const { challengeNumber, countryCode } = toRefs(props);
-    const hasBeenCompleted = ref<boolean>(true);
 
     const { t } = useI18n();
 
-    const { challenge } = useChallenge(
-      challengeNumber,
-      countryCode as Ref<CountryCodes>
+    const { challenge, correctAnswersCount } = useCheckedUserChallenge(
+      countryCode as Ref<CountryCode>,
+      challengeNumber
     );
 
-    const { checkedAnswers, checkAnswer, countOfValidAnswers } =
-      useCheckedAnswers(
-        countryCode as Ref<CountryCodes>,
-        challengeNumber,
-        challenge
+    const { answerQuestion } = useApplicationServices();
+
+    const onAnswer = async (answer: string, questionNumber: number) => {
+      challenge.value = await answerQuestion.execute(
+        countryCode.value as CountryCode,
+        challengeNumber.value,
+        challenge.value,
+        questionNumber,
+        answer
       );
-
-    const onAnswer = (answer: string, questionNumber: number) => {
-      checkAnswer(answer, questionNumber);
     };
-
-    watch([challenge], async () => {
-      const questionsCount = challenge.value.questions.length;
-
-      if (countOfValidAnswers.value === questionsCount) {
-        hasBeenCompleted.value = true;
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("correct_answers")
-        .select("id")
-        .like("country_code", countryCode.value)
-        .eq("challenge_number", challengeNumber.value)
-        .eq("correct_answers_count", questionsCount);
-
-      if (error || !data || data.length > 0) {
-        hasBeenCompleted.value = true;
-        return;
-      }
-
-      hasBeenCompleted.value = false;
-    });
 
     return {
       challenge,
-      hasBeenCompleted,
-      checkedAnswers,
-      countOfValidAnswers,
+      correctAnswersCount,
       onAnswer,
       t,
     };

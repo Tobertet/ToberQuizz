@@ -8,9 +8,9 @@ describe("Home view", () => {
     it("navigates to the country challenges", () => {
       cy.visit("/");
 
-      cy.contains("Spain (Spanish)").click();
+      cy.contains("International (English)").click();
 
-      cy.url().should("include", "/ES");
+      cy.url().should("include", "/WW");
     });
   });
 });

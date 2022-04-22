@@ -2,7 +2,7 @@
   <AppBar />
   <div id="view-container">
     <Challenge
-      v-if="challengeAvailable"
+      v-if="countryCode && challengeNumber"
       :countryCode="countryCode"
       :challengeNumber="challengeNumber"
     />
@@ -11,51 +11,59 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { CountryCodes } from "../models";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import Challenge from "../components/Challenge.vue";
 import Footer from "../components/Footer.vue";
 import AppBar from "@/components/AppBar.vue";
 import { changeI18nLocale } from "@/i18n";
+import { CountryCode } from "@/domain";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   components: { Challenge, Footer, AppBar },
-  data: function () {
-    return {
-      countryCode: CountryCodes.Spain,
-      challengeNumber: 1,
-      challengeAvailable: false,
-    };
-  },
-  mounted: function () {
-    this.getUrlParams();
-    if (!Object.values(CountryCodes).includes(this.countryCode)) {
-      this.$router.replace("/");
-      return;
-    }
-    changeI18nLocale(this.countryCode);
-    this.challengeAvailable = true;
-  },
-  methods: {
-    getUrlParams: function () {
+  setup: () => {
+    const countryCode = ref<CountryCode>();
+    const challengeNumber = ref<number>();
+
+    const route = useRoute();
+    const router = useRouter();
+
+    onMounted(() => {
+      readAndSetUrlParams();
+      changeI18nLocale(countryCode.value);
+    });
+
+    watch([route], () => {
+      readAndSetUrlParams();
+      changeI18nLocale(countryCode.value);
+    });
+
+    // TODO Take a look at router guards
+    const readAndSetUrlParams = () => {
+      if (!route.params.countryCode || !route.params.challengeNumber) return;
+
+      const countryCodeParam = (
+        (route.params.countryCode as string) || ""
+      ).toUpperCase() as CountryCode;
+      const challengeNumberParam = parseInt(
+        route.params.challengeNumber as string
+      );
+
       if (
-        this.$route.params.countryCode &&
-        this.$route.params.challengeNumber
+        Object.values(CountryCode).includes(countryCodeParam) &&
+        !isNaN(challengeNumberParam)
       ) {
-        this.countryCode = (
-          this.$route.params.countryCode as string
-        ).toUpperCase() as CountryCodes;
-        this.challengeNumber = parseInt(
-          this.$route.params.challengeNumber as string
-        );
+        countryCode.value = countryCodeParam;
+        challengeNumber.value = challengeNumberParam;
+      } else {
+        router.replace("/");
       }
-    },
-  },
-  watch: {
-    $route() {
-      this.getUrlParams();
-      changeI18nLocale(this.countryCode);
-    },
+    };
+
+    return {
+      countryCode,
+      challengeNumber,
+    };
   },
 });
 </script>

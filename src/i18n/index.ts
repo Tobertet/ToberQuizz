@@ -1,4 +1,4 @@
-import { CountryCodes } from "@/models";
+import { CountryCode } from "@/domain";
 import { createI18n } from "vue-i18n";
 import en from "./locales/en.json";
 import es from "./locales/es.json";
@@ -10,10 +10,10 @@ const getNavigatorLocale = () =>
     ? "es"
     : navigator.language.split("-")[0];
 
-export const changeI18nLocale = (countryCode?: CountryCodes) => {
+export const changeI18nLocale = (countryCode?: CountryCode) => {
   if (!countryCode) {
     i18n.global.locale = getNavigatorLocale();
-  } else if (countryCode === CountryCodes.WorldWide) {
+  } else if (countryCode === CountryCode.WorldWide) {
     i18n.global.locale = "en";
   } else {
     i18n.global.locale = countryCode.toLowerCase();

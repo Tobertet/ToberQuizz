@@ -11,52 +11,52 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import { CountryCodes } from "../models";
+import { CountryCode } from "@/domain";
 import AppBar from "@/components/AppBar.vue";
 import ChallengeStatistics from "@/components/ChallengeStatistics.vue";
 import { useRoute, useRouter } from "vue-router";
+import { changeI18nLocale } from "@/i18n";
 
 export default defineComponent({
   components: { AppBar, ChallengeStatistics },
   setup: () => {
-    const countryCode = ref<CountryCodes>();
+    const countryCode = ref<CountryCode>();
     const challengeNumber = ref<number>();
 
     const router = useRouter();
     const route = useRoute();
 
-    const getUrlParams = () => {
-      if (route.params.countryCode && route.params.challengeNumber) {
-        countryCode.value = (
-          route.params.countryCode as string
-        ).toUpperCase() as CountryCodes;
-        challengeNumber.value = parseInt(
-          route.params.challengeNumber as string
-        );
-      }
-    };
-
     onMounted(() => {
-      getUrlParams();
-      if (
-        countryCode.value &&
-        !Object.values(CountryCodes).includes(countryCode.value)
-      ) {
-        router.replace("/");
-        return;
-      }
+      readAndSetUrlParams();
+      changeI18nLocale(countryCode.value);
     });
 
     watch([route], () => {
-      getUrlParams();
-      if (
-        countryCode.value &&
-        !Object.values(CountryCodes).includes(countryCode.value)
-      ) {
-        router.replace("/");
-        return;
-      }
+      readAndSetUrlParams();
+      changeI18nLocale(countryCode.value);
     });
+
+    // TODO Take a look at router guards
+    const readAndSetUrlParams = () => {
+      if (!route.params.countryCode || !route.params.challengeNumber) return;
+
+      const countryCodeParam = (
+        (route.params.countryCode as string) || ""
+      ).toUpperCase() as CountryCode;
+      const challengeNumberParam = parseInt(
+        route.params.challengeNumber as string
+      );
+
+      if (
+        Object.values(CountryCode).includes(countryCodeParam) &&
+        !isNaN(challengeNumberParam)
+      ) {
+        countryCode.value = countryCodeParam;
+        challengeNumber.value = challengeNumberParam;
+      } else {
+        router.replace("/");
+      }
+    };
 
     return {
       countryCode,

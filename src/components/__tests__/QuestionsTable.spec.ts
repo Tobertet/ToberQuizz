@@ -9,7 +9,6 @@ describe("QuestionsTable.vue", () => {
         challengeNumber: 1,
         countryCode: "ES",
         challenge: TESTING_CHALLENGE,
-        checkedAnswers: [],
       },
     });
     const [firstSelect, secondSelect] = utils.getAllByRole("combobox");

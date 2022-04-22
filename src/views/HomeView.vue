@@ -43,7 +43,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-import { CountryCodes } from "@/models";
+import { CountryCode } from "@/domain";
 import { useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
 import ShareIcon from "@/components/icons/ShareIcon.vue";
@@ -52,11 +52,11 @@ import { changeI18nLocale } from "@/i18n";
 export default defineComponent({
   components: { ArrowRight, ShareIcon },
   setup: () => {
-    const quizzCountries = Object.values(CountryCodes);
+    const quizzCountries = Object.values(CountryCode);
     const { t } = useI18n();
     const router = useRouter();
 
-    const goToChallengeListView = (countryCode: CountryCodes) => {
+    const goToChallengeListView = (countryCode: CountryCode) => {
       router.push({
         path: `/${countryCode}`,
       });

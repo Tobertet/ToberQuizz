@@ -61,8 +61,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
-import { CountryCodes } from "@/models";
+import { defineComponent, onMounted, ref, watch } from "vue";
+import { CountryCode } from "@/domain";
 import { useRoute, useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
 import StatisticsIcon from "@/components/icons/StatisticsIcon.vue";
@@ -79,7 +79,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     const challenges = ref(new Array<number>());
-    const countryCode = ref<CountryCodes>(CountryCodes.WorldWide);
+    const countryCode = ref<CountryCode>(CountryCode.WorldWide);
 
     const goToChallengeView = (challengeNumber: number) => {
       router.push({
@@ -94,15 +94,34 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      const countryCodeParam = route.params.countryCode as CountryCodes;
-      if (!Object.values(CountryCodes).includes(countryCodeParam)) {
-        router.replace("/");
-      } else {
-        countryCode.value = countryCodeParam;
-        changeI18nLocale(countryCodeParam);
-        loadChallenges();
-      }
+      readAndSetUrlParams();
+      changeI18nLocale(countryCode.value);
+      loadChallenges();
     });
+
+    watch([route], () => {
+      readAndSetUrlParams();
+      changeI18nLocale(countryCode.value);
+      loadChallenges();
+    });
+
+    // TODO Take a look at router guards
+    const readAndSetUrlParams = () => {
+      const rawCountryCodeParam = (route.params.countryCode as string) || "";
+      if (!rawCountryCodeParam) return;
+
+      if (rawCountryCodeParam.toUpperCase() != rawCountryCodeParam) {
+        router.replace(`/${rawCountryCodeParam.toUpperCase()}`);
+        return;
+      }
+      const countryCodeParam = rawCountryCodeParam as CountryCode;
+
+      if (Object.values(CountryCode).includes(countryCodeParam)) {
+        countryCode.value = countryCodeParam;
+      } else {
+        router.replace("/");
+      }
+    };
 
     const loadChallenges = async () => {
       const challengeURL = `${process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET}/${countryCode.value}/challenges.json`;
