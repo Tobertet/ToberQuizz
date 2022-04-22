@@ -1,11 +1,11 @@
 import { CountryCode } from "@/domain";
 
-export interface CorrectAnswersCountStatisticsEvent {
+export type CorrectAnswersCountStatisticsEvent = {
   countryCode: CountryCode;
   challengeNumber: number;
   correctAnswersCount: number;
-}
+};
 
-export interface StatisticsCollector {
+export type StatisticsCollector = {
   collect(event: CorrectAnswersCountStatisticsEvent): Promise<void>;
-}
+};

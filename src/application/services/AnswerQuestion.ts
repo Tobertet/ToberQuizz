@@ -1,55 +1,56 @@
 import {
-  Challenge,
   CountryCode,
   AnswerRepository,
   isCorrectlyAnsweredQuestion,
+  UncheckedAnswer,
+  CheckedChallenge,
+  ChallengeUtils,
+  UncheckedQuestion,
+  CheckedQuestion,
 } from "@/domain";
-import { HashingAlgorithm, StatisticsCollector } from "@/application/ports";
+import { StatisticsCollector } from "@/application/ports";
 
-export class AnswerQuestion {
-  constructor(
-    private readonly hashingAlgorithm: HashingAlgorithm,
-    private readonly answerRepository: AnswerRepository,
-    private readonly statisticsCollector: StatisticsCollector
-  ) {}
+const answerQuestion = async (
+  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>,
+  statisticsCollector: StatisticsCollector,
+  answerRepository: AnswerRepository,
+  countryCode: CountryCode,
+  challengeNumber: number,
+  challenge: CheckedChallenge,
+  questionNumber: number,
+  answer: UncheckedAnswer
+) => {
+  const answeredChallenge = ChallengeUtils.fillInAnswer(
+    challenge,
+    answer,
+    questionNumber
+  );
 
-  async execute(
-    countryCode: CountryCode,
-    challengeNumber: number,
-    challenge: Challenge,
-    questionNumber: number,
-    answer: string
-  ): Promise<Challenge> {
-    // const answeredChallenge = challenge.answerQuestion(questionNumber, answer);
+  await answerRepository.save(
+    { countryCode, challengeNumber },
+    answeredChallenge
+  );
 
-    // await this.answerRepository.save(
-    //   countryCode,
-    //   challengeNumber,
-    //   answeredChallenge
-    // );
+  const checkedChallenge = await ChallengeUtils.checkQuestion(
+    challenge,
+    questionChecker,
+    questionNumber
+  );
 
-    // const checkedQuestion = await this.hashingAlgorithm.checkQuestion(
-    //   answeredChallenge.questions[questionNumber - 1]
-    // );
+  if (isCorrectlyAnsweredQuestion(challenge.questions[questionNumber - 1])) {
+    const correctAnswersCount = checkedChallenge.questions.filter(
+      isCorrectlyAnsweredQuestion
+    ).length;
 
-    // const checkedChallenge = answeredChallenge.checkQuestion(
-    //   questionNumber,
-    //   checkedQuestion.answer.isCorrect || false
-    // );
-
-    // if (checkedQuestion.answer.isCorrect) {
-    //   const correctAnswersCount = checkedChallenge.questions.filter(
-    //     isCorrectlyAnsweredQuestion
-    //   ).length;
-
-    //   this.statisticsCollector.collect({
-    //     countryCode,
-    //     challengeNumber,
-    //     correctAnswersCount,
-    //   });
-    // }
-
-    // return checkedChallenge;
-    return challenge;
+    statisticsCollector.collect({
+      countryCode,
+      challengeNumber,
+      correctAnswersCount,
+    });
   }
-}
+  return checkedChallenge;
+};
+
+export const AnswerQuestion = {
+  execute: answerQuestion,
+};

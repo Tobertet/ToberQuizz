@@ -11,6 +11,7 @@ import {
   EmptyChallengeGetter,
   UncheckedChallenge,
   CheckedChallenge,
+  Challenge,
 } from "@/domain";
 import {
   StorageAnswerRepository,
@@ -32,10 +33,10 @@ const answerRepository = StorageAnswerRepository.create();
 const challengeRepository = RestChallengeRepository.create(
   process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET || ""
 );
-const storageApiQueueRepository = new StorageApiQueueRepository();
+const storageApiQueueRepository = StorageApiQueueRepository.create();
 
 const hashingAlgorithm = Argon2HashingAlgorithm.create();
-const statisticsCollector = new SupabaseStatisticsCollector(
+const statisticsCollector = SupabaseStatisticsCollector.create(
   storageApiQueueRepository,
   supabaseClient
 );
@@ -45,11 +46,14 @@ const checkChallenge: (
 ) => Promise<CheckedChallenge> = (challenge) =>
   CheckChallenge.execute(challenge, hashingAlgorithm.checkQuestion);
 
-const answerQuestion = new AnswerQuestion(
-  hashingAlgorithm,
-  answerRepository,
-  statisticsCollector
-);
+const answerQuestion: (challenge: Challenge) => Promise<Challenge> = (
+  challenge
+) =>
+  AnswerQuestion.execute(
+    hashingAlgorithm,
+    answerRepository,
+    statisticsCollector
+  );
 
 const getUserChallenge: (
   challengeIdentifier: ChallengeIdentifier

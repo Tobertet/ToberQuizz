@@ -2,6 +2,7 @@ import {
   Answer,
   CheckedAnswer,
   CorrectAnswer,
+  IncorrectAnswer,
   UncheckedAnswer,
 } from "./Answer";
 
@@ -47,16 +48,22 @@ export function isUncheckedQuestion(
 
 export function isCorrectlyAnsweredQuestion(
   question: Question
-): question is AnsweredQuestion {
+): question is AnsweredQuestion<CorrectAnswer> {
   const answeredQuestion = question as AnsweredQuestion<CorrectAnswer>;
   return answeredQuestion.answer && answeredQuestion.answer.isCorrect;
 }
 
 const answerQuestion = (
-  question: UnansweredQuestion,
+  question: UnansweredQuestion | CheckedQuestion,
   answer: UncheckedAnswer
 ): UncheckedQuestion => ({ ...question, answer });
 
+const checkQuestion = async (
+  question: UncheckedQuestion,
+  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
+): Promise<CheckedQuestion> => questionChecker(question);
+
 export const QuestionUtils = {
   answerQuestion,
+  checkQuestion,
 };
