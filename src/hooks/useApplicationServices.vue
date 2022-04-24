@@ -24,7 +24,7 @@ import {
 } from "@/infrastructure";
 import { createClient } from "@supabase/supabase-js";
 
-export const supabaseClient = createClient(
+const supabaseClient = createClient(
   // eslint-disable-next-line
   process.env.VUE_APP_SUPABASE_URL!,
   // eslint-disable-next-line
@@ -90,7 +90,7 @@ const getEmptyChallenge: (
     challengeIdentifier
   );
 
-export function useApplicationServices() {
+export default function useApplicationServices() {
   return {
     getEmptyChallenge,
     getUserChallenge,

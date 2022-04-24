@@ -3,7 +3,7 @@ import { computed, ComputedRef, onMounted, Ref, ref, watch } from "vue";
 import { useApplicationServices } from "@/hooks";
 import { CountryCode, Challenge, isCorrectlyAnsweredQuestion } from "@/domain";
 
-export function useCheckedUserChallenge(
+export default function useCheckedUserChallenge(
   countryCode: Ref<CountryCode>,
   challengeNumber: Ref<number>
 ) {
