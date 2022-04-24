@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Answer, isAnsweredQuestion, Question } from "@/domain";
+import { Answer, Question, QuestionService } from "@/domain";
 import {
   defineComponent,
   PropType,
@@ -58,7 +58,7 @@ export default defineComponent({
     };
 
     const setAnswer = () => {
-      const answer: Answer = isAnsweredQuestion(question.value)
+      const answer: Answer = QuestionService.isAnswered(question.value)
         ? question.value.answer
         : { text: "" };
       inputText.value = answer.text;

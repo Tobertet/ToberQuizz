@@ -1,12 +1,12 @@
 import {
   CountryCode,
   AnswerRepository,
-  isCorrectlyAnsweredQuestion,
   UncheckedAnswer,
   ChallengeUtils,
   UncheckedQuestion,
   CheckedQuestion,
   Challenge,
+  QuestionService,
 } from "@/domain";
 import { StatisticsCollector } from "@/application/ports";
 
@@ -38,10 +38,12 @@ const answerQuestion = async (
   );
 
   if (
-    isCorrectlyAnsweredQuestion(checkedChallenge.questions[questionNumber - 1])
+    QuestionService.isCorrectlyAnswered(
+      checkedChallenge.questions[questionNumber - 1]
+    )
   ) {
     const correctAnswersCount = checkedChallenge.questions.filter(
-      isCorrectlyAnsweredQuestion
+      QuestionService.isCorrectlyAnswered
     ).length;
 
     statisticsCollector.collect({

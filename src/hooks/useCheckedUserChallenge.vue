@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, ComputedRef, onMounted, Ref, ref, watch } from "vue";
 import { useApplicationServices } from "@/hooks";
-import { CountryCode, Challenge, isCorrectlyAnsweredQuestion } from "@/domain";
+import { CountryCode, Challenge, QuestionService } from "@/domain";
 
 export default function useCheckedUserChallenge(
   countryCode: Ref<CountryCode>,
@@ -31,7 +31,9 @@ export default function useCheckedUserChallenge(
   });
 
   const correctAnswersCount: ComputedRef<number> = computed(
-    () => challenge.value.questions.filter(isCorrectlyAnsweredQuestion).length
+    () =>
+      challenge.value.questions.filter(QuestionService.isCorrectlyAnswered)
+        .length
   );
 
   return {

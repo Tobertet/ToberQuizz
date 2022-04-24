@@ -1,11 +1,11 @@
-import { CountryCode, UncheckedAnswer } from "@/domain";
 import {
-  QuestionUtils,
+  CountryCode,
+  UncheckedAnswer,
+  QuestionService,
   CheckedQuestion,
-  isUncheckedQuestion,
   UnansweredQuestion,
   UncheckedQuestion,
-} from "./Question";
+} from "@/domain";
 
 export type ChallengeIdentifier = {
   countryCode: CountryCode;
@@ -32,8 +32,8 @@ const fillInAnswer = (
   questionNumber: number
 ): UncheckedChallenge => {
   const filledInQuestions = challenge.questions.map((question, index) =>
-    index + 1 === questionNumber
-      ? QuestionUtils.answerQuestion(question, answer)
+    index + 1 === questionNumber && QuestionService.isUnanswered(question)
+      ? QuestionService.answer(question, answer)
       : question
   );
   return { ...challenge, questions: filledInQuestions };
@@ -46,10 +46,7 @@ const fillInAnswers = (
   const filledInQuestions = challenge.questions.map((question, index) =>
     !answers[index]
       ? question
-      : QuestionUtils.answerQuestion(
-          question,
-          answers[index] as UncheckedAnswer
-        )
+      : QuestionService.answer(question, answers[index] as UncheckedAnswer)
   );
   return { ...challenge, questions: filledInQuestions };
 };
@@ -61,7 +58,7 @@ const checkQuestion = async (
 ): Promise<Challenge> => {
   const checkedQuestions = await Promise.all(
     challenge.questions.map(async (question, index) =>
-      index + 1 === questionNumber && isUncheckedQuestion(question)
+      index + 1 === questionNumber && QuestionService.isUnchecked(question)
         ? await questionChecker(question)
         : question
     )
@@ -75,8 +72,8 @@ const checkChallenge = async (
 ): Promise<CheckedChallenge> => {
   const checkedQuestions = await Promise.all(
     challenge.questions.map(async (question) =>
-      isUncheckedQuestion(question)
-        ? QuestionUtils.checkQuestion(question, questionChecker)
+      QuestionService.isUnchecked(question)
+        ? QuestionService.check(question, questionChecker)
         : question
     )
   );
