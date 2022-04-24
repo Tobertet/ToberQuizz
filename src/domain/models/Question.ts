@@ -2,67 +2,68 @@ import {
   Answer,
   CheckedAnswer,
   CorrectAnswer,
+  IncorrectAnswer,
   UncheckedAnswer,
-} from "./Answer";
+} from "@/domain";
 
-type Image = {
+type Image = Readonly<{
   mediaType: "image";
   uri: string;
-};
-type Audio = {
+}>;
+type Audio = Readonly<{
   mediaType: "audio";
   uri: string;
-};
+}>;
 type MediaResource = Audio | Image;
 
-export type AnsweredQuestion<T extends Answer = Answer> = {
+export type AnsweredQuestion<T extends Answer = Answer> = Readonly<{
   solutions: string[];
   mediaResource: MediaResource;
   answer: T;
-};
-export type UnansweredQuestion = {
+}>;
+
+export type UnansweredQuestion = Readonly<{
   solutions: string[];
   mediaResource: MediaResource;
   answer?: never;
-};
+}>;
 
 export type CheckedQuestion = AnsweredQuestion<CheckedAnswer>;
 export type UncheckedQuestion = AnsweredQuestion<UncheckedAnswer>;
 export type Question = UnansweredQuestion | AnsweredQuestion;
 
-export function isAnsweredQuestion(
-  question: Question
-): question is AnsweredQuestion {
-  return (question as AnsweredQuestion).answer !== undefined;
-}
-
-export function isUncheckedQuestion(
-  question: Question
-): question is UncheckedQuestion {
-  const uncheckedQuestion = question as UncheckedQuestion;
-  return (
-    uncheckedQuestion.answer && uncheckedQuestion.answer.isCorrect === undefined
-  );
-}
-
-export function isCorrectlyAnsweredQuestion(
-  question: Question
-): question is AnsweredQuestion<CorrectAnswer> {
-  const answeredQuestion = question as AnsweredQuestion<CorrectAnswer>;
-  return answeredQuestion.answer && answeredQuestion.answer.isCorrect;
-}
-
-const answerQuestion = (
-  question: Question,
+export type DeleteAnswer = (question: AnsweredQuestion) => UnansweredQuestion;
+export type UncheckQuestion = (question: CheckedQuestion) => UncheckedQuestion;
+// GOD METHOD dependency
+export type AnswerQuestion = (
+  question: UnansweredQuestion,
   answer: UncheckedAnswer
-): UncheckedQuestion => ({ ...question, answer });
-
-const checkQuestion = async (
+) => UncheckedQuestion;
+// GOD METHOD dependency
+export type CheckQuestion = (
   question: UncheckedQuestion,
-  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
-): Promise<CheckedQuestion> => questionChecker(question);
+  answer: CheckedAnswer
+) => CheckedQuestion;
 
-export const QuestionUtils = {
-  answerQuestion,
-  checkQuestion,
-};
+export type CheckQuestionCorrectly = (
+  question: UncheckedQuestion
+) => AnsweredQuestion<CorrectAnswer>;
+
+export type CheckQuestionIncorrectly = (
+  question: UncheckedQuestion
+) => AnsweredQuestion<IncorrectAnswer>;
+
+// const answerQuestion = (
+//   question: Question,
+//   answer: UncheckedAnswer
+// ): UncheckedQuestion => ({ ...question, answer });
+
+// const checkQuestion = async (
+//   question: UncheckedQuestion,
+//   questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
+// ): Promise<CheckedQuestion> => questionChecker(question);
+
+// export const QuestionUtils = {
+//   answerQuestion,
+//   checkQuestion,
+// };

@@ -34,13 +34,13 @@ const isUnchecked = (answer: Answer): answer is UncheckedAnswer =>
   answer.isCorrect === undefined;
 
 const isChecked = (answer: Answer): answer is CheckedAnswer =>
-  answer.isCorrect !== undefined;
+  !isUnchecked(answer);
 
 const isCorrect = (answer: Answer): answer is CorrectAnswer =>
   isChecked(answer) && answer.isCorrect === true;
 
 const isIncorrect = (answer: Answer): answer is IncorrectAnswer =>
-  isChecked(answer) && answer.isCorrect === false;
+  isChecked(answer) && !isCorrect(answer);
 
 export const AnswerService = {
   check,

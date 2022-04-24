@@ -22,6 +22,9 @@ export type CheckAnswer = (
   isCorrect: boolean
 ) => CheckedAnswer;
 
+// TODO: GOD METHOD! SHOULD IT BE LIKE THIS BELOW?
+export type CheckAnswer2 = (answer: UncheckedAnswer) => CheckedAnswer;
+
 export type CheckAnswerCorrectly = (answer: UncheckedAnswer) => CorrectAnswer;
 
 export type CheckAnswerIncorrectly = (
