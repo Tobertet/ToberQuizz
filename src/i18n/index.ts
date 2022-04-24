@@ -2,6 +2,7 @@ import { CountryCode } from "@/domain";
 import { createI18n } from "vue-i18n";
 import en from "./locales/en.json";
 import es from "./locales/es.json";
+import de from "./locales/de.json";
 
 type MessageSchema = typeof en;
 
@@ -20,10 +21,11 @@ export const changeI18nLocale = (countryCode?: CountryCode) => {
   }
 };
 
-export const i18n = createI18n<[MessageSchema], "en" | "es">({
+export const i18n = createI18n<[MessageSchema], "en" | "es" | "de">({
   messages: {
     en,
     es,
+    de,
   },
   locale: getNavigatorLocale(),
   fallbackLocale: "en",
