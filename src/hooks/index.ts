@@ -1,2 +1,4 @@
-export * from "./useApplicationServices.vue";
-export * from "./useCheckedUserChallenge.vue";
+import useApplicationServices from "./useApplicationServices.vue";
+import useCheckedUserChallenge from "./useCheckedUserChallenge.vue";
+
+export { useApplicationServices, useCheckedUserChallenge };

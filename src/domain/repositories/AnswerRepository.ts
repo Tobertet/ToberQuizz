@@ -1,10 +1,13 @@
-import { Answer, CountryCode, Challenge } from "@/domain";
+import { Challenge, ChallengeIdentifier, UncheckedAnswer } from "@/domain";
 
-export interface AnswerRepository {
-  get(countryCode: CountryCode, challengeNumber: number): Promise<Answer[]>;
+export type UserAnswersGetter = (
+  challengeIdentifier: ChallengeIdentifier
+) => Promise<(UncheckedAnswer | undefined)[]>;
+
+export type AnswerRepository = {
+  get: UserAnswersGetter;
   save(
-    countryCode: CountryCode,
-    challengeNumber: number,
+    challengeIdentifier: ChallengeIdentifier,
     challenge: Challenge
   ): Promise<void>;
-}
+};

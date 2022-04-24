@@ -1,9 +1,14 @@
 import { render, fireEvent, RenderOptions } from "@testing-library/vue";
 import Question from "@/components/Question.vue";
-import { Question as QuestionModel } from "@/domain";
+import {
+  AnsweredQuestion,
+  CorrectAnswer,
+  IncorrectAnswer,
+  Question as QuestionModel,
+} from "@/domain";
 
-const testingQuestion = {
-  altText: "Testing question",
+const testingQuestion: QuestionModel = {
+  mediaResource: { mediaType: "image", uri: "" },
   solutions: [
     "6c11c637ac31ae0a59976acb163424dae5ff190d53ffe8183782f82eb0e54db4",
   ],
@@ -45,12 +50,6 @@ describe("Question.vue", () => {
     );
   });
 
-  it("sets the image alt text", () => {
-    const { img } = setup();
-
-    expect(img.alt).toBe("Testing question");
-  });
-
   it("shows a gray border around the image", () => {
     const { getByTestId } = setup();
 
@@ -89,10 +88,9 @@ describe("Question.vue", () => {
   describe("when there is a checked answer", () => {
     describe("when the answer is wrong", () => {
       it("shows a red border around the image", async () => {
-        const question: QuestionModel = {
+        const question: AnsweredQuestion<IncorrectAnswer> = {
           ...testingQuestion,
-          answer: "whatever",
-          isCorrect: false,
+          answer: { text: "whatever", isCorrect: false },
         };
         const { findByTestId } = setup({ props: { question } });
 
@@ -101,10 +99,9 @@ describe("Question.vue", () => {
     });
 
     describe("when the answer is right", () => {
-      const question: QuestionModel = {
+      const question: AnsweredQuestion<CorrectAnswer> = {
         ...testingQuestion,
-        answer: "whatever",
-        isCorrect: true,
+        answer: { text: "whatever", isCorrect: true },
       };
 
       it("shows a green border around the image", async () => {

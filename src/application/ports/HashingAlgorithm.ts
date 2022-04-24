@@ -1,9 +1,5 @@
-import { Challenge, Question } from "@/domain";
+import { CheckedQuestion, UncheckedQuestion } from "@/domain";
 
-export interface HashingAlgorithm {
-  checkQuestion: (question: Question) => Promise<Question>;
-
-  checkQuestions: (questions: Question[]) => Promise<Question[]>;
-
-  checkChallenge: (challenge: Challenge) => Promise<Challenge>;
-}
+export type HashingAlgorithm = {
+  checkQuestion: (question: UncheckedQuestion) => Promise<CheckedQuestion>;
+};

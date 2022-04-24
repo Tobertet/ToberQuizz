@@ -1,38 +1,27 @@
 import { HashingAlgorithm } from "@/application/ports";
-import { Challenge, Question } from "@/domain";
 import argon2 from "argon2-browser";
 
-export class Argon2HashingAlgorithm implements HashingAlgorithm {
-  private static readonly SALT = "Tobertet";
-  private static readonly HASH_LENGTH = 32;
-  private static readonly TYPE = argon2.ArgonType.Argon2id;
+const SALT = "Tobertet";
+const HASH_LENGTH = 32;
+const TYPE = argon2.ArgonType.Argon2id;
 
-  async checkQuestion(question: Question): Promise<Question> {
-    if (!question.answer) return { ...question };
-
+const create: () => HashingAlgorithm = () => ({
+  checkQuestion: async (question) => {
     const hashedAnswerText = await argon2.hash({
-      pass: question.answer.toLocaleLowerCase(),
-      salt: Argon2HashingAlgorithm.SALT,
-      hashLen: Argon2HashingAlgorithm.HASH_LENGTH,
-      type: Argon2HashingAlgorithm.TYPE,
+      pass: question.answer.text.toLocaleLowerCase(),
+      salt: SALT,
+      hashLen: HASH_LENGTH,
+      type: TYPE,
     });
 
     const isCorrect = !!question.solutions.find(
       (solution) => solution === hashedAnswerText.hashHex
     );
 
-    return { ...question, isCorrect };
-  }
+    return { ...question, answer: { ...question.answer, isCorrect } };
+  },
+});
 
-  checkQuestions(questions: Question[]): Promise<Question[]> {
-    const questionsToCheck = questions.map(this.checkQuestion);
-
-    return Promise.all(questionsToCheck);
-  }
-
-  async checkChallenge(challenge: Challenge): Promise<Challenge> {
-    return challenge.merge({
-      questions: await this.checkQuestions(challenge.questions),
-    });
-  }
-}
+export const Argon2HashingAlgorithm = {
+  create,
+};

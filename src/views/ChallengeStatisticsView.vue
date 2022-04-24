@@ -13,7 +13,8 @@
 import { defineComponent, onMounted, ref, watch } from "vue";
 import { CountryCode } from "@/domain";
 import AppBar from "@/components/AppBar.vue";
-import ChallengeStatistics from "@/components/ChallengeStatistics.vue";
+const ChallengeStatistics = () =>
+  import("@/components/ChallengeStatistics.vue");
 import { useRoute, useRouter } from "vue-router";
 import { changeI18nLocale } from "@/i18n";
 
