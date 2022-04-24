@@ -31,11 +31,16 @@ const fillInAnswer = (
   answer: UncheckedAnswer,
   questionNumber: number
 ): UncheckedChallenge => {
-  const filledInQuestions = challenge.questions.map((question, index) =>
-    index + 1 === questionNumber && QuestionService.isUnanswered(question)
-      ? QuestionService.answer(question, answer)
-      : question
-  );
+  const filledInQuestions = challenge.questions.map((question, index) => {
+    if (index + 1 === questionNumber) {
+      const blankQuestion = QuestionService.isAnswered(question)
+        ? QuestionService.deleteAnswer(question)
+        : question;
+      const answeredQuestion = QuestionService.answer(blankQuestion, answer);
+      return answeredQuestion;
+    }
+    return question;
+  });
   return { ...challenge, questions: filledInQuestions };
 };
 
