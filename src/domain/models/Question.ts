@@ -39,11 +39,15 @@ export type AnswerQuestion = (
   question: UnansweredQuestion,
   answer: UncheckedAnswer
 ) => UncheckedQuestion;
-// GOD METHOD dependency
+
 export type CheckQuestion = (
+  question: UncheckedQuestion
+) => Promise<CheckedQuestion>;
+
+export type CheckQuestionWith = (
   question: UncheckedQuestion,
-  answer: CheckedAnswer
-) => CheckedQuestion;
+  checker: CheckQuestion
+) => Promise<CheckedQuestion>;
 
 export type CheckQuestionCorrectly = (
   question: UncheckedQuestion
@@ -52,18 +56,3 @@ export type CheckQuestionCorrectly = (
 export type CheckQuestionIncorrectly = (
   question: UncheckedQuestion
 ) => AnsweredQuestion<IncorrectAnswer>;
-
-// const answerQuestion = (
-//   question: Question,
-//   answer: UncheckedAnswer
-// ): UncheckedQuestion => ({ ...question, answer });
-
-// const checkQuestion = async (
-//   question: UncheckedQuestion,
-//   questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
-// ): Promise<CheckedQuestion> => questionChecker(question);
-
-// export const QuestionUtils = {
-//   answerQuestion,
-//   checkQuestion,
-// };

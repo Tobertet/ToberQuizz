@@ -9,10 +9,10 @@ import {
   CheckedQuestion,
   DeleteAnswer,
   AnswerQuestion,
-  CheckQuestion,
   CheckQuestionCorrectly,
   CheckQuestionIncorrectly,
   UncheckQuestion,
+  CheckQuestionWith,
 } from "@/domain";
 
 const deleteAnswer: DeleteAnswer = (question) => ({
@@ -27,7 +27,7 @@ const uncheck: UncheckQuestion = (question) => ({
 
 const answer: AnswerQuestion = (question, answer) => ({ ...question, answer });
 
-const check: CheckQuestion = (question, answer) => ({ ...question, answer });
+const check: CheckQuestionWith = (question, checker) => checker(question);
 
 const checkCorrectly: CheckQuestionCorrectly = (question) => ({
   ...question,
