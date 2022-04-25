@@ -1,5 +1,4 @@
 import {
-  CountryCode,
   AnswerRepository,
   UncheckedAnswer,
   ChallengeService,
@@ -13,8 +12,6 @@ const answerQuestion = async (
   checker: CheckQuestion,
   statisticsCollector: StatisticsCollector,
   answerRepository: AnswerRepository,
-  countryCode: CountryCode,
-  challengeNumber: number,
   challenge: Challenge,
   questionNumber: number,
   answer: UncheckedAnswer
@@ -25,10 +22,7 @@ const answerQuestion = async (
     questionNumber
   );
 
-  await answerRepository.save(
-    { countryCode, challengeNumber },
-    answeredChallenge
-  );
+  await answerRepository.save(answeredChallenge);
 
   const checkedChallenge = await ChallengeService.checkQuestion(
     answeredChallenge,
@@ -46,8 +40,7 @@ const answerQuestion = async (
     ).length;
 
     statisticsCollector.collect({
-      countryCode,
-      challengeNumber,
+      ...ChallengeService.getIdentifier(checkedChallenge),
       correctAnswersCount,
     });
   }

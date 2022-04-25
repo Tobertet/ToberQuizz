@@ -6,8 +6,5 @@ export type UserAnswersGetter = (
 
 export type AnswerRepository = {
   get: UserAnswersGetter;
-  save(
-    challengeIdentifier: ChallengeIdentifier,
-    challenge: Challenge
-  ): Promise<void>;
+  save(challenge: Challenge): Promise<void>;
 };

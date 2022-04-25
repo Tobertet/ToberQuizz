@@ -1,6 +1,7 @@
 import {
   AnswerRepository,
   ChallengeIdentifier,
+  ChallengeService,
   UncheckedAnswer,
 } from "@/domain";
 import { Storage } from "@capacitor/storage";
@@ -37,11 +38,14 @@ const create: () => AnswerRepository = () => ({
         : undefined
     );
   },
-  save: async (challengeIdentifier, challenge) => {
+  save: async (challenge) => {
     const rawAnswers = challenge.questions.map(
       (question) => question.answer?.text
     );
-    return storeRawAnswers(challengeIdentifier, rawAnswers);
+    return storeRawAnswers(
+      ChallengeService.getIdentifier(challenge),
+      rawAnswers
+    );
   },
 });
 

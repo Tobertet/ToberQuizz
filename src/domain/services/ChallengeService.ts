@@ -6,7 +6,13 @@ import {
   UncheckedChallenge,
   QuestionService,
   CheckQuestion,
+  ChallengeIdentifier,
 } from "@/domain";
+
+const getIdentifier = (challenge: Challenge): ChallengeIdentifier => ({
+  countryCode: challenge.countryCode,
+  challengeNumber: challenge.challengeNumber,
+});
 
 const fillInAnswer = (
   challenge: Challenge,
@@ -88,6 +94,7 @@ const isCorrect = (challenge: Challenge) =>
 const isIncorrect = (challenge: Challenge) => !isCorrect(challenge);
 
 export const ChallengeService = {
+  getIdentifier,
   fillInAnswer,
   fillInAnswers,
   checkQuestion,

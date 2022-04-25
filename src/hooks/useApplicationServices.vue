@@ -12,7 +12,6 @@ import {
   UncheckedChallenge,
   CheckedChallenge,
   Challenge,
-  CountryCode,
   UncheckedAnswer,
 } from "@/domain";
 import {
@@ -49,24 +48,14 @@ const checkChallenge: (
   CheckChallenge.execute(challenge, hashingAlgorithm.check);
 
 const answerQuestion: (
-  countryCode: CountryCode,
-  challengeNumber: number,
   challenge: Challenge,
   questionNumber: number,
   answer: UncheckedAnswer
-) => Promise<Challenge> = (
-  countryCode,
-  challengeNumber,
-  challenge,
-  questionNumber,
-  answer
-) =>
+) => Promise<Challenge> = (challenge, questionNumber, answer) =>
   AnswerQuestion.execute(
     hashingAlgorithm.check,
     statisticsCollector,
     answerRepository,
-    countryCode,
-    challengeNumber,
     challenge,
     questionNumber,
     answer
