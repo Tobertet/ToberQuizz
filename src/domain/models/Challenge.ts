@@ -1,7 +1,5 @@
 import {
   CountryCode,
-  UncheckedAnswer,
-  QuestionService,
   CheckedQuestion,
   UnansweredQuestion,
   UncheckedQuestion,
@@ -25,69 +23,3 @@ export type UncheckedChallenge = {
   questions: (UnansweredQuestion | CheckedQuestion | UncheckedQuestion)[];
 };
 export type Challenge = EmptyChallenge | CheckedChallenge | UncheckedChallenge;
-
-const fillInAnswer = (
-  challenge: Challenge,
-  answer: UncheckedAnswer,
-  questionNumber: number
-): UncheckedChallenge => {
-  const filledInQuestions = challenge.questions.map((question, index) => {
-    if (index + 1 === questionNumber) {
-      const blankQuestion = QuestionService.isAnswered(question)
-        ? QuestionService.deleteAnswer(question)
-        : question;
-      const answeredQuestion = QuestionService.answer(blankQuestion, answer);
-      return answeredQuestion;
-    }
-    return question;
-  });
-  return { ...challenge, questions: filledInQuestions };
-};
-
-const fillInAnswers = (
-  challenge: EmptyChallenge,
-  answers: (UncheckedAnswer | undefined)[]
-): UncheckedChallenge => {
-  const filledInQuestions = challenge.questions.map((question, index) =>
-    !answers[index]
-      ? question
-      : QuestionService.answer(question, answers[index] as UncheckedAnswer)
-  );
-  return { ...challenge, questions: filledInQuestions };
-};
-
-const checkQuestion = async (
-  challenge: UncheckedChallenge,
-  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>,
-  questionNumber: number
-): Promise<Challenge> => {
-  const checkedQuestions = await Promise.all(
-    challenge.questions.map(async (question, index) =>
-      index + 1 === questionNumber && QuestionService.isUnchecked(question)
-        ? await questionChecker(question)
-        : question
-    )
-  );
-  return { ...challenge, questions: checkedQuestions };
-};
-
-const checkChallenge = async (
-  challenge: UncheckedChallenge,
-  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
-): Promise<CheckedChallenge> => {
-  const checkedQuestions = await Promise.all(
-    challenge.questions.map(async (question) =>
-      QuestionService.isUnchecked(question)
-        ? QuestionService.check(question, questionChecker)
-        : question
-    )
-  );
-  return { ...challenge, questions: checkedQuestions };
-};
-
-export const ChallengeUtils = {
-  fillInAnswer,
-  fillInAnswers,
-  checkChallenge,
-  checkQuestion,
-};

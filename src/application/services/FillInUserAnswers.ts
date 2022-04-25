@@ -1,6 +1,6 @@
 import {
   ChallengeIdentifier,
-  ChallengeUtils,
+  ChallengeService,
   EmptyChallenge,
   UncheckedChallenge,
   UserAnswersGetter,
@@ -12,7 +12,7 @@ const fillInUserAnswers = async (
   challengeIdentifier: ChallengeIdentifier
 ): Promise<UncheckedChallenge> => {
   const userAnswers = await userAnswersGetter(challengeIdentifier);
-  return ChallengeUtils.fillInAnswers(challenge, userAnswers);
+  return ChallengeService.fillInAnswers(challenge, userAnswers);
 };
 
 export const FillInUserAnswers = {

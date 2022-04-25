@@ -1,16 +1,15 @@
 import {
-  ChallengeUtils,
+  ChallengeService,
   CheckedChallenge,
-  CheckedQuestion,
+  CheckQuestion,
   UncheckedChallenge,
-  UncheckedQuestion,
 } from "@/domain";
 
 const checkChallenge: (
   uncheckedChallenge: UncheckedChallenge,
-  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>
-) => Promise<CheckedChallenge> = (uncheckedChallenge, questionChecker) => {
-  return ChallengeUtils.checkChallenge(uncheckedChallenge, questionChecker);
+  checker: CheckQuestion
+) => Promise<CheckedChallenge> = (uncheckedChallenge, checker) => {
+  return ChallengeService.check(uncheckedChallenge, checker);
 };
 
 export const CheckChallenge = {

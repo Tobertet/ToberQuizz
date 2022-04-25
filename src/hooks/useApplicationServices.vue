@@ -46,7 +46,7 @@ const statisticsCollector = SupabaseStatisticsCollector.create(
 const checkChallenge: (
   challenge: UncheckedChallenge
 ) => Promise<CheckedChallenge> = (challenge) =>
-  CheckChallenge.execute(challenge, hashingAlgorithm.checkQuestion);
+  CheckChallenge.execute(challenge, hashingAlgorithm.check);
 
 const answerQuestion: (
   countryCode: CountryCode,
@@ -62,7 +62,7 @@ const answerQuestion: (
   answer
 ) =>
   AnswerQuestion.execute(
-    hashingAlgorithm.checkQuestion,
+    hashingAlgorithm.check,
     statisticsCollector,
     answerRepository,
     countryCode,

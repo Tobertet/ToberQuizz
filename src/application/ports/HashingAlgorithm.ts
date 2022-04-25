@@ -1,5 +1,5 @@
-import { CheckedQuestion, UncheckedQuestion } from "@/domain";
+import { CheckQuestion } from "@/domain";
 
 export type HashingAlgorithm = {
-  checkQuestion: (question: UncheckedQuestion) => Promise<CheckedQuestion>;
+  check: CheckQuestion;
 };

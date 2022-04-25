@@ -2,16 +2,15 @@ import {
   CountryCode,
   AnswerRepository,
   UncheckedAnswer,
-  ChallengeUtils,
-  UncheckedQuestion,
-  CheckedQuestion,
+  ChallengeService,
   Challenge,
   QuestionService,
+  CheckQuestion,
 } from "@/domain";
 import { StatisticsCollector } from "@/application/ports";
 
 const answerQuestion = async (
-  questionChecker: (question: UncheckedQuestion) => Promise<CheckedQuestion>,
+  checker: CheckQuestion,
   statisticsCollector: StatisticsCollector,
   answerRepository: AnswerRepository,
   countryCode: CountryCode,
@@ -20,7 +19,7 @@ const answerQuestion = async (
   questionNumber: number,
   answer: UncheckedAnswer
 ) => {
-  const answeredChallenge = ChallengeUtils.fillInAnswer(
+  const answeredChallenge = ChallengeService.fillInAnswer(
     challenge,
     answer,
     questionNumber
@@ -31,9 +30,9 @@ const answerQuestion = async (
     answeredChallenge
   );
 
-  const checkedChallenge = await ChallengeUtils.checkQuestion(
+  const checkedChallenge = await ChallengeService.checkQuestion(
     answeredChallenge,
-    questionChecker,
+    checker,
     questionNumber
   );
 

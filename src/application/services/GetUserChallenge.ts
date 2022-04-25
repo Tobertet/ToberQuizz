@@ -2,7 +2,7 @@ import {
   EmptyChallengeGetter,
   ChallengeIdentifier,
   UserAnswersGetter,
-  ChallengeUtils,
+  ChallengeService,
 } from "@/domain";
 
 const getUserChallenge = async (
@@ -12,7 +12,7 @@ const getUserChallenge = async (
 ) => {
   const emptyChallenge = await emptyChallengeGetter(challengeIdentifier);
   const userAnswers = await userAnswersGetter(challengeIdentifier);
-  return ChallengeUtils.fillInAnswers(emptyChallenge, userAnswers);
+  return ChallengeService.fillInAnswers(emptyChallenge, userAnswers);
 };
 
 export const GetUserChallenge = {

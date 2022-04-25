@@ -6,7 +6,7 @@ const HASH_LENGTH = 32;
 const TYPE = argon2.ArgonType.Argon2id;
 
 const create: () => HashingAlgorithm = () => ({
-  checkQuestion: async (question) => {
+  check: async (question) => {
     const hashedAnswerText = await argon2.hash({
       pass: question.answer.text.toLocaleLowerCase(),
       salt: SALT,
