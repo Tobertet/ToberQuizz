@@ -8,6 +8,8 @@ export default function useCheckedUserChallenge(
   challengeNumber: Ref<number>
 ) {
   const challenge = ref<Challenge>({
+    countryCode: CountryCode.WorldWide,
+    challengeNumber: 1,
     description: "",
     questions: [],
   });

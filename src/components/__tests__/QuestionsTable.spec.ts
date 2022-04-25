@@ -6,8 +6,6 @@ describe("QuestionsTable.vue", () => {
   const setup = () => {
     const utils = render(QuestionsTable, {
       props: {
-        challengeNumber: 1,
-        countryCode: "ES",
         challenge: TESTING_CHALLENGE,
       },
     });

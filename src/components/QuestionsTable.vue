@@ -21,8 +21,8 @@
       :key="index"
       :question="question"
       :questionNumber="index + 1"
-      :challengeNumber="challengeNumber"
-      :countryCode="countryCode"
+      :challengeNumber="challenge.challengeNumber"
+      :countryCode="challenge.countryCode"
       @answer="emitAnswer"
     >
     </Question>
@@ -55,8 +55,6 @@ export default defineComponent({
       type: Object as PropType<Challenge>,
       required: true,
     },
-    challengeNumber: { type: Number, required: true },
-    countryCode: { type: String, required: true },
   },
   setup: function (props, context) {
     const { t } = useI18n();

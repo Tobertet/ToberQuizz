@@ -35,12 +35,7 @@
   </p> -->
 
   <hr />
-  <QuestionsTable
-    :challengeNumber="challengeNumber"
-    :countryCode="countryCode"
-    :challenge="challenge"
-    @answer="onAnswer"
-  />
+  <QuestionsTable :challenge="challenge" @answer="onAnswer" />
 
   <div id="sticky-bar">
     <div>

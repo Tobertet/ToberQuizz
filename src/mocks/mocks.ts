@@ -1,6 +1,8 @@
-import { EmptyChallenge } from "@/domain";
+import { CountryCode, EmptyChallenge } from "@/domain";
 
 export const TESTING_CHALLENGE: EmptyChallenge = {
+  countryCode: CountryCode.Spain,
+  challengeNumber: 1,
   description: "Testing challenge.",
   questions: [
     {
