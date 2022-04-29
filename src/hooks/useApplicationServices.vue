@@ -14,72 +14,50 @@ import {
   Challenge,
   UncheckedAnswer,
 } from "@/domain";
-import {
-  StorageAnswerRepository,
-  Argon2HashingAlgorithm,
-  StorageApiQueueRepository,
-  SupabaseStatisticsCollector,
-  RestChallengeRepository,
-} from "@/infrastructure";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseClient = createClient(
-  // eslint-disable-next-line
-  process.env.VUE_APP_SUPABASE_URL!,
-  // eslint-disable-next-line
-  process.env.VUE_APP_SUPABASE_ANON_KEY!
-);
-
-const answerRepository = StorageAnswerRepository.create();
-const challengeRepository = RestChallengeRepository.create(
-  process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET || ""
-);
-const storageApiQueueRepository = StorageApiQueueRepository.create();
-
-const hashingAlgorithm = Argon2HashingAlgorithm.create();
-const statisticsCollector = SupabaseStatisticsCollector.create(
-  storageApiQueueRepository,
-  supabaseClient
-);
-
-const checkChallenge: (
-  challenge: UncheckedChallenge
-) => Promise<CheckedChallenge> = (challenge) =>
-  CheckChallenge.execute(challenge, hashingAlgorithm.check);
-
-const answerQuestion: (
-  challenge: Challenge,
-  questionNumber: number,
-  answer: UncheckedAnswer
-) => Promise<Challenge> = (challenge, questionNumber, answer) =>
-  AnswerQuestion.execute(
-    hashingAlgorithm.check,
-    statisticsCollector,
-    answerRepository,
-    challenge,
-    questionNumber,
-    answer
-  );
-
-const getUserChallenge: (
-  challengeIdentifier: ChallengeIdentifier
-) => Promise<UncheckedChallenge> = (challengeIdentifier) =>
-  GetUserChallenge.execute(
-    challengeRepository.getEmpty,
-    answerRepository.get,
-    challengeIdentifier
-  );
-
-const getEmptyChallenge: (
-  challengeIdentifier: ChallengeIdentifier,
-  options?: { emptyChallengeGetter: EmptyChallengeGetter }
-) => Promise<EmptyChallenge> = (challengeIdentifier, options) =>
-  GetEmptyChallenge.execute(
-    options?.emptyChallengeGetter || challengeRepository.getEmpty,
-    challengeIdentifier
-  );
+import useApplicationPorts from "./useApplicationPorts.vue";
+import useDomainRepositories from "./useDomainRepositories.vue";
 
 export default function useApplicationServices() {
+  const { answerRepository, challengeRepository } = useDomainRepositories();
+  const { hashingAlgorithm, statisticsCollector } = useApplicationPorts();
+
+  const checkChallenge: (
+    challenge: UncheckedChallenge
+  ) => Promise<CheckedChallenge> = (challenge) =>
+    CheckChallenge.execute(challenge, hashingAlgorithm.check);
+
+  const answerQuestion: (
+    challenge: Challenge,
+    questionNumber: number,
+    answer: UncheckedAnswer
+  ) => Promise<Challenge> = (challenge, questionNumber, answer) =>
+    AnswerQuestion.execute(
+      hashingAlgorithm.check,
+      statisticsCollector,
+      answerRepository,
+      challenge,
+      questionNumber,
+      answer
+    );
+
+  const getUserChallenge: (
+    challengeIdentifier: ChallengeIdentifier
+  ) => Promise<UncheckedChallenge> = (challengeIdentifier) =>
+    GetUserChallenge.execute(
+      challengeRepository.getEmpty,
+      answerRepository.get,
+      challengeIdentifier
+    );
+
+  const getEmptyChallenge: (
+    challengeIdentifier: ChallengeIdentifier,
+    options?: { emptyChallengeGetter: EmptyChallengeGetter }
+  ) => Promise<EmptyChallenge> = (challengeIdentifier, options) =>
+    GetEmptyChallenge.execute(
+      options?.emptyChallengeGetter || challengeRepository.getEmpty,
+      challengeIdentifier
+    );
+
   return {
     getEmptyChallenge,
     getUserChallenge,
