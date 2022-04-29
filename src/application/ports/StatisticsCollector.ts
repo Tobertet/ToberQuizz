@@ -7,5 +7,8 @@ export type CorrectAnswersCountStatisticsEvent = {
 };
 
 export type StatisticsCollector = {
-  collect(event: CorrectAnswersCountStatisticsEvent): Promise<void>;
+  collect: (event: CorrectAnswersCountStatisticsEvent) => Promise<void>;
+  flush: () => Promise<void>;
+  isEnabled: () => Promise<boolean>;
+  setEnabled: (isEnabled: boolean) => Promise<void>;
 };

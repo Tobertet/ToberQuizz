@@ -3,7 +3,11 @@ import {
   StatisticsCollector,
 } from "@/application/ports";
 import { ApiQueueRepository } from "@/domain";
+import { Capacitor } from "@capacitor/core";
+import { Storage } from "@capacitor/storage";
 import { SupabaseClient } from "@supabase/supabase-js";
+
+const STORAGE_KEY = "STATISTICS_OPT_IN";
 
 const loadEvents = async (
   apiQueueRepository: ApiQueueRepository
@@ -28,6 +32,9 @@ const sendStoredEvents = async (
   apiQueueRepository: ApiQueueRepository,
   supabaseClient: SupabaseClient
 ): Promise<void> => {
+  const userOptedIn = await isEnabled();
+  if (!userOptedIn) return;
+
   const storedEvents = await loadEvents(apiQueueRepository);
 
   const { error } = await supabaseClient.from("correct_answers").insert(
@@ -44,6 +51,20 @@ const sendStoredEvents = async (
   }
 };
 
+const isEnabled = async () => {
+  // This line causes e2e tests to fail
+  if (!Capacitor.isNativePlatform()) return true;
+  const storedOptIn = await Storage.get({ key: STORAGE_KEY });
+  if (!storedOptIn) return false;
+  const isOptinEnabled: boolean | null = JSON.parse(
+    storedOptIn.value as string
+  );
+  return !!isOptinEnabled;
+};
+
+const setEnabled = (isEnabled: boolean) =>
+  Storage.set({ key: STORAGE_KEY, value: JSON.stringify(isEnabled) });
+
 const create = (
   apiQueueRepository: ApiQueueRepository,
   supabaseClient: SupabaseClient
@@ -53,6 +74,9 @@ const create = (
     await storeEvents([...storedEvents, event], apiQueueRepository);
     await sendStoredEvents(apiQueueRepository, supabaseClient);
   },
+  isEnabled,
+  setEnabled,
+  flush: () => sendStoredEvents(apiQueueRepository, supabaseClient),
 });
 
 export const SupabaseStatisticsCollector = {

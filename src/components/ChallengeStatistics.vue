@@ -13,6 +13,20 @@
     {{ t("CHALLENGE_STATISTICS_VIEW.CHALLENGE_PROGRESS") }}
   </h3>
 
+  <div class="info-box" v-if="optedIn === false">
+    <p>
+      {{ t("CHALLENGE_STATISTICS_VIEW.OPT_IN_BOX.TEXT_1") }}
+    </p>
+    <p>
+      {{ t("CHALLENGE_STATISTICS_VIEW.OPT_IN_BOX.TEXT_2") }}
+    </p>
+    <p>
+      <a role="button" class="button" @click="optIn">
+        {{ t("CHALLENGE_STATISTICS_VIEW.OPT_IN_BOX.BUTTON") }}
+      </a>
+    </p>
+  </div>
+
   <div style="margin-bottom: 40px">
     <BarChart
       v-if="chartData"
@@ -35,7 +49,7 @@
 <script lang="ts">
 import { useCheckedUserChallenge } from "@/hooks";
 import { CountryCode } from "@/domain";
-import { defineComponent, ref, Ref, toRefs, watch } from "vue";
+import { defineComponent, onMounted, ref, Ref, toRefs, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { supabase } from "@/supabase";
 import { BarChart } from "vue-chart-3";
@@ -49,6 +63,8 @@ import {
   LinearScale,
   Tooltip,
 } from "chart.js";
+import useApplicationPorts from "@/hooks/useApplicationPorts.vue";
+import { useRouter } from "vue-router";
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
 
@@ -62,6 +78,7 @@ export default defineComponent({
     const { challengeNumber, countryCode } = toRefs(props);
 
     const chartData = ref<ChartData>();
+    const optedIn = ref<boolean>();
 
     const { t } = useI18n();
 
@@ -69,6 +86,20 @@ export default defineComponent({
       countryCode as Ref<CountryCode>,
       challengeNumber
     );
+
+    const router = useRouter();
+
+    const { statisticsCollector } = useApplicationPorts();
+
+    const optIn = async () => {
+      await statisticsCollector.setEnabled(true);
+      await statisticsCollector.flush();
+      router.go(0);
+    };
+
+    onMounted(async () => {
+      optedIn.value = await statisticsCollector.isEnabled();
+    });
 
     watch([challenge], async () => {
       const questionsCount = challenge.value.questions.length;
@@ -106,7 +137,8 @@ export default defineComponent({
       elements: {
         bar: {
           backgroundColor: (ctx) => {
-            return ctx.dataIndex + 1 === correctAnswersCount.value
+            return optedIn.value &&
+              ctx.dataIndex + 1 === correctAnswersCount.value
               ? "#ffa316"
               : "#4aab79";
           },
@@ -157,6 +189,8 @@ export default defineComponent({
       t,
       chartData,
       chartOptions,
+      optedIn,
+      optIn,
     };
   },
 });
@@ -192,5 +226,27 @@ h3 {
 
 p {
   font-size: 18px;
+}
+
+.info-box {
+  border-left: 5px solid var(--info-color);
+  background-color: rgba(#1366c9, 0.1);
+  text-align: left;
+  border-radius: 5px;
+  padding: 4px 20px;
+  margin: 1em 0;
+  p {
+    color: var(--info-color);
+  }
+  .button {
+    padding: 8px 16px;
+    background-color: var(--info-color);
+    color: white;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 300;
+    font-family: "Roboto";
+  }
 }
 </style>

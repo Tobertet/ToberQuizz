@@ -49,7 +49,12 @@
     "USERS_PERCENTAGE": "Porcentaje de usuarios",
     "COUNT_OF_CORRECT_ANSWERS": "Total de respuestas acertadas",
     "X_CORRECT_ANSWERS": "{count} respuestas acertadas",
-    "CHALLENGE_PROGRESS": "Progreso del desafío"
+    "CHALLENGE_PROGRESS": "Progreso del desafío",
+    "OPT_IN_BOX": {
+      "TEXT_1": "Las estadísticas mostradas son totalmente anónimas bajo consentimiento previo.",
+      "TEXT_2": "Actualmente, tu dispositivo no está enviándolas. ¿Te gustaría contribuir para ver tu progreso?",
+      "BUTTON": "Contribuir"
+    }
   },
   "FOOTER": {
     "MADE_BY": "Hecho para ti con mucho ❤️ por",
