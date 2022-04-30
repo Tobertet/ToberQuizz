@@ -23,34 +23,43 @@
       <p class="regular list-heading">
         {{ t("CHALLENGE_LIST_VIEW.SELECT_A_CHALLENGE") }}
       </p>
-      <div class="list-item not-allowed">
+      <div
+        class="list-item not-allowed"
+        v-for="upcomingChallenge of upcomingChallenges"
+        :key="upcomingChallenge.challengeNumber"
+      >
         <p class="gray">
           {{
             t("CHALLENGE_LIST_VIEW.CHALLENGE", {
-              challengeNumber: challenges.length + 1,
+              challengeNumber: upcomingChallenge.challengeNumber,
             })
           }}
-          <span class="danger">({{ t("MONTHS.JUNE") }})</span>
+          <span class="danger"
+            >({{ t(getMonthLiteral(upcomingChallenge.startingDate)) }})</span
+          >
         </p>
-        <ArrowRight :color="'#a0a0a0'" />
+        <div class="end-icons">
+          <span class="danger">{{ upcomingChallenge.remainingTime }}</span>
+          <ArrowRight :color="'#a0a0a0'" />
+        </div>
       </div>
       <div
         class="list-item pointer"
-        v-for="challengeIndex of Object.keys(challenges).reverse()"
-        :key="challengeIndex"
-        @click="goToChallengeView(parseInt(challengeIndex) + 1)"
+        v-for="availableChallenge of availableChallenges"
+        :key="availableChallenge.challengeNumber"
+        @click="goToChallengeView(availableChallenge.challengeNumber)"
       >
         <p>
           {{
             t("CHALLENGE_LIST_VIEW.CHALLENGE", {
-              challengeNumber: parseInt(challengeIndex) + 1,
+              challengeNumber: availableChallenge.challengeNumber,
             })
           }}
         </p>
         <div class="end-icons">
           <StatisticsIcon
             @click.stop="
-              goToChallengeStatisticsView(parseInt(challengeIndex) + 1)
+              goToChallengeStatisticsView(availableChallenge.challengeNumber)
             "
           />
           <ArrowRight />
@@ -61,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
 import { CountryCode } from "@/domain";
 import { useRoute, useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
@@ -71,14 +80,63 @@ import { useI18n } from "vue-i18n";
 import axios from "axios";
 import { changeI18nLocale } from "@/i18n";
 
+type ChallengeData = {
+  challengeNumber: number;
+  startingDate: string;
+  remainingTime?: string;
+};
+
+const zeroPad = (number: number) => {
+  return String(number).padStart(2, "0");
+};
+
+const getRemainingTimeCounter = (date: Date): string => {
+  const now = Date.now();
+  let delta = Math.abs(date.getTime() - now) / 1000;
+  const days = Math.floor(delta / 86400);
+  delta -= days * 86400;
+  const hours = Math.floor(delta / 3600) % 24;
+  delta -= hours * 3600;
+  const minutes = Math.floor(delta / 60) % 60;
+  delta -= minutes * 60;
+  const seconds = Math.round(delta % 60); // in theory the modulus is not required
+
+  return `${zeroPad(days)}:${zeroPad(hours)}:${zeroPad(minutes)}:${zeroPad(
+    seconds
+  )}`;
+};
+
+const months = [
+  "JANUARY",
+  "FEBRUARY",
+  "MARCH",
+  "APRIL",
+  "MAY",
+  "JUNE",
+  "JULY",
+  "AUGUST",
+  "SEPTEMBER",
+  "OCTOBER",
+  "NOVEMBER",
+  "DECEMBER",
+];
+
+const getMonthLiteral = (time: string) => {
+  const monthIndex = new Date(time).getMonth();
+  return `MONTHS.${months[monthIndex]}`;
+};
+
 export default defineComponent({
   components: { ArrowRight, AppBar, StatisticsIcon },
   setup: () => {
     const router = useRouter();
     const route = useRoute();
     const { t } = useI18n();
+    let intervalID: NodeJS.Timer;
 
-    const challenges = ref(new Array<number>());
+    const challenges = ref(new Array<ChallengeData>());
+    const availableChallenges = ref(new Array<ChallengeData>());
+    const upcomingChallenges = ref(new Array<ChallengeData>());
     const countryCode = ref<CountryCode>(CountryCode.WorldWide);
 
     const goToChallengeView = (challengeNumber: number) => {
@@ -97,12 +155,19 @@ export default defineComponent({
       readAndSetUrlParams();
       changeI18nLocale(countryCode.value);
       loadChallenges();
+      intervalID = setInterval(() => {
+        updateChallenges();
+      }, 1000);
     });
 
     watch([route], () => {
       readAndSetUrlParams();
       changeI18nLocale(countryCode.value);
       loadChallenges();
+    });
+
+    onUnmounted(() => {
+      clearInterval(intervalID);
     });
 
     // TODO Take a look at router guards
@@ -125,16 +190,37 @@ export default defineComponent({
 
     const loadChallenges = async () => {
       const challengeURL = `${process.env.VUE_APP_QUIZZ_RESOURCES_BUCKET}/${countryCode.value}/challenges.json`;
-      const data = await (await axios.get(challengeURL)).data;
+      const data = (await axios.get<Array<ChallengeData>>(challengeURL)).data;
       challenges.value = data;
+      updateChallenges();
+    };
+
+    const updateChallenges = () => {
+      const now = Date.now();
+      availableChallenges.value = challenges.value
+        .filter(
+          (challenge) => new Date(challenge.startingDate).getTime() <= now
+        )
+        .reverse();
+      upcomingChallenges.value = challenges.value
+        .filter((challenge) => new Date(challenge.startingDate).getTime() > now)
+        .reverse()
+        .map((upcomingChallenge) => ({
+          ...upcomingChallenge,
+          remainingTime: getRemainingTimeCounter(
+            new Date(upcomingChallenge.startingDate)
+          ),
+        }));
     };
 
     return {
       goToChallengeView,
-      challenges,
+      availableChallenges,
+      upcomingChallenges,
       t,
       countryCode,
       goToChallengeStatisticsView,
+      getMonthLiteral,
     };
   },
 });
@@ -189,6 +275,7 @@ h2 {
 .end-icons {
   display: flex;
   flex-direction: row;
+  align-items: center;
   svg {
     padding: 4px;
   }
