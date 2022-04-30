@@ -30,7 +30,7 @@
               challengeNumber: challenges.length + 1,
             })
           }}
-          <span class="danger">({{ t("MONTHS.MAY") }})</span>
+          <span class="danger">({{ t("MONTHS.JUNE") }})</span>
         </p>
         <ArrowRight :color="'#a0a0a0'" />
       </div>

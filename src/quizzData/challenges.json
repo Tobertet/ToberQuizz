@@ -1,1 +1,5 @@
-[1, 2, 3, 4]
+[
+  { "challengeNumber": 1, "startingDate": "2022-02-01" },
+  { "challengeNumber": 2, "startingDate": "2022-04-01" },
+  { "challengeNumber": 3, "startingDate": "2022-05-01" }
+]
