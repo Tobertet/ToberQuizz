@@ -15,9 +15,19 @@
 
 [Download it from Play Store](https://play.google.com/store/apps/details?id=com.robertmengual.toberquizz)
 
+## Contributing
+
+### Proposing a new challenge
+
+Would you like to create content either for a specific country or internationally? Just open a new Issue of type **New challenge proposal** and follow the steps in the wiki page [Proposing a new challenge](https://github.com/Tobertet/ToberQuizz/wiki/Proposing-a-new-challenge).
+
+### Donating
+
+If you really enjoyed the application and want to support me, you can also [buy me a coffee](https://ko-fi.com/robertmengual). I would be eternally grateful :)
+
 ## Project Setup
 
-The project has been developed using NodeJS v14 so we encourage you to do the same. If you use [nvm](https://github.com/nvm-sh/nvm), you can simply run `nvm use` in the root of the project and it will automatically set that version for you.
+The project has been developed using NodeJS v16 so we encourage you to do the same. If you use [nvm](https://github.com/nvm-sh/nvm), you can simply run `nvm use` in the root of the project and it will automatically set that version for you.
 
 The package manager we use is [yarn](https://classic.yarnpkg.com/lang/en/docs/install).
 
@@ -44,45 +54,3 @@ _Requires Xcode and a Mac machine._
 Run the command `npx cap build ios` after building the web resources and the ios project will be available under the `ios` directory.
 
 If you only want to run the app, you can run the command `npx cap run ios` and the app will be run in your pluged device or in a simulator.
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn`
-
-Installs all the dependencies.
-
-### `yarn serve`
-
-Runs the app in the development mode.\
-Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn test:coverage`
-
-Shows the test coverage for the unit tests.
-
-### `yarn build`
-
-Builds the _web app_ for production to the `dist` folder.\
-It correctly bundles Vue in production mode and optimizes the build for the best performance.
-The build is minified and the filenames include the hashes.\
-
-### `yarn lint`
-
-Runs eslint and prettier on all the files in the /src folder. This linter has been configured to be extended with rules for jest, prettier and cypress.
-
-### `yarn cypress:open`
-
-Opens up the cypress UI for running the e2e test suite.
-
-## Contributing
-
-You can contribute in many ways in this project. Any challenge submission for any country is more than welcome.
-
-Another way is simply by downloading the app from FDroid or Play Store. Will you be able to solve all them all?
