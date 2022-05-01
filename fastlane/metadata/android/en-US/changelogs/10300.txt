@@ -1,0 +1,2 @@
+A new section with statistics has been added with an opt-in.
+The upcoming challenges now show the date correctly and also have time countdown.

@@ -1,0 +1,2 @@
+Se ha añadido una sección de estadísticas con opt-in.
+Ahora los desafíos futuros mostrarán la fecha correctamente y un contador de tiempo.
