@@ -8,13 +8,13 @@
       </div>
     </div>
 
-    <p id="share-button">
+    <p id="contribute-button">
       <a
-        :href="'whatsapp://send?text=' + t('HOME_VIEW.SHARE_MESSAGE')"
-        data-action="share/whatsapp/share"
+        href="https://github.com/Tobertet/ToberQuizz/wiki/Proposing-a-new-challenge"
+        rel="noopener noreferrer"
         target="_blank"
       >
-        {{ t("HOME_VIEW.SHARE") }} <ShareIcon :color="'#ffa316'" />
+        {{ t("HOME_VIEW.CONTRIBUTE") }}
       </a>
     </p>
 
@@ -46,11 +46,10 @@ import { useI18n } from "vue-i18n";
 import { CountryCode } from "@/domain";
 import { useRouter } from "vue-router";
 import ArrowRight from "@/components/icons/ArrowRight.vue";
-import ShareIcon from "@/components/icons/ShareIcon.vue";
 import { changeI18nLocale } from "@/i18n";
 
 export default defineComponent({
-  components: { ArrowRight, ShareIcon },
+  components: { ArrowRight },
   setup: () => {
     const quizzCountries = Object.values(CountryCode);
     const { t } = useI18n();
@@ -99,17 +98,15 @@ export default defineComponent({
   }
 }
 
-#share-button {
+#contribute-button {
   a {
-    font-size: 24px;
+    text-align: center;
+    font-size: 20px;
     color: var(--warning-color);
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: 400;
-  }
-  @media (min-width: 500px) {
-    display: none;
   }
 }
 

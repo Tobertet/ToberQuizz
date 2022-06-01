@@ -27,8 +27,7 @@
     "FREE_CHALLENGES": "<span class=\"regular\">Kostenlose</span> Aufgaben",
     "ETHICAL_TECHNOLOGY": "<span class=\"regular\">Ethische</span> Technologie",
     "SELECT_A_COUNTRY": "Wähle ein Land aus",
-    "SHARE": "Teilen",
-    "SHARE_MESSAGE": "Entdecke die Aufgaben von ToberQuizz!%0aSchaffst du es alle zu lösen?%0a%0ahttps://toberquizz.com"
+    "CONTRIBUTE": "Möchten Sie Ihre eigenen Herausforderungen erstellen?"
   },
   "CHALLENGE_LIST_VIEW": {
     "CHALLENGE": "Aufgabe {challengeNumber}",
