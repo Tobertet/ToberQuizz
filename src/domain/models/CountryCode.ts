@@ -3,6 +3,7 @@
  * @enum {string}
  */
 export enum CountryCode {
-  Spain = "ES",
   WorldWide = "WW",
+  Germany = "DE",
+  Spain = "ES",
 }

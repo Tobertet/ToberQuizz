@@ -1,0 +1,2 @@
+Added Germany to the list of countries.
+Added the first challenge for Germany.
